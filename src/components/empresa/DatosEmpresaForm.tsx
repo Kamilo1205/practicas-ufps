@@ -10,12 +10,37 @@ import { TooltipComponent } from ".."
 import Image from "next/image"
 
 import InfoIcon from '/public/info.svg'
+import { SelectComponent } from "../ui/SelectComponent"
+import { getPaises } from "@/helpers"
+import { get } from "http"
+import { useEffect, useState } from "react"
+
+const getListaDePaises = async () => {
+  const paises = await getPaises()
+  return paises.map((pais) => {
+    return {
+      key: pais.nombre,
+      value: pais.nombre,
+     
+    }
+  })
+}
 
 export const DatosEmpresaForm = () => { 
+  const [paises, setPaises] = useState<{ key: string; value: string; }[]>([]);
+  useEffect(() => { 
+    getListaDePaises().then((paises) => {
+      setPaises(paises)
+    })
+  }, [])
+
   const form = useForm<z.infer<typeof DatosEmpresaSchema>>({
     mode: 'onBlur',
     resolver: zodResolver(DatosEmpresaSchema)
   })
+
+  console.log(form.getValues())
+
   return (
       <div className="p-2">
       <h1>Datos de la empresa</h1>
@@ -50,7 +75,7 @@ export const DatosEmpresaForm = () => {
                       <span className="mr-1">Telefono</span>
 
                       <TooltipComponent
-                        content="Tenga en cuenta que si el telefono no es Colombia, debe agregar el código de país. Ejemplo: +1 para Estados Unidos"
+                        content="Tenga en cuenta que si el telefono no es de Colombia, debe agregar el código de país. Ejemplo: +1 para Estados Unidos"
                         hoverText={
                           <Image src={InfoIcon}
                             width={16}
@@ -64,6 +89,28 @@ export const DatosEmpresaForm = () => {
                   </FormLabel>
                   <FormControl>
                     <Input type="text" autoComplete="false" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/*Selección del Pais*/}
+          <div className="col-span-3">
+            <FormField
+              control={form.control}
+              name="pais"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Pais</FormLabel>
+                  <FormControl>
+                    <SelectComponent
+                      placeholder="Seleccione un pais"
+                      items={paises}
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

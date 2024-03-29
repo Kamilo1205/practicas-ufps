@@ -17,6 +17,11 @@ export const DatosEmpresaSchema = z.object({
     required_error: 'El NIT es requerido',
     invalid_type_error: 'El NIT ingresado no es valido'
   }),
+  pais: z.string({
+    required_error: 'El pais es requerido',
+    invalid_type_error: 'El pais ingresado no es valido'
+  
+  }),
   municipio: z.string({
     required_error: 'El municipio es requerido',
     invalid_type_error: 'El municipio ingresado no es valido'

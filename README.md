@@ -9,6 +9,9 @@ Pasos para levantar la app en desarrollo
 6. Ejecutar seed ``` npm run seed ```.
 7. Correr el proyecto ``` npm run dev ```.
 
+>[!NOTE]
+>
+> Debe considerar que puerto se expone en el docker compose y que puerto configura en el archivo .env
 
 # Prisma commands
 ```

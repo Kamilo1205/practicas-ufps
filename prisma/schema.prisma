@@ -25,9 +25,48 @@ model Usuario {
   id              String    @id @default(uuid())
   email           String    @unique
   emailVerificado DateTime?
-  password        String
+  password        String?
   rol             Rol       @default(estudiante)
   imagen          String?
+  creado          DateTime  @default(now())
+  actulizado      DateTime  @updatedAt
+}
+
+model Estudiante {
+  id         String   @id @default(uuid())
+  codigo     Int
+  creado     DateTime @default(now())
+  actulizado DateTime @updatedAt
+
+  informacionPersonal  InformacioPersonal @relation(fields: [informacionPersonaId], references: [id])
+  informacionPersonaId String             @unique
+}
+
+model TutorPractica {
+  id                  String   @id @default(uuid())
+  cargo               String // Cargo en la empresa
+  departamentoEmpresa String // Departamento en la empresa
+  creado              DateTime @default(now())
+  actulizado          DateTime @updatedAt
+
+  informacionPersonal  InformacioPersonal @relation(fields: [informacionPersonaId], references: [id])
+  informacionPersonaId String             @unique
+}
+
+model InformacioPersonal {
+  id           String   @id @default(uuid())
+  nombre       String
+  apellido     String
+  genero       String
+  telefono     Int
+  departamento Int
+  municipio    Int
+  direccion    String
+  creado       DateTime @default(now())
+  actulizado   DateTime @updatedAt
+
+  estudiante    Estudiante?
+  tutorPractica TutorPractica?
 }
 
 model RepresentanteLegal {
@@ -55,7 +94,3 @@ model Empresa {
   representanteLegal   RepresentanteLegal? @relation(fields: [representanteLegalId], references: [id])
   representanteLegalId String
 }
-
-//TODO: Modelo de la empresa. 
-//TODO: Modelo del tutor empresarial.
-//TODO: Modelo del representante legal.

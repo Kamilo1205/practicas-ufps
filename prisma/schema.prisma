@@ -31,12 +31,13 @@ model Usuario {
 }
 
 model RepresentanteLegal {
-  id       String    @id @default(uuid())
-  nombre   String
-  apellido String
-  telefono String
-  email    String
-  empresa  Empresa[]
+  id                    String    @id @default(uuid())
+  nombre                String
+  apellido              String
+  telefono              String?
+  email                 String?
+  documentoIdentidadUrl String
+  empresa               Empresa[]
 }
 
 model Empresa {

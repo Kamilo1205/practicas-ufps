@@ -6,16 +6,21 @@
 
 El modelo prima contiene según el modelo y el alcance del proyecto:
 
-- Nombre de la empresa [ ]
-- Teléfono de contacto [ ]
-- Dirección [ ]
-- NIT (Número de Identificación Tributaria) [ ]
-- RUT (Registro Único Tributario) [ ]
-- Datos personales del representante legal: [ ]
-  - Nombre completo [ ]
-  - Documento de identidad escaneado [ ]
-- Cámara de Comercio o Registro Mercantil [ ]
+- Nombre de la empresa [x]
+- Teléfono de contacto [x]
+- Dirección [x]
+- NIT (Número de Identificación Tributaria) [x]
+- RUT (Registro Único Tributario) [x]
+- Datos personales del representante legal: [] (PENDIENTE)
+  - Nombre completo [x]
+  - Documento de identidad escaneado [x]
+- Cámara de Comercio o Registro Mercantil [x]
 - Convenio (si la empresa ya cuenta con uno): [ ]
   - Se puede subir el convenio para registrar la empresa. [ ]
   - En caso de no tener convenio, se indica enviar la solicitud al plan de estudio o a secretaría. [ ]
   - Una vez que se cuente con el convenio, se puede registrar posteriormente. [ ]
+
+### Agregados por modelo anterior.
+
+- [X] Industria
+- [X] Email

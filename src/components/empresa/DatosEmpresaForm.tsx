@@ -152,6 +152,23 @@ export const DatosEmpresaForm = () => {
               )}
             />
           </div>
+
+          {/* Input Direccion */}
+          <div className="col-span-3">
+            <FormField
+              control={form.control}
+              name="direccion"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Dirección</FormLabel>
+                  <FormControl>
+                    <Input type="text" autoComplete="false" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </form>
       </Form>
       </div>

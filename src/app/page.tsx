@@ -1,5 +1,7 @@
-import { auth } from '@/auth.config';
+import { LogoutButton } from '@/components/auth/LogoutButton';
+import { auth } from '../auth.config';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default async function Home() {
 
@@ -112,11 +114,27 @@ export default async function Home() {
           </p>
         </a>
 
-        <pre>
+        <div className="flex flex-col">
+          <pre>
+            {
+              JSON.stringify(session?.user, null, 2)
+            }
+          </pre>
+          
           {
-            JSON.stringify(session?.user, null, 2)
+            session && session?.user && session?.user?.image &&
+            <Image
+              className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
+              src={ session?.user.image }
+              alt="Images"
+              width={180}
+              height={37}
+              priority
+            />
           }
-        </pre>
+          <LogoutButton />
+          <Link href="/login">Login</Link>
+        </div>
       </div>
     </main>
   );

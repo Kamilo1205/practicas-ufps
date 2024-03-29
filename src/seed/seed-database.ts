@@ -3,11 +3,11 @@ import prisma from '../lib/prisma';
 
 async function main() {
     // await Promise.all([
-        await prisma.usuario.deleteMany()
+        await prisma.user.deleteMany()
     // ]);
 
     const { users } = initialData;
-    await prisma.usuario.createMany({
+    await prisma.user.createMany({
         data: users
     });
     

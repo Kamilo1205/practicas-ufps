@@ -18,8 +18,11 @@ El modelo prima contiene según el modelo y el alcance del proyecto:
 - [x] NIT (Número de Identificación Tributaria)  :white_check_mark:
 - [x] RUT (Registro Único Tributario) 
 - [ ] Datos personales del representante legal:  (PENDIENTE)
-  - [X] Nombre completo 
-  - [x] Documento de identidad escaneado 
+  - [X] Nombre completo :white_check_mark:
+  - [X] Número de identificación (¿Qué tipos de documentos de identidad se permiten?)
+  - [X] Correo (?)
+  - [X] Telefono (?)
+  - [x] Documento de identidad escaneado :white_check_mark:
 - [x] Cámara de Comercio o Registro Mercantil 
 - [ ] Convenio (si la empresa ya cuenta con uno): 
   - [ ] Se puede subir el convenio para registrar la empresa. 
@@ -49,7 +52,9 @@ El modelo prima contiene según el modelo y el alcance del proyecto:
 ### Guardar datos del representante legal. 
 - [ ] Datos personales del representante legal:  (PENDIENTE)
   - [ ] Nombre completo 
-  - [ ] Documento de identidad escaneado 
+  - [ ] Número de identificación
+  - [ ] Correo (?)
+  - [ ] Telefono (?)
 
 ### Guardar datos sobre el convenio.
 

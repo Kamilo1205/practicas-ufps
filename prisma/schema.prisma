@@ -36,6 +36,7 @@ model RepresentanteLegal {
   apellido              String
   telefono              String?
   email                 String?
+  cedula                String
   documentoIdentidadUrl String
   empresa               Empresa[]
 }

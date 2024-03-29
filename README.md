@@ -9,9 +9,10 @@ Pasos para levantar la app en desarrollo
 6. Ejecutar seed ``` npm run seed ```.
 7. Correr el proyecto ``` npm run dev ```.
 
->[!NOTE]
+>[!IMPORTANT]
 >
 > Debe considerar que puerto se expone en el docker compose y que puerto configura en el archivo .env
+> Por lo general postgres expone el puerto 5432 por defecto.
 
 # Prisma commands
 ```

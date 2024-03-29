@@ -22,8 +22,8 @@ enum Rol {
 }
 
 model Usuario {
-  id              String     @id @default(uuid())
-  email           String     @unique
+  id              String    @id @default(uuid())
+  email           String    @unique
   emailVerificado DateTime?
   password        String?
   rol             Rol       @default(estudiante)
@@ -33,39 +33,64 @@ model Usuario {
 }
 
 model Estudiante {
-  id                   String @id @default(uuid())
-  codigo               Int
-  creado               DateTime  @default(now())
-  actulizado           DateTime  @updatedAt
+  id         String   @id @default(uuid())
+  codigo     Int
+  creado     DateTime @default(now())
+  actulizado DateTime @updatedAt
 
   informacionPersonal  InformacioPersonal @relation(fields: [informacionPersonaId], references: [id])
-  informacionPersonaId String    @unique
+  informacionPersonaId String             @unique
 }
 
 model TutorPractica {
-  id                  String     @id @default(uuid())
-  cargo               String     // Cargo en la empresa
-  departamentoEmpresa String     // Departamento en la empresa
-  creado              DateTime  @default(now())
-  actulizado          DateTime  @updatedAt    
-  
+  id                  String   @id @default(uuid())
+  cargo               String // Cargo en la empresa
+  departamentoEmpresa String // Departamento en la empresa
+  creado              DateTime @default(now())
+  actulizado          DateTime @updatedAt
+
   informacionPersonal  InformacioPersonal @relation(fields: [informacionPersonaId], references: [id])
-  informacionPersonaId String   @unique
+  informacionPersonaId String             @unique
 }
 
 model InformacioPersonal {
-  id              String         @id @default(uuid())
-  nombre          String 
-  apellido        String
-  genero          String
-  telefono        Int
-  departamento    Int
-  municipio       Int
-  direccion       String
-  creado          DateTime       @default(now())
-  actulizado      DateTime       @updatedAt
+  id           String   @id @default(uuid())
+  nombre       String
+  apellido     String
+  genero       String
+  telefono     Int
+  departamento Int
+  municipio    Int
+  direccion    String
+  creado       DateTime @default(now())
+  actulizado   DateTime @updatedAt
 
-  estudiante      Estudiante?
-  tutorPractica   TutorPractica?
+  estudiante    Estudiante?
+  tutorPractica TutorPractica?
 }
 
+model RepresentanteLegal {
+  id                    String    @id @default(uuid())
+  nombre                String
+  apellido              String
+  telefono              String?
+  email                 String?
+  cedula                String
+  documentoIdentidadUrl String
+  empresa               Empresa[]
+}
+
+model Empresa {
+  id                   String              @id @default(uuid())
+  nombre               String
+  direccion            String
+  NIT                  String
+  telefono             String
+  email                String
+  industria            String
+  RUTUrl               String
+  camaraComercioUrl    String?
+  registroMercantilUrl String?
+  representanteLegal   RepresentanteLegal? @relation(fields: [representanteLegalId], references: [id])
+  representanteLegalId String
+}

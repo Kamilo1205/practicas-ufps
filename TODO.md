@@ -1,6 +1,12 @@
 
 # Lista de TODOS para el registro de la empresa.
 
+1. [ ] Crear el modelo en PRISMA de la empresa.
+2. [ ] Crear formulario para el registro de la empresa.
+3. [ ] Enviar correo de notificación del registro al correo de la empresa. 
+4. [ ] Permitir ingresar a al sistema como empresa. 
+5. [ ] Recibir feedback.
+6. [ ] Hacer correcciones.
 
 ## 1. Crear el modelo en PRISMA de la empresa.
 
@@ -28,3 +34,26 @@ El modelo prima contiene según el modelo y el alcance del proyecto:
 
 ## 2. Crear formulario para el registro de la empresa.
 
+### Guardar datos propios de la empresa.
+
+- [ ] Nombre de la empresa  
+- [ ] Teléfono de contacto  
+- [ ] Dirección  
+- [ ] NIT (Número de Identificación Tributaria)  
+- [ ] RUT (Registro Único Tributario)
+- [ ] Cámara de Comercio o Registro Mercantil.
+  - [ ] 1. Recibir le documento pdf.
+  - [ ] 2. Guardar el documento en el Storage.
+  - [ ] 3. Guardar el URL en la db.
+
+### Guardar datos del representante legal. 
+- [ ] Datos personales del representante legal:  (PENDIENTE)
+  - [ ] Nombre completo 
+  - [ ] Documento de identidad escaneado 
+
+### Guardar datos sobre el convenio.
+
+
+## 3. Enviar correo de notificación del registro al correo de la empresa. 
+
+## 4. Permitir ingresar a al sistema como empresa. 

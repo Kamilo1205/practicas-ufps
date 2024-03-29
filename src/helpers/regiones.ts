@@ -42,9 +42,9 @@ export const getPaises = async () => {
   })
 }
 
-export const getEstadosPorPais = async (id:string) => { 
+export const getEstadosPorPais = async (name:string) => { 
   const data = await getData()
-  return data.find((pais) => pais.id.toString() === id)
+  return data.find((pais) => pais.name.toString() === name)
     ?.states.map((estado) => {
     return {
       id: estado.id.toString(),
@@ -53,10 +53,10 @@ export const getEstadosPorPais = async (id:string) => {
   })
 }
 
-export const getCiudadesPorEstado = async (idPais: string, idEstado: string) => { 
+export const getCiudadesPorEstado = async (nombrePais: string, nombreEstado: string) => { 
   const data = await getData()
-  return data.find((pais) => pais.id.toString() === idPais)
-    ?.states.find((estado) => estado.id.toString() === idEstado)
+  return data.find((pais) => pais.name.toString() === nombrePais)
+    ?.states.find((estado) => estado.name.toString() === nombreEstado)
     ?.cities.map((ciudad) => {
     return {
       id: ciudad.id.toString(),

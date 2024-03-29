@@ -11,36 +11,26 @@ import Image from "next/image"
 
 import InfoIcon from '/public/info.svg'
 import { SelectComponent } from "../ui/SelectComponent"
-import { getPaises } from "@/helpers"
-import { get } from "http"
-import { useEffect, useState } from "react"
+import { PaisEstadoCiudadFormHook } from "@/helpers/PaisEstadoCiudadFormHook"
+import { useEffect } from "react"
 
-const getListaDePaises = async () => {
-  const paises = await getPaises()
-  return paises.map((pais) => {
-    return {
-      key: pais.nombre,
-      value: pais.nombre,
-     
-    }
-  })
-}
+
+
 
 export const DatosEmpresaForm = () => { 
-  const [paises, setPaises] = useState<{ key: string; value: string; }[]>([]);
-  useEffect(() => { 
-    getListaDePaises().then((paises) => {
-      setPaises(paises)
-    })
-  }, [])
-
+  
+  
   const form = useForm<z.infer<typeof DatosEmpresaSchema>>({
     mode: 'onBlur',
     resolver: zodResolver(DatosEmpresaSchema)
   })
-
-  console.log(form.getValues())
-
+  const { paises,estados,ciudades } = PaisEstadoCiudadFormHook({
+    paisSeleccionado: form.getValues().pais || "",
+    estadoSeleccionado: form.getValues().departamento || "",
+  }); 
+ 
+  useEffect(() => { },
+    [form.watch(['pais', 'departamento', 'municipio'])])
   return (
       <div className="p-2">
       <h1>Datos de la empresa</h1>
@@ -108,6 +98,51 @@ export const DatosEmpresaForm = () => {
                     <SelectComponent
                       placeholder="Seleccione un pais"
                       items={paises}
+                      value={field.value}
+                      onChange={field.onChange}
+                      
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/*Selección del Departamento/Estado*/}
+          <div className="col-span-3">
+            <FormField
+              control={form.control}
+              name="departamento"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Departamento</FormLabel>
+                  <FormControl>
+                    <SelectComponent
+                      placeholder="Seleccione un departamento"
+                      items={estados}
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/*Selección del Ciudad*/}
+          <div className="col-span-3">
+            <FormField
+              control={form.control}
+              name="municipio"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Ciudad</FormLabel>
+                  <FormControl>
+                    <SelectComponent
+                      placeholder="Seleccione una ciudad"
+                      items={ciudades}
                       value={field.value}
                       onChange={field.onChange}
                     />

@@ -26,6 +26,34 @@ model Usuario {
   email           String    @unique
   emailVerificado DateTime?
   password        String
-  rol             Rol      @default(estudiante)
+  rol             Rol       @default(estudiante)
   imagen          String?
 }
+
+model RepresentanteLegal {
+  id       String    @id @default(uuid())
+  nombre   String
+  apellido String
+  telefono String
+  email    String
+  empresa  Empresa[]
+}
+
+model Empresa {
+  id                   String              @id @default(uuid())
+  nombre               String
+  direccion            String
+  NIT                  String
+  telefono             String
+  email                String
+  industria            String
+  RUTUrl               String
+  camaraComercioUrl    String?
+  registroMercantilUrl String?
+  representanteLegal   RepresentanteLegal? @relation(fields: [representanteLegalId], references: [id])
+  representanteLegalId String
+}
+
+//TODO: Modelo de la empresa. 
+//TODO: Modelo del tutor empresarial.
+//TODO: Modelo del representante legal.

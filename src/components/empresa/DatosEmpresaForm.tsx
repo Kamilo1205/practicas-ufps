@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { Input } from "../ui/input"
-import { TooltipComponent } from ".."
+import { FileInputComponent, TooltipComponent } from ".."
 import Image from "next/image"
 
 import InfoIcon from '/public/info.svg'
@@ -28,7 +28,7 @@ export const DatosEmpresaForm = () => {
     paisSeleccionado: form.getValues().pais || "",
     estadoSeleccionado: form.getValues().departamento || "",
   }); 
- 
+ console.log(form.getValues())
   useEffect(() => { },
     [form.watch(['pais', 'departamento', 'municipio'])])
   return (
@@ -163,6 +163,23 @@ export const DatosEmpresaForm = () => {
                   <FormLabel>Dirección</FormLabel>
                   <FormControl>
                     <Input type="text" autoComplete="false" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/* Input Camara de comercio */}
+          <div className="col-span-3">
+            <FormField
+              control={form.control}
+              name="camaraComercio"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Camara de comercio o Registro mercantil</FormLabel>
+                  <FormControl>
+                    <FileInputComponent field={field} onChange={ field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

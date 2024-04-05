@@ -4,6 +4,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { z } from "zod"
 import { Input } from "../ui/input"
 import { DatosRepresentanteLegalSchema } from "@/schemas/DatosRepresentanteLegalScheme"
+import { FileInputComponent } from "../ui/FileInputComponent"
 
 
 export const DatosRepresentanteLegal = () => { 
@@ -64,6 +65,22 @@ export const DatosRepresentanteLegal = () => {
                       <FormLabel>Correo</FormLabel>
                       <FormControl>
                         <Input type="email" autoComplete="false" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              {/* Documento de identidad PDF */}
+              <div className="col-span-3">
+                <FormField
+                  control={form.control}
+                  name="documentoFile"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Camara de comercio</FormLabel>
+                      <FormControl>
+                        <FileInputComponent field={field} onChange={field.onChange} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

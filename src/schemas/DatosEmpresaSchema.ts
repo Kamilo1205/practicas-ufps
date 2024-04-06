@@ -34,9 +34,8 @@ export const DatosEmpresaSchema = z.object({
     required_error: 'El RUT es requerido',
     invalid_type_error: 'El RUT ingresado no es valido'
   }),
-  camaraComercio: z.string().array().nonempty({
-    message: 'La camara de comercio es requerida'
-  }),
+  camaraComercio: z.any()
+    .refine((file) => file?.length !==0, 'Debe adjuntar un archivo'),
   email: z.string({
     required_error: 'El email es requerido',
     invalid_type_error: 'El email ingresado no es valido'

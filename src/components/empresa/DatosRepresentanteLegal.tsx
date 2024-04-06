@@ -5,6 +5,7 @@ import { z } from "zod"
 import { Input } from "../ui/input"
 import { DatosRepresentanteLegalSchema } from "@/schemas/DatosRepresentanteLegalScheme"
 import { FileInputComponent } from "../ui/FileInputComponent"
+import { LabelConInfo } from "../ui/LabelConInfo"
 
 
 export const DatosRepresentanteLegal = () => { 
@@ -15,7 +16,7 @@ export const DatosRepresentanteLegal = () => {
   })
     return (
         <div>
-        <h1>Datos del representante legal</h1>
+       
 
         <div className="p-2">
           <Form {...form}>
@@ -71,16 +72,18 @@ export const DatosRepresentanteLegal = () => {
                   )}
                 />
               </div>
-              {/* Documento de identidad PDF */}
-              <div className="col-span-3">
+              {/* Input Telefono */}
+              <div className="flex-1 m-1">
                 <FormField
                   control={form.control}
-                  name="documentoFile"
+                  name="telefono"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Camara de comercio</FormLabel>
+                      <FormLabel asChild>
+                        <LabelConInfo label="Telefono" info="Tenga en cuenta que si el telefono no es de Colombia, debe agregar el código de país. Ejemplo: +1 para Estados Unidos" />
+                      </FormLabel>
                       <FormControl>
-                        <FileInputComponent field={field} onChange={field.onChange} />
+                        <Input type="text" autoComplete="false" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -98,4 +101,25 @@ export const DatosRepresentanteLegal = () => {
  *  <div className="flex flex-wrap mb-2">
                 
               </div>
+
+
+
+
+
+             
+<div className="col-span-3">
+  <FormField
+    control={form.control}
+    name="documentoFile"
+    render={({ field }) => (
+      <FormItem>
+        <FormLabel>Camara de comercio</FormLabel>
+        <FormControl>
+          <FileInputComponent field={field} onChange={field.onChange} />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    )}
+  />
+</div>
  */

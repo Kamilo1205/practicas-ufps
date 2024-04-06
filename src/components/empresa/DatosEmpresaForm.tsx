@@ -12,15 +12,18 @@ import { SelectComponent } from "../ui/SelectComponent"
 import { PaisEstadoCiudadFormHook } from "@/helpers/PaisEstadoCiudadFormHook"
 import { useEffect } from "react"
 import { DigitosInputComponent } from "../ui/DigitosInputComponent"
+import { guardarDatosEmpresa } from "@/actions/empresa/registro-empresa-actions"
+import { Button } from "../ui/button"
 
 
 interface Props{
-  setStage: React.Dispatch<React.SetStateAction<number>>
+  setStage: () => void
 
 }
 
 export const DatosEmpresaForm = ({setStage}:Props) => { 
   
+  const EMPRESA_ID = "1"
   
   const form = useForm<z.infer<typeof DatosEmpresaSchema>>({
     mode: 'onBlur',
@@ -30,15 +33,36 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
     paisSeleccionado: form.getValues().pais || "",
     estadoSeleccionado: form.getValues().departamento || "",
   }); 
- console.log(form.getValues())
+  //console.log(form.getValues())
+  const watcher = form.watch(['pais', 'departamento', 'municipio'])
+
+  const onSubmit = async() => { 
+    console.log("ENTRA")
+    try {
+      console.log('onSubmit',form.getValues())
+      const formData = form.getValues()
+      const empresa = {
+        id: EMPRESA_ID, ...formData
+      }
+      const result = await guardarDatosEmpresa(empresa)
+      if (result) {
+        console.log('Datos de la empresa guardados correctamente')
+        setStage()
+      }
+    } catch (error) { 
+      console.log('Error al guardar los datos de la empresa') 
+      console.log(error)
+    }
+  }
+
   useEffect(() => { },
-    [form.watch(['pais', 'departamento', 'municipio'])])
+    [watcher])
   return (
       <div className="p-2">
    
       
-      <Form {...form}>
-        <form className="flex flex-col flex-wrap">
+      <Form {...form} >
+        <form className="flex flex-col flex-wrap" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex flex-wrap mb-2">
             {/* Input Nombre */}
             <div className="m-1">
@@ -197,7 +221,7 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
               )}
             />
           </div>
-          
+          <Button onClick={onSubmit} className="self-end">Siguiente</Button>
         </form>
       </Form>
       </div>

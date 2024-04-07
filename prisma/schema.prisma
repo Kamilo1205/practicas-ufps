@@ -82,18 +82,18 @@ model RepresentanteLegal {
 
 model Empresa {
   id                   String              @id @default(uuid())
-  nombre               String
-  direccion            String
-  NIT                  String
-  telefono             String
-  pais                 String
-  departamento         String
-  municipio            String
-  email                String
-  industria            String
-  RUTUrl               String
+  nombre               String?
+  direccion            String?
+  NIT                  String?
+  telefono             String?
+  pais                 String?
+  departamento         String?
+  municipio            String?
+  email                String?
+  industria            String?
+  RUTUrl               String?
   camaraComercioUrl    String?
   registroMercantilUrl String?
-  representanteLegal   RepresentanteLegal @relation(fields: [representanteLegalId], references: [id])
-  representanteLegalId String
+  representanteLegal   RepresentanteLegal? @relation(fields: [representanteLegalId], references: [id])
+  representanteLegalId String?
 }

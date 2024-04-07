@@ -13,24 +13,6 @@ export const getData = async (url: string = JSON_COUINTRIES_STATES_CITIES) => {
   return data
 }
 
-//TODO: Implementar si se optione la API key para usarlo.
-export const getPaisesVAPI = async () => {
-  
-  var headers = new Headers();
-  headers.append("X-CSCAPI-KEY", "API_KEY");
-
-  const requestOptions = {
-    method: 'GET',
-    headers: headers,
-    //redirect: 'follow' // Set the redirect property to 'follow'
-  };
-
-  const data = fetch("https://api.countrystatecity.in/v1/countries", requestOptions)
-    .then(response => response.json())
-  
-  return data
-
-}
 
 export const getPaises = async () => { 
   const data = await getData()

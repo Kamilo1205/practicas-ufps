@@ -12,7 +12,7 @@ import { SelectComponent } from "../ui/SelectComponent"
 import { PaisEstadoCiudadFormHook } from "@/helpers/PaisEstadoCiudadFormHook"
 import { useEffect } from "react"
 import { DigitosInputComponent } from "../ui/DigitosInputComponent"
-import { guardarDatosEmpresa } from "@/actions/empresa/registro-empresa-actions"
+import { guardarArchivo, guardarDatosEmpresa } from "@/actions/empresa/registro-empresa-actions"
 import { Button } from "../ui/button"
 
 
@@ -42,11 +42,21 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
       console.log('onSubmit',form.getValues())
       const formData = form.getValues()
       const empresa = {
-        id: EMPRESA_ID, ...formData
+        id: EMPRESA_ID,
+        nombre: formData.nombre,
+        direccion: formData.direccion,
+        NIT: formData.nit,
+        telefono: formData.telefono,
+        pais: formData.pais,
+        departamento: formData.departamento,
+        municipio: formData.municipio,
+
       }
       const result = await guardarDatosEmpresa(empresa)
       if (result) {
         console.log('Datos de la empresa guardados correctamente')
+        console.log('Guardando camara de comercio', formData.camaraComercio)
+        const guardarCamaraComercio = await guardarArchivo(formData.camaraComercio, 'camaraComercio')
         setStage()
       }
     } catch (error) { 

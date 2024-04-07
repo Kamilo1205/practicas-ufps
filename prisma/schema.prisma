@@ -86,6 +86,9 @@ model Empresa {
   direccion            String
   NIT                  String
   telefono             String
+  pais                 String
+  departamento         String
+  municipio            String
   email                String
   industria            String
   RUTUrl               String

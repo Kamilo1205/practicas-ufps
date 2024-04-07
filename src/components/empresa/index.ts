@@ -1,3 +1,4 @@
 
 
-export {DatosEmpresaForm} from './DatosEmpresaForm'
+export { DatosEmpresaForm } from './DatosEmpresaForm'
+export { DatosRepresentanteLegal } from './DatosRepresentanteLegal'

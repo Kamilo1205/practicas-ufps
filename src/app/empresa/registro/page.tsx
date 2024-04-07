@@ -1,14 +1,13 @@
-import { DatosEmpresaForm } from "@/components/empresa";
+import { RegistroEmpresaComponent } from "@/components/empresa/RegistroEmpresaComponent";
 
+
+export const metadata = {
+    title: "Registro de empresa",
+    description: "Formulario para el registro de una empresa",
+}
 
 export default function Page() { 
-  
     return (
-        <div>
-        <h1>Registro de Empresa</h1>
-        { /* TODO: Layout para el registro */}
-
-        <DatosEmpresaForm />
-        </div>
+        <RegistroEmpresaComponent />
     )
 }

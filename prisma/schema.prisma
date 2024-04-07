@@ -94,6 +94,6 @@ model Empresa {
   RUTUrl               String
   camaraComercioUrl    String?
   registroMercantilUrl String?
-  representanteLegal   RepresentanteLegal? @relation(fields: [representanteLegalId], references: [id])
+  representanteLegal   RepresentanteLegal @relation(fields: [representanteLegalId], references: [id])
   representanteLegalId String
 }

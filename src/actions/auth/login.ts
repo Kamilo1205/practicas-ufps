@@ -1,9 +1,11 @@
 'use server';
+
 import { z } from 'zod';
+import { AuthError } from 'next-auth';
 import { signIn } from '@/auth.config';
 import { LoginSchema } from '@/schemas';
 
-export async function authenticated(
+export async function authenticate(
     prevState: string | undefined,
     formData: z.infer<typeof LoginSchema>
 ) {
@@ -13,11 +15,15 @@ export async function authenticated(
             redirect: false
         });
         return 'Success';
-    } catch ( error ) {
-        //if ((error as Error).message.includes('CredentialSignin')) {       
-            return 'CredentialsSignin';
-        //}
-        return 'UnknowError';
-        // throw error;
+    } catch (error) {
+        if (error instanceof AuthError) {
+            switch (error.type) {
+                case 'CredentialsSignin':
+                    return 'Invalid credentials.';
+                default:
+                    return 'Something went wrong.';
+            }
+        }
+        throw error;
     }
 }

@@ -3,7 +3,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { LuCheck, LuChevronsUpDown } from "react-icons/lu";
+import { format } from "date-fns";
+import { es } from 'date-fns/locale';
+
+import { LuCalendar } from "react-icons/lu";
+import { RxCaretSort, RxCheck } from "react-icons/rx";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -22,29 +26,23 @@ import {
 	CommandGroup,
 	CommandInput,
 	CommandItem,
+	CommandList,
 } from "@/components/ui/command";
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { PersonalFormSchema } from "@/schemas";
 import { cn } from "@/lib/utils";
 
-
 const languages = [
-	{ label: "English", value: "en" },
-	{ label: "French", value: "fr" },
-	{ label: "German", value: "de" },
-	{ label: "Spanish", value: "es" },
-	{ label: "Portuguese", value: "pt" },
-	{ label: "Russian", value: "ru" },
-	{ label: "Japanese", value: "ja" },
-	{ label: "Korean", value: "ko" },
-	{ label: "Chinese", value: "zh" },
-] as const
-
+	{ label: 'Español', value: 'ES' },
+	{ label: 'Ingles', value: 'EN' },
+];
 
 export const PersonalForm = () => {
 
@@ -54,6 +52,7 @@ export const PersonalForm = () => {
 	});
 
 	const onSubmit = (values: z.infer<typeof PersonalFormSchema>) => {
+		alert('Formulario');
 		console.log(values);
 	}
 
@@ -75,7 +74,7 @@ export const PersonalForm = () => {
 					<form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-6 col-span-2 gap-x-6 gap-y-8">
 
 						{/* Input Nombre */}
-						<div className="col-span-3">
+						<div className="col-span-6 sm:col-span-3">
 							<FormField
 								control={form.control}
 								name="nombre"
@@ -92,7 +91,7 @@ export const PersonalForm = () => {
 						</div>
 
 						{/* Input Apellido */}
-						<div className="col-span-3">
+						<div className="col-span-6 sm:col-span-3">
 							<FormField
 								control={form.control}
 								name="apellido"
@@ -109,7 +108,7 @@ export const PersonalForm = () => {
 						</div>
 
 						{/* Input Telefono */}
-						<div className="col-span-3">
+						<div className="col-span-6 sm:col-span-3">
 							<FormField
 								control={form.control}
 								name="telefono"
@@ -125,14 +124,97 @@ export const PersonalForm = () => {
 							/>
 						</div>
 
-						{/* Select Departamento */}			
-						<div className="col-span-3">
+						{/* RadioButton Genero */}
+						<div className="col-span-6 sm:col-span-3">
+							<FormField
+								control={form.control}
+								name="genero"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Género</FormLabel>
+										<FormControl>
+											<RadioGroup
+												onValueChange={field.onChange}
+												defaultValue={field.value}
+												className="flex flex-col space-y-1"
+											>
+												<FormItem className="flex items-center space-x-3 space-y-0">
+													<FormControl>
+														<RadioGroupItem value="masculino" id="masculino" />
+													</FormControl>
+													<FormLabel className="font-normal" htmlFor="masculino">
+														Masculino
+													</FormLabel>
+												</FormItem>
+												<FormItem className="flex items-center space-x-3 space-y-0">
+													<FormControl>
+														<RadioGroupItem value="femenino" id="femenino" />
+													</FormControl>
+													<FormLabel className="font-normal" htmlFor="femenino">
+														Femenino
+													</FormLabel>
+												</FormItem>
+											</RadioGroup>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+
+						{/* Input Fecha de Nacimiento */}
+						<div className="col-span-6 sm:col-span-4">
+							<FormField
+								control={form.control}
+								name="fechaNacimiento"
+								render={({ field }) => (
+									<FormItem className="flex flex-col">
+										<FormLabel>Fecha de Nacimiento</FormLabel>
+										<Popover>
+											<PopoverTrigger asChild>
+												<FormControl>
+													<Button
+														variant={"outline"}
+														className={cn(
+															"w-wull pl-3 text-left font-normal",
+															!field.value && "text-muted-foreground"
+														)}
+													>
+														{field.value ? (
+															format(field.value, "PPP", { locale: es })
+														) : (
+															<span>Selecciona una fecha</span>
+														)}
+														<LuCalendar className="ml-auto h-4 w-4 opacity-50" />
+													</Button>
+												</FormControl>
+											</PopoverTrigger>
+											<PopoverContent className="w-auto p-0" align="start">
+												<Calendar
+													mode="single"
+													selected={field.value}
+													onSelect={field.onChange} 
+													disabled={(date) =>
+														date > new Date() || date < new Date("1900-01-01")
+													}
+													initialFocus
+												/>
+											</PopoverContent>
+										</Popover>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+
+						{/* Select Departamento */}
+						<div className="col-span-6 sm:col-span-3">
 							<FormField
 								control={form.control}
 								name="departamento"
 								render={({ field }) => (
-									<FormItem className="flex flex-col">
-										<FormLabel>Departamento</FormLabel>
+									<FormItem>
+										<FormLabel>Departamento de Residencia</FormLabel>
 										<Popover>
 											<PopoverTrigger asChild>
 												<FormControl>
@@ -140,7 +222,7 @@ export const PersonalForm = () => {
 														variant="outline"
 														role="combobox"
 														className={cn(
-															"w-[200px] justify-between",
+															"w-full justify-between",
 															!field.value && "text-muted-foreground"
 														)}
 													>
@@ -149,34 +231,39 @@ export const PersonalForm = () => {
 																(language) => language.value === field.value
 															)?.label
 															: "Select language"}
-														<LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+														<RxCaretSort className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 													</Button>
 												</FormControl>
 											</PopoverTrigger>
-											<PopoverContent className="w-[200px] p-0">
+											<PopoverContent className="w-[300px] p-0">
 												<Command>
-													<CommandInput placeholder="Search language..." />
-													<CommandEmpty>No language found.</CommandEmpty>
+													<CommandInput
+														placeholder="Search framework..."
+														className="h-9"
+													/>
+													<CommandEmpty>No framework found.</CommandEmpty>
 													<CommandGroup>
-														{languages.map((language) => (
-															<CommandItem
-																value={language.label}
-																key={language.value}
-																onSelect={() => {
-																	form.setValue("departamento", language.value)
-																}}
-															>
-																<LuCheck
-																	className={cn(
-																		"mr-2 h-4 w-4",
-																		language.value === field.value
-																			? "opacity-100"
-																			: "opacity-0"
-																	)}
-																/>
-																{language.label}
-															</CommandItem>
-														))}
+														<CommandList>
+															{languages.map((language) => (
+																<CommandItem
+																	value={language.label}
+																	key={language.value}
+																	onSelect={() => {
+																		form.setValue("departamento", language.value)
+																	}}
+																>
+																	{language.label}
+																	<RxCheck
+																		className={cn(
+																			"ml-auto h-4 w-4",
+																			language.value === field.value
+																				? "opacity-100"
+																				: "opacity-0"
+																		)}
+																	/>
+																</CommandItem>
+															))}
+														</CommandList>
 													</CommandGroup>
 												</Command>
 											</PopoverContent>
@@ -187,11 +274,100 @@ export const PersonalForm = () => {
 							/>
 						</div>
 
-						<Button type="submit">Submit</Button>
+						{/* Select Municipio */}
+						<div className="col-span-6 sm:col-span-3">
+							<FormField
+								control={form.control}
+								name="municipio"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Municipio de Residencia</FormLabel>
+										<Popover>
+											<PopoverTrigger asChild>
+												<FormControl>
+													<Button
+														variant="outline"
+														role="combobox"
+														className={cn(
+															"w-full justify-between",
+															!field.value && "text-muted-foreground"
+														)}
+													>
+														{field.value
+															? languages.find(
+																(language) => language.value === field.value
+															)?.label
+															: "Select language"}
+														<RxCaretSort className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+													</Button>
+												</FormControl>
+											</PopoverTrigger>
+											<PopoverContent className="w-[300px] p-0">
+												<Command>
+													<CommandInput
+														placeholder="Search framework..."
+														className="h-9"
+													/>
+													<CommandEmpty>No framework found.</CommandEmpty>
+													<CommandGroup>
+														<CommandList>
+															{languages.map((language) => (
+																<CommandItem
+																	value={language.label}
+																	key={language.value}
+																	onSelect={() => {
+																		form.setValue("municipio", language.value)
+																	}}
+																>
+																	{language.label}
+																	<RxCheck
+																		className={cn(
+																			"ml-auto h-4 w-4",
+																			language.value === field.value
+																				? "opacity-100"
+																				: "opacity-0"
+																		)}
+																	/>
+																</CommandItem>
+															))}
+														</CommandList>
+													</CommandGroup>
+												</Command>
+											</PopoverContent>
+										</Popover>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+
+						{/* Input Direccion */}
+						<div className="col-span-6 sm:col-span-4">
+							<FormField
+								control={form.control}
+								name="direccion"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Direccion</FormLabel>
+										<FormControl>
+											<Input type="text" autoComplete="false" {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+
+						<div className="col-span-6 flex justify-end">
+							<Button type="submit">Siguiente</Button>
+						</div>
 					</form>
 				</Form>
 			</div>
 
+			{/* {
+				JSON.stringify(form)
+			} */}
 		</div>
 	);
 }

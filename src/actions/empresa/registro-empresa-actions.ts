@@ -4,9 +4,13 @@ import prisma from "@/lib/prisma"
 import { Empresa } from "@prisma/client"
 import { writeFile } from "fs/promises"
 
+import { google } from 'googleapis'
+import googleApiKey  from '../../../googleApiKey.json'
+
 
 import { revalidatePath } from "next/cache"
 import { join } from "path"
+import { guardarArchivoEnDrive } from "@/helpers/drive_api"
 
 interface EmpresaData { 
   id                   :string, 
@@ -90,6 +94,7 @@ export const guardarArchivo = async (file: string, nombre: string): Promise<stri
     const archivoB = await srcToFile(file, nombre, 'application/pdf')
     //const path = join(process.cwd(), 'camaraComercio.pdf')
     //await writeFile(path, Buffer.from(archivo))  
+    guardarArchivoEnDrive()
     console.log('Archivo guardado correctamente', archivoB)
   } catch (error) {
     console.log('Error al guardar el archivo', error)

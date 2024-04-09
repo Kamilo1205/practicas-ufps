@@ -37,8 +37,10 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
   const watcher = form.watch(['pais', 'departamento', 'municipio'])
 
   const onSubmit = async() => { 
-    console.log("ENTRA")
+   
     try {
+      console.log("ERRORES",form.formState.errors)
+      if (JSON.stringify(form.formState.errors) !== '{}') return;
       console.log('onSubmit',form.getValues())
       const formData = form.getValues()
       const empresa = {
@@ -102,6 +104,22 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
                     </FormLabel>
                     <FormControl>
                       <Input type="text" autoComplete="false" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            { /** Correo de la empresa */}
+            <div className="m-1">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Correo</FormLabel>
+                    <FormControl>
+                      <Input type="email" autoComplete="false" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -225,6 +243,22 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
                   <FormLabel>Camara de comercio</FormLabel>
                   <FormControl>
                     <FileInputComponent field={field} onChange={ field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          {/* Input RUT */}
+          <div className="col-span-3">
+            <FormField
+              control={form.control}
+              name="rut"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>RUT</FormLabel>
+                  <FormControl>
+                    <FileInputComponent field={field} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

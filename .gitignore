@@ -41,3 +41,5 @@ next-env.d.ts
 
 TODO.md
 .vscode
+
+googleApiKey.json

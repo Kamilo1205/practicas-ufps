@@ -2,10 +2,9 @@
 
 import { google } from "googleapis";
 import googleApiKey from '../../googleApiKey.json'
-import { apikeys } from "googleapis/build/src/apis/apikeys";
 import { createReadStream } from "fs";
 import path from "path";
-import { min } from "date-fns";
+import { JWT } from "google-auth-library";
 
 const SCOPE = ["https://www.googleapis.com/auth/drive"]
 const PATH = process.cwd()
@@ -24,7 +23,7 @@ const autorizar = async () => {
   return jwtClient
 }
 
-const uploadeFile = async (authClient) => { 
+const uploadeFile = async (authClient: JWT) => { 
   const drive = google.drive({ version: 'v3', auth: authClient });
   
 
@@ -53,7 +52,7 @@ const uploadeFile = async (authClient) => {
   }
 }
 
-const createFolder = async (authClient, folderName:string) => {
+const createFolder = async (authClient:JWT, folderName:string) => {
   const drive = google.drive({ version: 'v3', auth: authClient });
   const requestBody = {
     name: folderName,

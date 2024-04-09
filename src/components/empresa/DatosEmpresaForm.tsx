@@ -58,7 +58,7 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
       if (result) {
         console.log('Datos de la empresa guardados correctamente')
         console.log('Guardando camara de comercio', formData.camaraComercio)
-        const guardarCamaraComercio = await guardarArchivo(formData.camaraComercio, 'camaraComercio')
+        const guardarCamaraComercio = await guardarArchivo(formData.camaraComercio, 'camaraComercio', formData.nombre)
         setStage()
       }
     } catch (error) { 

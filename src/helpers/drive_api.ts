@@ -8,8 +8,11 @@ import { JWT } from "google-auth-library";
 
 const SCOPE = ["https://www.googleapis.com/auth/drive"]
 const PATH = process.cwd()
-const FOLDERID = '1VUJ0LvbfI0T5-gNV34l31R1qN2_agLgU'
-const EMPRESAS_FOLDER_ID = '1_01jGWKQrQ9SojPZW8UVuI2pp3VxE9t4'
+
+const FOLDERS = {
+  RAIZ: '1VUJ0LvbfI0T5-gNV34l31R1qN2_agLgU',
+  EMPRESAS: '1_01jGWKQrQ9SojPZW8UVuI2pp3VxE9t4',
+}
 
 const autorizar = async () => { 
   const jwtClient = new google.auth.JWT(
@@ -22,21 +25,32 @@ const autorizar = async () => {
 
   return jwtClient
 }
-
-const uploadeFile = async (authClient: JWT) => { 
+/**
+ * Crea un archivo en Google Drive.
+ * @param authClient Objeto de autenticación.
+ * @param folderName Nombre de la carpeta donde se guardará el archivo.
+ * @param fileName Nombre del archivo.
+ * @throws Error si no se puede crear la carpeta.
+ * @returns {Promise<string>} Id del archivo creado.
+ */
+const uploadeFile = async (authClient: JWT,folderName:string, fileName:string) => { 
   const drive = google.drive({ version: 'v3', auth: authClient });
   
 
   const media = {
-    mineType: 'application/pdf',
+    mimeType: 'application/pdf',
     body: createReadStream('camaraComercio.pdf')
   }
 
   try {
-    const folderId = await createFolder(authClient, 'Empresa1')
+    const folders = await searchFoldersInDrive(authClient, folderName, FOLDERS.EMPRESAS)
+    //Buscamos si la carpeta ya existe. Si no la creamos.
+    const folderId = folders?.length > 0 ? folders[0].id :
+      await createFolder(authClient, folderName, FOLDERS.EMPRESAS) 
+  
     if(!folderId) throw new Error('Error al crear la carpeta')
     const requestBody = {
-      name: 'camaraComercio.pdf',
+      name: fileName,
       fields: 'id',
       parents: [folderId]
     }
@@ -52,11 +66,18 @@ const uploadeFile = async (authClient: JWT) => {
   }
 }
 
-const createFolder = async (authClient:JWT, folderName:string) => {
+/**
+ * Crea una carpeta en Google Drive.
+ * @param authClient Objeto de autenticación
+ * @param folderName Nombre de la carpeta que se quiere crear.
+ * @param parentFolderId Id de la carpeta padre.
+ * @returns {Promise<string>} Id de la carpeta creada.
+ */
+const createFolder = async (authClient: JWT, folderName: string, parentFolderId: string) => {
   const drive = google.drive({ version: 'v3', auth: authClient });
   const requestBody = {
     name: folderName,
-    parents: [EMPRESAS_FOLDER_ID],
+    parents: [parentFolderId],
     mimeType: 'application/vnd.google-apps.folder',
   }
 
@@ -73,9 +94,15 @@ const createFolder = async (authClient:JWT, folderName:string) => {
   }  
 }
 
-export const guardarArchivoEnDrive = async (): Promise<string> => { 
+/**
+ * Guarda un archivo en Google Drive.
+ * @param folderName Carpeta donde se guardará el archivo.
+ * @param fileName Nombre del archivo.
+ * @returns {string} URL del archivo guardado.
+ */
+export const guardarArchivoEnDrive = async (folderName:string ,fileName:string): Promise<string> => { 
   const id =  autorizar()
-    .then((auth)=>uploadeFile(auth))
+    .then((auth)=>uploadeFile(auth,folderName,fileName))
     .catch(console.error)
   
   if (!id) {
@@ -85,6 +112,38 @@ export const guardarArchivoEnDrive = async (): Promise<string> => {
   
 }
 
+const searchFoldersInDrive = async (authClient: JWT, folderName: string, parentFolderId: string) => { 
+  try {
+    console.log('Buscando carpeta', folderName)
+    const drive = google.drive({ version: 'v3', auth: authClient });
+    const res = await drive.files.list({
+      q: `name = '${folderName}' and '${parentFolderId}' in parents and trashed = false`,
+      fields: 'nextPageToken, files(id, name)',
+    });
+    const files = res.data.files;
+    if (files === undefined) {
+      throw new Error('No se encontró la carpeta')
+    }
+    if (files.length === 0) {
+      console.log('No hay archivos que mostrar.');
+      return [];
+    }
+
+    console.log('Files:');
+    const resp = files.map((file) => {
+      console.log(`${file.name} (${file.id})`);
+      return {
+        name: file.name,
+        id: file.id
+      }
+    });
+    return resp
+
+  } catch (error) {
+    console.log(error)
+    throw new Error(`Error al buscar la carpeta: ${error}`)
+  }
+}
 
 /**
  *   return new Promise((resolve, rejected) => {

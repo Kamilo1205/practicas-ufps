@@ -4,8 +4,6 @@ import prisma from "@/lib/prisma"
 import { Empresa } from "@prisma/client"
 import { writeFile } from "fs/promises"
 
-import { google } from 'googleapis'
-import googleApiKey  from '../../../googleApiKey.json'
 
 
 import { revalidatePath } from "next/cache"
@@ -14,7 +12,7 @@ import { guardarArchivoEnDrive } from "@/helpers/drive_api"
 
 interface EmpresaData { 
   id                   :string, 
-  nombre               ?:string,
+  nombre               :string,
   direccion            ?:string,
   NIT                  ?:string,
   telefono             ?:string,
@@ -46,7 +44,7 @@ export const guardarDatosEmpresa = async (data: EmpresaData): Promise<Empresa> =
   if (!usuarioExiste) {
     throw new Error('El usuario no existe')
   }
-  const urlCamaraComercio = await guardarArchivo(data.camaraComercio, 'camaraComercio')
+  const urlCamaraComercio = await guardarArchivo(data.camaraComercio, 'camaraComercio',data.nombre)
   const actualizarDatos = await prisma.empresa.update({
     where: {
       id: data.id
@@ -75,7 +73,7 @@ export const guardarDatosEmpresa = async (data: EmpresaData): Promise<Empresa> =
 }
 
 //TODO: Implementar la función de guardarArchivo
-export const guardarArchivo = async (file: string, nombre: string): Promise<string> => { 
+export const guardarArchivo = async (file: string, nombre: string, nombreDeCarpeta:string): Promise<string> => { 
   const archivo = file 
   console.log('guardarArchivo', archivo, nombre)
   
@@ -94,8 +92,9 @@ export const guardarArchivo = async (file: string, nombre: string): Promise<stri
     const archivoB = await srcToFile(file, nombre, 'application/pdf')
     //const path = join(process.cwd(), 'camaraComercio.pdf')
     //await writeFile(path, Buffer.from(archivo))  
-    guardarArchivoEnDrive()
+    const url = await guardarArchivoEnDrive(nombreDeCarpeta,nombre)
     console.log('Archivo guardado correctamente', archivoB)
+    return url
   } catch (error) {
     console.log('Error al guardar el archivo', error)
   }

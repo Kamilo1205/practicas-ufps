@@ -10,10 +10,11 @@ import { FileInputComponent, LabelConInfo } from ".."
 
 import { SelectComponent } from "../ui/SelectComponent"
 import { PaisEstadoCiudadFormHook } from "@/helpers/PaisEstadoCiudadFormHook"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { DigitosInputComponent } from "../ui/DigitosInputComponent"
-import { guardarArchivo, guardarDatosEmpresa } from "@/actions/empresa/registro-empresa-actions"
+import { guardarArchivoEmpresa, guardarDatosEmpresa } from "@/actions/empresa/registro-empresa-actions"
 import { Button } from "../ui/button"
+import { Toaster, toast } from "sonner"
 
 
 interface Props{
@@ -21,10 +22,21 @@ interface Props{
 
 }
 
+const verificarValoresJSON = (obj: any) => { 
+  for (const key in obj) {
+    if (obj[key] === null || obj[key] === undefined || obj[key] === '') {
+      return false
+    }
+  }
+  return true
+
+}
+
 export const DatosEmpresaForm = ({setStage}:Props) => { 
   
   const EMPRESA_ID = "1"
-  
+  const [loading, setLoading] = useState(false)
+
   const form = useForm<z.infer<typeof DatosEmpresaSchema>>({
     mode: 'onBlur',
     resolver: zodResolver(DatosEmpresaSchema)
@@ -37,12 +49,20 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
   const watcher = form.watch(['pais', 'departamento', 'municipio'])
 
   const onSubmit = async() => { 
-   
     try {
-      console.log("ERRORES",form.formState.errors)
-      if (JSON.stringify(form.formState.errors) !== '{}') return;
-      console.log('onSubmit',form.getValues())
+      setLoading(true)
       const formData = form.getValues()
+      
+      if (JSON.stringify(form.formState.errors) !== '{}' || !verificarValoresJSON(formData)) {
+        return setLoading(false);
+      }
+      //console.log('onSubmit',form.getValues())
+      const nombreCarpeta = `${formData.nit}-${formData.nombre}`
+ 
+      //Guardamos primero los archivos.
+      const camaraDeComercioUrl = await guardarArchivoEmpresa(formData.camaraComercio, `${formData.nit}-camaraComercio.pdf`, nombreCarpeta)
+      const RUTUrl = await guardarArchivoEmpresa(formData.rut,`${formData.nit}-rut.pdf`,nombreCarpeta)
+      
       const empresa = {
         id: EMPRESA_ID,
         nombre: formData.nombre,
@@ -52,18 +72,20 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
         pais: formData.pais,
         departamento: formData.departamento,
         municipio: formData.municipio,
+        email: formData.email,
+        camaraDeComercioUrl,
+        RUTUrl
 
       }
-      const result = await guardarDatosEmpresa(empresa)
-      if (result) {
-        console.log('Datos de la empresa guardados correctamente')
-        console.log('Guardando camara de comercio', formData.camaraComercio)
-        const guardarCamaraComercio = await guardarArchivo(formData.camaraComercio, 'camaraComercio.pdf', formData.nombre)
-        setStage()
-      }
+
+      await guardarDatosEmpresa(empresa) 
+      setStage()
+      console.log('Datos de la empresa guardados correctamente')
+
     } catch (error) { 
-      console.log('Error al guardar los datos de la empresa') 
       console.log(error)
+      toast.error('¡Ha ocurrido un error!')
+      setLoading(false)
     }
   }
 
@@ -72,7 +94,7 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
   return (
       <div className="p-2">
    
-      
+      <Toaster position="top-right" />
       <Form {...form} >
         <form className="flex flex-col flex-wrap" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex flex-wrap mb-2">
@@ -265,7 +287,7 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
               )}
             />
           </div>
-          <Button onClick={onSubmit} className="self-end">Siguiente</Button>
+          <Button onClick={onSubmit} className={`self-end`} disabled={loading}>Siguiente</Button>
         </form>
       </Form>
       </div>

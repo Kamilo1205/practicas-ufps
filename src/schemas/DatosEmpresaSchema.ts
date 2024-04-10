@@ -17,7 +17,7 @@ export const DatosEmpresaSchema = z.object({
     required_error: 'El NIT es requerido',
     invalid_type_error: 'El NIT ingresado no es valido',
     
-  }).length(9, 'El NIT debe tener 9 digitos'),
+  }).length(10, 'El NIT debe tener 9 digitos y el digito de verificación'),
   pais: z.string({
     required_error: 'El pais es requerido',
     invalid_type_error: 'El pais ingresado no es valido'
@@ -46,7 +46,7 @@ export const DatosEmpresaSchema = z.object({
   
 })
 
-//TODO: EL rut no se que tipo de dato es, por ahora lo deje como string.
+//TODO: Pedir feedback del formulario para saber si está correcto.
 
 /**
  *   camaraComercio: z.any()

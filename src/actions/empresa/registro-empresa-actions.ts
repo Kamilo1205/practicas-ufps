@@ -75,7 +75,7 @@ export const guardarDatosEmpresa = async (data: EmpresaData): Promise<Empresa> =
 //TODO: Implementar la función de guardarArchivo
 export const guardarArchivo = async (file: string, nombre: string, nombreDeCarpeta:string): Promise<string> => { 
   const archivo = file 
-  console.log('guardarArchivo', archivo, nombre)
+  console.log('guardarArchivo', nombre)
   
   //if (!file) throw new Error('No se ha encontrado un archivo')
   //TODO: El archivo llega como string y se queda como Uint8Contents. Ahora creo que se puede guardar.
@@ -96,8 +96,9 @@ export const guardarArchivo = async (file: string, nombre: string, nombreDeCarpe
     //TODO: Recibir el path y guardarlo en Google Drive.
     const url = await guardarArchivoEnDrive(nombreDeCarpeta,nombre)
     console.log('Archivo guardado correctamente', archivoB)
-
+    //TODO: Esto no está borrando na.
     await unlink(path) //Borra los archivos al finalizar.
+    console.log('Archivo borrado correctamente')
     return url
   } catch (error) {
     console.log('Error al guardar el archivo', error)

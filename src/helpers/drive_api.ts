@@ -9,6 +9,7 @@ import { JWT } from "google-auth-library";
 const SCOPE = ["https://www.googleapis.com/auth/drive"]
 const PATH = process.cwd()
 
+//TODO: Estos ids deberian estar en un archivo de configuración. .env quizás.
 const FOLDERS = {
   RAIZ: '1VUJ0LvbfI0T5-gNV34l31R1qN2_agLgU',
   EMPRESAS: '1_01jGWKQrQ9SojPZW8UVuI2pp3VxE9t4',

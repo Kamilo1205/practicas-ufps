@@ -15,8 +15,9 @@ export const DatosEmpresaSchema = z.object({
   }),
   nit: z.string({
     required_error: 'El NIT es requerido',
-    invalid_type_error: 'El NIT ingresado no es valido'
-  }),
+    invalid_type_error: 'El NIT ingresado no es valido',
+    
+  }).length(9, 'El NIT debe tener 9 digitos'),
   pais: z.string({
     required_error: 'El pais es requerido',
     invalid_type_error: 'El pais ingresado no es valido'

@@ -34,11 +34,11 @@ export const DatosEmpresaSchema = z.object({
   rut: z.string({
     required_error: 'El RUT es requerido',
     invalid_type_error: 'El RUT ingresado no es valido'
-  }),
+  }).includes('application/pdf', { message: 'El archivo debe ser un PDF' }),
   camaraComercio: z.string({
     required_error: 'La camara de comercio es requerida',
     invalid_type_error: 'El email ingresado no es valido'
-  }),
+  }).includes('application/pdf',{ message:'El archivo debe ser un PDF'}),
   email: z.string({
     required_error: 'El email es requerido',
     invalid_type_error: 'El email ingresado no es valido'

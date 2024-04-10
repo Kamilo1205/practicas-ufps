@@ -2,7 +2,7 @@
 
 import prisma from "@/lib/prisma"
 import { Empresa } from "@prisma/client"
-import { writeFile } from "fs/promises"
+import { unlink, writeFile } from "fs/promises"
 
 
 
@@ -90,10 +90,14 @@ export const guardarArchivo = async (file: string, nombre: string, nombreDeCarpe
       );
     }
     const archivoB = await srcToFile(file, nombre, 'application/pdf')
-    //const path = join(process.cwd(), 'camaraComercio.pdf')
-    //await writeFile(path, Buffer.from(archivo))  
+    
+    const path = join(process.cwd(), 'temp', nombre)
+    await writeFile(path, Buffer.from(archivo))  
+    //TODO: Recibir el path y guardarlo en Google Drive.
     const url = await guardarArchivoEnDrive(nombreDeCarpeta,nombre)
     console.log('Archivo guardado correctamente', archivoB)
+
+    await unlink(path) //Borra los archivos al finalizar.
     return url
   } catch (error) {
     console.log('Error al guardar el archivo', error)

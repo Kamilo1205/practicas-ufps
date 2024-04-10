@@ -100,7 +100,8 @@ const createFolder = async (authClient: JWT, folderName: string, parentFolderId:
  * @param fileName Nombre del archivo.
  * @returns {string} URL del archivo guardado.
  */
-export const guardarArchivoEnDrive = async (folderName:string ,fileName:string): Promise<string> => { 
+export const guardarArchivoEnDrive = async (folderName: string, fileName: string): Promise<string> => { 
+  //TODO: Ahora toca guardar los arhivos guardados en la carpeta temp en Google Drive.
   const id =  autorizar()
     .then((auth)=>uploadeFile(auth,folderName,fileName))
     .catch(console.error)
@@ -112,6 +113,15 @@ export const guardarArchivoEnDrive = async (folderName:string ,fileName:string):
   
 }
 
+//TODO: Tengo la sospecha de que el nextjs está cacheando las respuestas de la API de Google Drive. 
+/**
+ * Busca una carpeta en Google Drive. Aunque en realidad busca cualquier archivo o carpeta.
+ * @param authClient Objeto de autenticación.
+ * @param folderName Carpeta que se quiere buscar.
+ * @param parentFolderId Carpeta padre donde se buscará la carpeta.
+ * @throws Error si no se puede buscar la carpeta debido a un error.
+ * @returns {Promise<{name: string, id: string}[]>} Arreglo con los nombres e ids de los archivos encontrados. Si no hay nada retorna un arreglo vacío.
+ */
 const searchFoldersInDrive = async (authClient: JWT, folderName: string, parentFolderId: string) => { 
   try {
     console.log('Buscando carpeta', folderName)
@@ -145,24 +155,3 @@ const searchFoldersInDrive = async (authClient: JWT, folderName: string, parentF
   }
 }
 
-/**
- *   return new Promise((resolve, rejected) => {
-    const drive = google.drive({ version: 'v3', auth: authClient });
-    const fileMetaData = {
-      name: 'mydrivetext.txt',
-      parents: ['1bZoTbqCew34MGr1DfgczcA40ECM_QhKg'] // A folder ID to which file will get uploaded
-    }
-    drive.files.create({
-      media: {
-        body: createReadStream('mydrivetext.txt'), // files that will get uploaded
-        mimeType: 'text/plain'
-      },
-      fields: 'id'
-    }, function (error, file) {
-      if (error) {
-        return rejected(error)
-      }
-      resolve(file);
-    })
-  });
- */

@@ -22,29 +22,27 @@ interface EmpresaData {
   email                ?:string,
   industria            ?:string,
   RUTUrl               ?:string,
-  camaraComercio    ?:any, 
+  camaraComercio       ?:string, 
   registroMercantilUrl ?:string, 
   representanteLegalId ?:string,
 }
 
 /**
  * Actualiza los datos de una empresa ya registrada. O devuelve un error si la empresa no existe.
- * @param data 
+ * @param {EmpresaData} data
  * @returns {Promise<Empresa>} Empresa con los datos actualizados.
  */
 export const guardarDatosEmpresa = async (data: EmpresaData): Promise<Empresa> => { 
-  console.log("QUE PASA")
   console.log('guardarDatosEmpresa', data)
-  const usuarioExiste = await prisma.usuario.findFirst({
+  const usuarioExiste = await prisma.empresa.findFirst({
     where: {
-      email: data.email
+      id: data.id
     }
   })
-
+  console.log('usuarioExiste', usuarioExiste)
   if (!usuarioExiste) {
     throw new Error('El usuario no existe')
   }
-  const urlCamaraComercio = await guardarArchivo(data.camaraComercio, 'camaraComercio',data.nombre)
   const actualizarDatos = await prisma.empresa.update({
     where: {
       id: data.id
@@ -60,8 +58,7 @@ export const guardarDatosEmpresa = async (data: EmpresaData): Promise<Empresa> =
       email: data.email,
       industria: data.industria,
       RUTUrl: data.RUTUrl,
-      camaraComercioUrl: urlCamaraComercio,
-      registroMercantilUrl: data.registroMercantilUrl,
+      camaraComercioUrl: data.camaraComercio,
       representanteLegalId: data.representanteLegalId
     }
   })
@@ -73,14 +70,12 @@ export const guardarDatosEmpresa = async (data: EmpresaData): Promise<Empresa> =
 }
 
 //TODO: Implementar la función de guardarArchivo
-export const guardarArchivo = async (file: string, nombre: string, nombreDeCarpeta:string): Promise<string> => { 
+export const guardarArchivoEmpresa = async (file: string, nombre: string, nombreDeCarpeta:string): Promise<string> => { 
   const archivo = file 
   console.log('guardarArchivo', nombre)
   
-  //if (!file) throw new Error('No se ha encontrado un archivo')
-  //TODO: El archivo llega como string y se queda como Uint8Contents. Ahora creo que se puede guardar.
   try{
-    if (file === null || file === undefined) {
+    if (file === null || file === undefined || file === '') {
       throw new Error('No se ha encontrado un archivo')
     }
     const srcToFile= (src:string, fileName:string, mimeType:string) =>{
@@ -94,7 +89,7 @@ export const guardarArchivo = async (file: string, nombre: string, nombreDeCarpe
     const path = join(process.cwd(), 'temp', nombre)
     await writeFile(path, Buffer.from(archivo))  
     //TODO: Recibir el path y guardarlo en Google Drive.
-    const url = await guardarArchivoEnDrive(nombreDeCarpeta,nombre)
+    const url = await guardarArchivoEnDrive(nombreDeCarpeta,nombre,"empresas")
     console.log('Archivo guardado correctamente', archivoB)
     //TODO: Esto no está borrando na.
     await unlink(path) //Borra los archivos al finalizar.

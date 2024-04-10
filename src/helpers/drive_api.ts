@@ -1,19 +1,23 @@
 'use server'
 
-import { google } from "googleapis";
-import googleApiKey from '../../googleApiKey.json'
-import { createReadStream } from "fs";
 import path from "path";
+import { createReadStream } from "fs";
+
+import { google } from "googleapis";
 import { JWT } from "google-auth-library";
+import googleApiKey from '../../googleApiKey.json'
 
 const SCOPE = ["https://www.googleapis.com/auth/drive"]
 const PATH = process.cwd()
 
 //TODO: Estos ids deberian estar en un archivo de configuración. .env quizás.
 const FOLDERS = {
-  RAIZ: '1VUJ0LvbfI0T5-gNV34l31R1qN2_agLgU',
-  EMPRESAS: '1_01jGWKQrQ9SojPZW8UVuI2pp3VxE9t4',
+  'raiz': '1VUJ0LvbfI0T5-gNV34l31R1qN2_agLgU',
+  'empresas': '1_01jGWKQrQ9SojPZW8UVuI2pp3VxE9t4',
 }
+
+type FolderKey = keyof typeof FOLDERS;
+
 
 const autorizar = async () => { 
   const jwtClient = new google.auth.JWT(
@@ -34,20 +38,20 @@ const autorizar = async () => {
  * @throws Error si no se puede crear la carpeta.
  * @returns {Promise<string>} Id del archivo creado.
  */
-const uploadeFile = async (authClient: JWT,folderName:string, fileName:string) => { 
+const uploadeFile = async (authClient: JWT,folderName:string, fileName:string, parentFolder:FolderKey) => { 
   const drive = google.drive({ version: 'v3', auth: authClient });
   
-
+  //TODO: Cambiar esto por un archivo real.
   const media = {
     mimeType: 'application/pdf',
     body: createReadStream('camaraComercio.pdf')
   }
 
   try {
-    const folders = await searchFoldersInDrive(authClient, folderName, FOLDERS.EMPRESAS)
+    const folders = await searchFoldersInDrive(authClient, folderName,parentFolder)
     //Buscamos si la carpeta ya existe. Si no la creamos.
     const folderId = folders?.length > 0 ? folders[0].id :
-      await createFolder(authClient, folderName, FOLDERS.EMPRESAS) 
+      await createFolder(authClient, folderName, 'empresas') 
   
     if(!folderId) throw new Error('Error al crear la carpeta')
     const requestBody = {
@@ -59,7 +63,7 @@ const uploadeFile = async (authClient: JWT,folderName:string, fileName:string) =
       requestBody,
       media
     })
-    console.log('File Id:', file.data.id);
+    console.log('File Id CrenadoFile:', file.data.id);
     return file.data.id;
   }
   catch (error) { 
@@ -74,8 +78,9 @@ const uploadeFile = async (authClient: JWT,folderName:string, fileName:string) =
  * @param parentFolderId Id de la carpeta padre.
  * @returns {Promise<string>} Id de la carpeta creada.
  */
-const createFolder = async (authClient: JWT, folderName: string, parentFolderId: string) => {
-  const drive = google.drive({ version: 'v3', auth: authClient });
+const createFolder = async (authClient: JWT, folderName: string, parentFolder: FolderKey) => {
+  const drive = google.drive({ version: 'v3', auth: authClient })
+  const parentFolderId = FOLDERS[parentFolder]
   const requestBody = {
     name: folderName,
     parents: [parentFolderId],
@@ -99,13 +104,14 @@ const createFolder = async (authClient: JWT, folderName: string, parentFolderId:
  * Guarda un archivo en Google Drive.
  * @param folderName Carpeta donde se guardará el archivo.
  * @param fileName Nombre del archivo.
+ * @param parentFolder Carpeta donde se encuentra la carpeta donde se guardará el archivo.
  * @returns {string} URL del archivo guardado.
  */
-export const guardarArchivoEnDrive = async (folderName: string, fileName: string): Promise<string> => { 
+export const guardarArchivoEnDrive = async (folderName: string, fileName: string, parentFolder:FolderKey): Promise<string> => { 
   //TODO: Ahora toca guardar los arhivos guardados en la carpeta temp en Google Drive.
-  const id =  autorizar()
-    .then((auth)=>uploadeFile(auth,folderName,fileName))
-    .catch(console.error)
+  const id =  await (autorizar()
+    .then((auth)=>uploadeFile(auth,folderName,fileName,parentFolder))
+    .catch(console.error))
   
   if (!id) {
     throw new Error('Error al subir el archivo')
@@ -119,14 +125,15 @@ export const guardarArchivoEnDrive = async (folderName: string, fileName: string
  * Busca una carpeta en Google Drive. Aunque en realidad busca cualquier archivo o carpeta.
  * @param authClient Objeto de autenticación.
  * @param folderName Carpeta que se quiere buscar.
- * @param parentFolderId Carpeta padre donde se buscará la carpeta.
+ * @param parentFolder 'raiz' o 'empresas'. Carpeta donde se buscará la carpeta.
  * @throws Error si no se puede buscar la carpeta debido a un error.
  * @returns {Promise<{name: string, id: string}[]>} Arreglo con los nombres e ids de los archivos encontrados. Si no hay nada retorna un arreglo vacío.
  */
-const searchFoldersInDrive = async (authClient: JWT, folderName: string, parentFolderId: string) => { 
+const searchFoldersInDrive = async (authClient: JWT, folderName: string, parentFolder: FolderKey) => { 
   try {
     console.log('Buscando carpeta', folderName)
     const drive = google.drive({ version: 'v3', auth: authClient });
+    const parentFolderId = FOLDERS[parentFolder]
     const res = await drive.files.list({
       q: `name = '${folderName}' and '${parentFolderId}' in parents and trashed = false`,
       fields: 'nextPageToken, files(id, name)',

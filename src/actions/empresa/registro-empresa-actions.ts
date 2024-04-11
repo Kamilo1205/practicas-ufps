@@ -4,8 +4,6 @@ import prisma from "@/lib/prisma"
 import { Empresa } from "@prisma/client"
 import { unlink, writeFile } from "fs/promises"
 
-
-
 import { revalidatePath } from "next/cache"
 import { join } from "path"
 import { guardarArchivoEnDrive } from "@/helpers/drive_api"
@@ -34,6 +32,7 @@ interface EmpresaData {
  */
 export const guardarDatosEmpresa = async (data: EmpresaData): Promise<Empresa> => { 
   console.log('guardarDatosEmpresa', data)
+  //TODO: Debe cambiarse a la tabla de usuarios.
   const usuarioExiste = await prisma.empresa.findFirst({
     where: {
       id: data.id
@@ -87,12 +86,14 @@ export const guardarArchivoEmpresa = async (file: string, nombre: string, nombre
     const archivoB = await srcToFile(file, nombre, 'application/pdf')
     
     const path = join(process.cwd(), 'temp', nombre)
-    await writeFile(path, Buffer.from(archivo))  
+    const ruta = join(__dirname, `temp/${nombre}`)
+console.log("AHHHH",ruta)
+    await writeFile(ruta, Buffer.from(archivo,'base64url'))  
     //TODO: Recibir el path y guardarlo en Google Drive.
-    const url = await guardarArchivoEnDrive(nombreDeCarpeta,nombre,"empresas")
+    const url = await guardarArchivoEnDrive(nombreDeCarpeta,nombre,path,"empresas")
     console.log('Archivo guardado correctamente', archivoB)
     //TODO: Esto no está borrando na.
-    await unlink(path) //Borra los archivos al finalizar.
+    //await unlink(path) //Borra los archivos al finalizar.
     console.log('Archivo borrado correctamente')
     return url
   } catch (error) {

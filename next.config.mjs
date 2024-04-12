@@ -11,7 +11,13 @@ const nextConfig = {
             hostname: 'ww2.ufps.edu.co'
           }
         ],
-      },
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '5mb'
+    }
+  }
 };
+
 
 export default nextConfig;

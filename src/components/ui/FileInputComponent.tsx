@@ -16,7 +16,7 @@ export const FileInputComponent = ({ field, onChange }: any) => {
         //onFileInput(e.target?.result)
         onChange(e.target?.result)
       }
-      reader.readAsArrayBuffer(file)
+      reader.readAsDataURL(file)
     }
   }
   return (

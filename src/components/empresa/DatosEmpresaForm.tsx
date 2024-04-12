@@ -10,10 +10,11 @@ import { FileInputComponent, LabelConInfo } from ".."
 
 import { SelectComponent } from "../ui/SelectComponent"
 import { PaisEstadoCiudadFormHook } from "@/helpers/PaisEstadoCiudadFormHook"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { DigitosInputComponent } from "../ui/DigitosInputComponent"
-import { guardarDatosEmpresa } from "@/actions/empresa/registro-empresa-actions"
+import { guardarArchivoEmpresa, guardarDatosEmpresa } from "@/actions/empresa/registro-empresa-actions"
 import { Button } from "../ui/button"
+import { Toaster, toast } from "sonner"
 
 
 interface Props{
@@ -21,10 +22,21 @@ interface Props{
 
 }
 
+const verificarValoresJSON = (obj: any) => { 
+  for (const key in obj) {
+    if (obj[key] === null || obj[key] === undefined || obj[key] === '') {
+      return false
+    }
+  }
+  return true
+
+}
+
 export const DatosEmpresaForm = ({setStage}:Props) => { 
   
   const EMPRESA_ID = "1"
-  
+  const [loading, setLoading] = useState(false)
+
   const form = useForm<z.infer<typeof DatosEmpresaSchema>>({
     mode: 'onBlur',
     resolver: zodResolver(DatosEmpresaSchema)
@@ -38,21 +50,43 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
   const watcher = form.watch(['pais', 'departamento', 'municipio'])
 
   const onSubmit = async() => { 
-    console.log("ENTRA")
     try {
-      console.log('onSubmit',form.getValues())
+      setLoading(true)
       const formData = form.getValues()
+      
+      if (JSON.stringify(form.formState.errors) !== '{}' || !verificarValoresJSON(formData)) {
+        return setLoading(false);
+      }
+      //console.log('onSubmit',form.getValues())
+      const nombreCarpeta = `${formData.nit}-${formData.nombre}`
+ 
+      //Guardamos primero los archivos.
+      const camaraDeComercioUrl = await guardarArchivoEmpresa(formData.camaraComercio, `${formData.nit}-camaraComercio.pdf`, nombreCarpeta)
+      const RUTUrl = await guardarArchivoEmpresa(formData.rut,`${formData.nit}-rut.pdf`,nombreCarpeta)
+      
       const empresa = {
-        id: EMPRESA_ID, ...formData
+        id: EMPRESA_ID,
+        nombre: formData.nombre,
+        direccion: formData.direccion,
+        NIT: formData.nit,
+        telefono: formData.telefono,
+        pais: formData.pais,
+        departamento: formData.departamento,
+        municipio: formData.municipio,
+        email: formData.email,
+        camaraComercio: camaraDeComercioUrl,
+        RUTUrl
+
       }
-      const result = await guardarDatosEmpresa(empresa)
-      if (result) {
-        console.log('Datos de la empresa guardados correctamente')
-        setStage()
-      }
+
+      await guardarDatosEmpresa(empresa) 
+      setStage()
+      console.log('Datos de la empresa guardados correctamente')
+
     } catch (error) { 
-      console.log('Error al guardar los datos de la empresa') 
       console.log(error)
+      toast.error('¡Ha ocurrido un error!')
+      setLoading(false)
     }
   }
 
@@ -61,7 +95,7 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
   return (
       <div className="p-2">
    
-      
+      <Toaster position="top-right" />
       <Form {...form} >
         <form className="flex flex-col flex-wrap" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex flex-wrap mb-2">
@@ -93,6 +127,22 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
                     </FormLabel>
                     <FormControl>
                       <Input type="text" autoComplete="false" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            { /** Correo de la empresa */}
+            <div className="m-1">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Correo</FormLabel>
+                    <FormControl>
+                      <Input type="email" autoComplete="false" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -222,7 +272,39 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
               )}
             />
           </div>
-          <Button onClick={onSubmit} className="self-end">Siguiente</Button>
+          {/* Input RUT */}
+          <div className="col-span-3">
+            <FormField
+              control={form.control}
+              name="rut"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>RUT</FormLabel>
+                  <FormControl>
+                    <FileInputComponent field={field} onChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <Button onClick={onSubmit} className={`self-end`} disabled={loading}>
+            {
+              loading ? <div className="flex items-center justify-center w-full h-full">
+                <div className="flex justify-center items-center space-x-1 text-sm text-white-700">
+
+                  <svg fill='none' className="w-6 h-6 animate-spin" viewBox="0 0 32 32" xmlns='http://www.w3.org/2000/svg'>
+                    <path clip-rule='evenodd'
+                      d='M15.165 8.53a.5.5 0 01-.404.58A7 7 0 1023 16a.5.5 0 011 0 8 8 0 11-9.416-7.874.5.5 0 01.58.404z'
+                      fill='currentColor' fill-rule='evenodd' />
+                  </svg>
+
+
+                  <div>Enviando...</div>
+                </div>
+              </div>
+                : 'Enviar'
+          }</Button>
         </form>
       </Form>
       </div>

@@ -15,8 +15,9 @@ export const DatosEmpresaSchema = z.object({
   }),
   nit: z.string({
     required_error: 'El NIT es requerido',
-    invalid_type_error: 'El NIT ingresado no es valido'
-  }),
+    invalid_type_error: 'El NIT ingresado no es valido',
+    
+  }).length(10, 'El NIT debe tener 9 digitos y el digito de verificación'),
   pais: z.string({
     required_error: 'El pais es requerido',
     invalid_type_error: 'El pais ingresado no es valido'
@@ -33,9 +34,11 @@ export const DatosEmpresaSchema = z.object({
   rut: z.string({
     required_error: 'El RUT es requerido',
     invalid_type_error: 'El RUT ingresado no es valido'
-  }),
-  camaraComercio: z.any()
-    .refine((file) => file?.length !==0, 'Debe adjuntar un archivo'),
+  }).includes('application/pdf', { message: 'El archivo debe ser un PDF' }),
+  camaraComercio: z.string({
+    required_error: 'La camara de comercio es requerida',
+    invalid_type_error: 'El email ingresado no es valido'
+  }).includes('application/pdf',{ message:'El archivo debe ser un PDF'}),
   email: z.string({
     required_error: 'El email es requerido',
     invalid_type_error: 'El email ingresado no es valido'
@@ -43,4 +46,9 @@ export const DatosEmpresaSchema = z.object({
   
 })
 
-//TODO: La camara de comercio y el RUT deben ser archivos.
+//TODO: Pedir feedback del formulario para saber si está correcto.
+
+/**
+ *   camaraComercio: z.any()
+    .refine((file) => file?.length !==0, 'Debe adjuntar un archivo'),
+ */

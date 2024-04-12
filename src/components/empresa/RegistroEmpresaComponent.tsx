@@ -19,7 +19,6 @@ export const RegistroEmpresaComponent = () => {
   }
   return (
     <div className="flex px-28 py-10">
-      { /* TODO: Layout para el registro */}
       <div className="mr-10 w-96 flex flex-col space-y-10">
         <div className={`rounded  p-3 ${stage === 1 && 'bg-red-50'}`}>
           <h2 className="font-semibold">

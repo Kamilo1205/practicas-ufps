@@ -1,8 +1,8 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const LoginSchema = z.object({
     email: z.string({
-        required_error: 'La dirección de correo electrónico es requerido'
+        required_error: 'La dirección de correo electrónico es requerida'
     }).email({
         message: 'La dirección de correo electrónico no es valida'
     }),

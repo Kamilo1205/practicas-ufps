@@ -6,9 +6,9 @@ async function main() {
         await prisma.usuario.deleteMany()
     // ]);
 
-    const { users } = initialData;
+    const { usuarios } = initialData;
     await prisma.usuario.createMany({
-        data: users
+        data: usuarios
     });
     
     console.log('Seed ejecutado correctamente');

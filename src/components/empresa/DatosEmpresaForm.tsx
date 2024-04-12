@@ -28,7 +28,8 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
   const form = useForm<z.infer<typeof DatosEmpresaSchema>>({
     mode: 'onBlur',
     resolver: zodResolver(DatosEmpresaSchema)
-  })
+  });
+
   const { paises,estados,ciudades } = PaisEstadoCiudadFormHook({
     paisSeleccionado: form.getValues().pais || "",
     estadoSeleccionado: form.getValues().departamento || "",

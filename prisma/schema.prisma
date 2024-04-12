@@ -14,56 +14,61 @@ datasource db {
 }
 
 enum Rol {
-  estudiante
-  tutor
-  coordinador
-  empresa
-  director
+  ESTUDIANTE
+  TUTOR_PRACTICAS
+  COORDINADOR
+  EMPRESA
+  DIRECTOR_PROGRAMA
 }
 
 model Usuario {
-  id              String    @id @default(uuid())
-  email           String    @unique
-  emailVerificado DateTime?
-  password        String?
-  rol             Rol       @default(estudiante)
-  imagen          String?
-  creado          DateTime  @default(now())
-  actulizado      DateTime  @updatedAt
+  id                 String    @id @default(uuid())
+  email              String    @unique
+  emailVerificado    DateTime?
+  password           String?
+  rol                Rol       @default(ESTUDIANTE)
+  imagen             String?
+  fechaCreacion      DateTime  @default(now())
+  fechaActualizacion DateTime  @updatedAt
+
+  estudiante     Estudiante?
 }
 
 model Estudiante {
-  id         String   @id @default(uuid())
-  codigo     Int
-  creado     DateTime @default(now())
-  actulizado DateTime @updatedAt
+  id                   String   @id @default(uuid())
+  fechaCreacion        DateTime @default(now())
+  fechaActualizacion   DateTime @updatedAt
 
-  informacionPersonal  InformacioPersonal @relation(fields: [informacionPersonaId], references: [id])
-  informacionPersonaId String             @unique
+  usuario              Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId            String  @unique
+
+  informacionPersonal  InformacionPersonal @relation(fields: [informacionPersonalId], references: [id])
+  informacionPersonalId String             @unique
 }
 
 model TutorPractica {
   id                  String   @id @default(uuid())
   cargo               String // Cargo en la empresa
   departamentoEmpresa String // Departamento en la empresa
-  creado              DateTime @default(now())
-  actulizado          DateTime @updatedAt
+  fechaCreacion       DateTime @default(now())
+  fechaActualizacion  DateTime @updatedAt
 
-  informacionPersonal  InformacioPersonal @relation(fields: [informacionPersonaId], references: [id])
+  informacionPersonal  InformacionPersonal @relation(fields: [informacionPersonaId], references: [id])
   informacionPersonaId String             @unique
 }
 
-model InformacioPersonal {
-  id           String   @id @default(uuid())
-  nombre       String
-  apellido     String
-  genero       String
-  telefono     Int
-  departamento Int
-  municipio    Int
-  direccion    String
-  creado       DateTime @default(now())
-  actulizado   DateTime @updatedAt
+model InformacionPersonal {
+  id                 String   @id @default(uuid())
+  nombre             String
+  apellido           String
+  genero             String
+  telefono           String
+  departamento       String
+  fechaNacimiento    DateTime
+  municipio          String
+  direccion          String
+  fechaCreacion      DateTime @default(now())
+  fechaActualizacion DateTime @updatedAt
 
   estudiante    Estudiante?
   tutorPractica TutorPractica?
@@ -78,6 +83,9 @@ model RepresentanteLegal {
   cedula                String
   documentoIdentidadUrl String
   empresa               Empresa[]
+
+  fechaCreacion      DateTime @default(now())
+  fechaActualizacion DateTime @updatedAt
 }
 
 model Empresa {
@@ -96,4 +104,7 @@ model Empresa {
   registroMercantilUrl String?
   representanteLegal   RepresentanteLegal @relation(fields: [representanteLegalId], references: [id])
   representanteLegalId String
+
+  fechaCreacion        DateTime @default(now())
+  fechaActualizacion   DateTime @updatedAt
 }

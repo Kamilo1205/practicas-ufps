@@ -1,29 +1,29 @@
-'use server';
+"use server";
 
-import { z } from 'zod';
-import { AuthError } from 'next-auth';
-import { signIn } from '@/auth.config';
-import { LoginSchema } from '@/schemas';
-
+import { AuthError } from "next-auth";
+import { signIn } from "@/auth.config";
+import { LoginSchema } from "@/schemas";
+import { z } from "zod";
+ 
 export async function authenticate(
-    prevState: string | undefined,
     formData: z.infer<typeof LoginSchema>
 ) {
     try {
-        await signIn('credentials', {
+        const respuesta = await signIn("credentials", {
             ...formData,
-            redirect: false
+            redirect: false,
         });
-        return 'Success';
-    } catch (error) {
+        return { ok: true, message: "Inicio de sesion exitoso." };
+    } catch ( error ) {
         if (error instanceof AuthError) {
             switch (error.type) {
-                case 'CredentialsSignin':
-                    return 'Invalid credentials.';
+                case "CredentialsSignin": {
+                    return { ok: false, message: "Credenciales invalidas." };
+                }
                 default:
-                    return 'Something went wrong.';
+                    return { ok: false, message: error.cause?.err?.message };
             }
         }
-        throw error;
+        return { ok: false, message: "Ocurrio un error, por favor intentalo de nuevo" };;
     }
 }

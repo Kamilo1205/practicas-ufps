@@ -1,6 +1,6 @@
-import type { Metadata } from 'next';
-import { redirect } from 'next/navigation';
-import { auth } from '@/auth.config';
+import type { Metadata } from "next";
+import { auth } from "@/auth.config";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -8,15 +8,15 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: Readonly<{children: React.ReactNode;}>) {
-  
   const session = await auth();
+
   if ( session?.user ) {
     redirect('/');
   }
- 
+
   return (
-    <div>
-        { children }
-    </div>
+    <main className="w-screen min-h-screen p-9">
+      { children }
+    </main>
   );
 }

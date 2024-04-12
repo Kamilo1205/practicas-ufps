@@ -163,8 +163,8 @@ function CustomCaption(props: CaptionProps & { onToggleView: () => void }) {
       buttonNextLabeDisabled={!previousMonth}
       buttonPreviousDisabled={!nextMonth}
       label={format(displayMonth, 'MMMM yyy', { locale: es })}
-      onNextClick={() => previousMonth && goToMonth(previousMonth)}
-      onPrevClick={() => nextMonth && goToMonth(nextMonth)}
+      onNextClick={() => nextMonth && goToMonth(nextMonth)}
+      onPrevClick={() => previousMonth && goToMonth(previousMonth)}
     />
   );
 }

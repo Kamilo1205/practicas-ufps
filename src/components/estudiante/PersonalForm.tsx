@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,16 +10,7 @@ import { LuCalendar } from "react-icons/lu";
 import { RxCaretSort, RxCheck } from "react-icons/rx";
 
 import { Button } from "@/components/ui/button";
-import {
-	Form,
-	FormControl,
-	FormDescription,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar";
 import {
 	Command,
 	CommandEmpty,
@@ -29,15 +20,26 @@ import {
 	CommandList,
 } from "@/components/ui/command";
 import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { FormularioGrid } from "@/components/ui/FormularioGrid";
 
 import { PersonalFormSchema } from "@/schemas";
 import { cn } from "@/lib/utils";
+
+import { agregarInformacionPersonal } from "@/actions";
 
 const languages = [
 	{ label: 'Español', value: 'ES' },
@@ -51,323 +53,308 @@ export const PersonalForm = () => {
 		resolver: zodResolver(PersonalFormSchema)
 	});
 
-	const onSubmit = (values: z.infer<typeof PersonalFormSchema>) => {
-		alert('Formulario');
-		console.log(values);
+	const onSubmit = async (values: z.infer<typeof PersonalFormSchema>) => {
+		await agregarInformacionPersonal(values);
 	}
 
-
 	return (
-		<div className="p-20">
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-y-8 gap-x-6">
+		<FormularioGrid
+			titulo="Información Personal"
+			subtitulo="Por favor, complete los siguientes campos con su información personal."
+		>
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-6 col-span-2 gap-x-6 gap-y-8">
 
-				<div>
-					<h2 className="font-semibold">
-						Información Personal
-					</h2>
-					<p className="text-gray-800 text-sm mt-1 leading-6">
-						Por favor, complete los siguientes campos con su información personal.
-					</p>
-				</div>
+					{/* Input Nombre */}
+					<div className="col-span-6 sm:col-span-3">
+						<FormField
+							control={form.control}
+							name="nombre"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Nombre</FormLabel>
+									<FormControl>
+										<Input type="text" autoComplete="false" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 
-				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-6 col-span-2 gap-x-6 gap-y-8">
+					{/* Input Apellido */}
+					<div className="col-span-6 sm:col-span-3">
+						<FormField
+							control={form.control}
+							name="apellido"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Apellido</FormLabel>
+									<FormControl>
+										<Input type="text" autoComplete="false" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 
-						{/* Input Nombre */}
-						<div className="col-span-6 sm:col-span-3">
-							<FormField
-								control={form.control}
-								name="nombre"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Nombre</FormLabel>
-										<FormControl>
-											<Input type="text" autoComplete="false" {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
+					{/* Input Telefono */}
+					<div className="col-span-6 sm:col-span-3">
+						<FormField
+							control={form.control}
+							name="telefono"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Telefono</FormLabel>
+									<FormControl>
+										<Input type="text" autoComplete="false" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 
-						{/* Input Apellido */}
-						<div className="col-span-6 sm:col-span-3">
-							<FormField
-								control={form.control}
-								name="apellido"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Apellido</FormLabel>
-										<FormControl>
-											<Input type="text" autoComplete="false" {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-
-						{/* Input Telefono */}
-						<div className="col-span-6 sm:col-span-3">
-							<FormField
-								control={form.control}
-								name="telefono"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Telefono</FormLabel>
-										<FormControl>
-											<Input type="number" autoComplete="false" {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-
-						{/* RadioButton Genero */}
-						<div className="col-span-6 sm:col-span-3">
-							<FormField
-								control={form.control}
-								name="genero"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Género</FormLabel>
-										<FormControl>
-											<RadioGroup
-												onValueChange={field.onChange}
-												defaultValue={field.value}
-												className="flex flex-col space-y-1"
-											>
-												<FormItem className="flex items-center space-x-3 space-y-0">
-													<FormControl>
-														<RadioGroupItem value="masculino" id="masculino" />
-													</FormControl>
-													<FormLabel className="font-normal" htmlFor="masculino">
-														Masculino
-													</FormLabel>
-												</FormItem>
-												<FormItem className="flex items-center space-x-3 space-y-0">
-													<FormControl>
-														<RadioGroupItem value="femenino" id="femenino" />
-													</FormControl>
-													<FormLabel className="font-normal" htmlFor="femenino">
-														Femenino
-													</FormLabel>
-												</FormItem>
-											</RadioGroup>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-
-						{/* Input Fecha de Nacimiento */}
-						<div className="col-span-6 sm:col-span-4">
-							<FormField
-								control={form.control}
-								name="fechaNacimiento"
-								render={({ field }) => (
-									<FormItem className="flex flex-col">
-										<FormLabel>Fecha de Nacimiento</FormLabel>
-										<Popover>
-											<PopoverTrigger asChild>
+					{/* RadioButton Genero */}
+					<div className="col-span-6 sm:col-span-3">
+						<FormField
+							control={form.control}
+							name="genero"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Género</FormLabel>
+									<FormControl>
+										<RadioGroup
+											onValueChange={field.onChange}
+											defaultValue={field.value}
+											className="flex flex-col space-y-1"
+										>
+											<FormItem className="flex items-center space-x-3 space-y-0">
 												<FormControl>
-													<Button
-														variant={"outline"}
-														className={cn(
-															"w-wull pl-3 text-left font-normal",
-															!field.value && "text-muted-foreground"
-														)}
-													>
-														{field.value ? (
-															format(field.value, "PPP", { locale: es })
-														) : (
-															<span>Selecciona una fecha</span>
-														)}
-														<LuCalendar className="ml-auto h-4 w-4 opacity-50" />
-													</Button>
+													<RadioGroupItem value="masculino" id="masculino" />
 												</FormControl>
-											</PopoverTrigger>
-											<PopoverContent className="w-auto p-0" align="start">
-												<Calendar
-													mode="single"
-													selected={field.value}
-													onSelect={field.onChange} 
-													disabled={(date) =>
-														date > new Date() || date < new Date("1900-01-01")
-													}
-													initialFocus
+												<FormLabel className="font-normal" htmlFor="masculino">
+													Masculino
+												</FormLabel>
+											</FormItem>
+											<FormItem className="flex items-center space-x-3 space-y-0">
+												<FormControl>
+													<RadioGroupItem value="femenino" id="femenino" />
+												</FormControl>
+												<FormLabel className="font-normal" htmlFor="femenino">
+													Femenino
+												</FormLabel>
+											</FormItem>
+										</RadioGroup>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+
+					{/* Input Fecha de Nacimiento */}
+					<div className="col-span-6 sm:col-span-4">
+						<FormField
+							control={form.control}
+							name="fechaNacimiento"
+							render={({ field }) => (
+								<FormItem className="flex flex-col">
+									<FormLabel>Fecha de Nacimiento</FormLabel>
+									<Popover>
+										<PopoverTrigger asChild>
+											<FormControl>
+												<Button
+													variant={"outline"}
+													className={cn(
+														"w-wull pl-3 text-left font-normal",
+														!field.value && "text-muted-foreground"
+													)}
+												>
+													{field.value ? (
+														format(field.value, "PPP", { locale: es })
+													) : (
+														<span>Selecciona una fecha</span>
+													)}
+													<LuCalendar className="ml-auto h-4 w-4 opacity-50" />
+												</Button>
+											</FormControl>
+										</PopoverTrigger>
+										<PopoverContent className="w-auto p-0" align="start">
+											<Calendar
+												mode="single"
+												selected={field.value}
+												onSelect={field.onChange}
+												disabled={(date) =>
+													date > new Date() || date < new Date("1900-01-01")
+												}
+												initialFocus
+											/>
+										</PopoverContent>
+									</Popover>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+
+					{/* Select Departamento */}
+					<div className="col-span-6 sm:col-span-3">
+					<FormField
+							control={form.control}
+							name="municipio"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Municipio de Residencia</FormLabel>
+									<Popover>
+										<PopoverTrigger asChild>
+											<FormControl>
+												<Button
+													variant="outline"
+													role="combobox"
+													className={cn(
+														"w-full justify-between",
+														!field.value && "text-muted-foreground"
+													)}
+												>
+													{field.value
+														? languages.find(
+															(language) => language.value === field.value
+														)?.label
+														: "Select language"}
+													<RxCaretSort className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+												</Button>
+											</FormControl>
+										</PopoverTrigger>
+										<PopoverContent className="w-[300px] p-0">
+											<Command>
+												<CommandInput
+													placeholder="Search framework..."
+													className="h-9"
 												/>
-											</PopoverContent>
-										</Popover>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
+												<CommandEmpty>No framework found.</CommandEmpty>
+												<CommandGroup>
+													<CommandList>
+														{languages.map((language) => (
+															<CommandItem
+																value={language.label}
+																key={language.value}
+																onSelect={() => {
+																	form.setValue("municipio", language.value)
+																}}
+															>
+																{language.label}
+																<RxCheck
+																	className={cn(
+																		"ml-auto h-4 w-4",
+																		language.value === field.value
+																			? "opacity-100"
+																			: "opacity-0"
+																	)}
+																/>
+															</CommandItem>
+														))}
+													</CommandList>
+												</CommandGroup>
+											</Command>
+										</PopoverContent>
+									</Popover>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 
-						{/* Select Departamento */}
-						<div className="col-span-6 sm:col-span-3">
-							<FormField
-								control={form.control}
-								name="departamento"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Departamento de Residencia</FormLabel>
-										<Popover>
-											<PopoverTrigger asChild>
-												<FormControl>
-													<Button
-														variant="outline"
-														role="combobox"
-														className={cn(
-															"w-full justify-between",
-															!field.value && "text-muted-foreground"
-														)}
-													>
-														{field.value
-															? languages.find(
-																(language) => language.value === field.value
-															)?.label
-															: "Select language"}
-														<RxCaretSort className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-													</Button>
-												</FormControl>
-											</PopoverTrigger>
-											<PopoverContent className="w-[300px] p-0">
-												<Command>
-													<CommandInput
-														placeholder="Search framework..."
-														className="h-9"
-													/>
-													<CommandEmpty>No framework found.</CommandEmpty>
-													<CommandGroup>
-														<CommandList>
-															{languages.map((language) => (
-																<CommandItem
-																	value={language.label}
-																	key={language.value}
-																	onSelect={() => {
-																		form.setValue("departamento", language.value)
-																	}}
-																>
-																	{language.label}
-																	<RxCheck
-																		className={cn(
-																			"ml-auto h-4 w-4",
-																			language.value === field.value
-																				? "opacity-100"
-																				: "opacity-0"
-																		)}
-																	/>
-																</CommandItem>
-															))}
-														</CommandList>
-													</CommandGroup>
-												</Command>
-											</PopoverContent>
-										</Popover>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
+					{/* Select Municipio */}
+					<div className="col-span-6 sm:col-span-3">
+						<FormField
+							control={form.control}
+							name="municipio"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Municipio de Residencia</FormLabel>
+									<Popover>
+										<PopoverTrigger asChild>
+											<FormControl>
+												<Button
+													variant="outline"
+													role="combobox"
+													className={cn(
+														"w-full justify-between",
+														!field.value && "text-muted-foreground"
+													)}
+												>
+													{field.value
+														? languages.find(
+															(language) => language.value === field.value
+														)?.label
+														: "Select language"}
+													<RxCaretSort className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+												</Button>
+											</FormControl>
+										</PopoverTrigger>
+										<PopoverContent className="w-[300px] p-0">
+											<Command>
+												<CommandInput
+													placeholder="Search framework..."
+													className="h-9"
+												/>
+												<CommandEmpty>No framework found.</CommandEmpty>
+												<CommandGroup>
+													<CommandList>
+														{languages.map((language) => (
+															<CommandItem
+																value={language.label}
+																key={language.value}
+																onSelect={() => {
+																	form.setValue("municipio", language.value)
+																}}
+															>
+																{language.label}
+																<RxCheck
+																	className={cn(
+																		"ml-auto h-4 w-4",
+																		language.value === field.value
+																			? "opacity-100"
+																			: "opacity-0"
+																	)}
+																/>
+															</CommandItem>
+														))}
+													</CommandList>
+												</CommandGroup>
+											</Command>
+										</PopoverContent>
+									</Popover>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 
-						{/* Select Municipio */}
-						<div className="col-span-6 sm:col-span-3">
-							<FormField
-								control={form.control}
-								name="municipio"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Municipio de Residencia</FormLabel>
-										<Popover>
-											<PopoverTrigger asChild>
-												<FormControl>
-													<Button
-														variant="outline"
-														role="combobox"
-														className={cn(
-															"w-full justify-between",
-															!field.value && "text-muted-foreground"
-														)}
-													>
-														{field.value
-															? languages.find(
-																(language) => language.value === field.value
-															)?.label
-															: "Select language"}
-														<RxCaretSort className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-													</Button>
-												</FormControl>
-											</PopoverTrigger>
-											<PopoverContent className="w-[300px] p-0">
-												<Command>
-													<CommandInput
-														placeholder="Search framework..."
-														className="h-9"
-													/>
-													<CommandEmpty>No framework found.</CommandEmpty>
-													<CommandGroup>
-														<CommandList>
-															{languages.map((language) => (
-																<CommandItem
-																	value={language.label}
-																	key={language.value}
-																	onSelect={() => {
-																		form.setValue("municipio", language.value)
-																	}}
-																>
-																	{language.label}
-																	<RxCheck
-																		className={cn(
-																			"ml-auto h-4 w-4",
-																			language.value === field.value
-																				? "opacity-100"
-																				: "opacity-0"
-																		)}
-																	/>
-																</CommandItem>
-															))}
-														</CommandList>
-													</CommandGroup>
-												</Command>
-											</PopoverContent>
-										</Popover>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
+					{/* Input Direccion */}
+					<div className="col-span-6 sm:col-span-4">
+						<FormField
+							control={form.control}
+							name="direccion"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Direccion</FormLabel>
+									<FormControl>
+										<Input type="text" autoComplete="false" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 
-						{/* Input Direccion */}
-						<div className="col-span-6 sm:col-span-4">
-							<FormField
-								control={form.control}
-								name="direccion"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Direccion</FormLabel>
-										<FormControl>
-											<Input type="text" autoComplete="false" {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-
-						<div className="col-span-6 flex justify-end">
-							<Button type="submit">Siguiente</Button>
-						</div>
-					</form>
-				</Form>
-			</div>
-
-			{/* {
-				JSON.stringify(form)
-			} */}
-		</div>
+					<div className="col-span-6 flex justify-end">
+						<Button type="submit">Siguiente</Button>
+					</div>
+				</form>
+			</Form>
+		</FormularioGrid>
 	);
 }

@@ -3,24 +3,24 @@ import bcryptjs from 'bcryptjs';
 interface SeedUser {
     email: string;
     password: string;
-    rol: 'estudiante' | 'tutor' | 'coordinador' | 'empresa' | 'director';
+    rol: 'ESTUDIANTE' | 'TUTOR_PRACTICAS' | 'COORDINADOR' | 'EMPRESA' | 'DIRECTOR_PROGRAMA';
 }
 
 interface SeedData {
-    users: SeedUser[];
+    usuarios: SeedUser[];
 }
 
 export const initialData: SeedData = {
-    users: [
+    usuarios: [
         {
             email: 'cristiancamilojv@ufps.edu.co',
             password: bcryptjs.hashSync('123456'),
-            rol: 'estudiante'
+            rol: 'ESTUDIANTE'
         },
         {
             email: 'jesionomarfort@ufps.edu.co',
             password: bcryptjs.hashSync('123456'),
-            rol: 'coordinador'
+            rol: 'COORDINADOR'
         }
     ]
 }

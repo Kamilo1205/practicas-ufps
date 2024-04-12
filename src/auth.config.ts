@@ -5,12 +5,12 @@ import bcryptjs from 'bcryptjs';
 
 import prisma from './lib/prisma';
 import { LoginSchema } from './schemas';
-import { UserRol } from '@prisma/client';
+import { Rol } from '@prisma/client';
 
 export const authConfig: NextAuthConfig = {
-  session: { strategy: "jwt" },
   pages: {
     signIn: '/login',
+    error: '/login'
   },
   providers: [
     GoogleProvider({
@@ -22,28 +22,33 @@ export const authConfig: NextAuthConfig = {
         const parsedCredentials = LoginSchema.safeParse(credentials); 
         
         if ( !parsedCredentials.success ) {
-          throw new Error("Las credenciales proporcionadas son inválidas.");
+          throw new Error('Las credenciales proporcionadas son inválidas.');
         };
         const { email, password } = parsedCredentials.data;
         
         //Buscar el correo
-        const user = await prisma.user.findUnique({ where: { email: email.toLowerCase() }});
-        if ( !user ) {
-          throw new Error("El correo electrónico proporcionado no está asociado con ninguna cuenta.");
+        const usuario = await prisma.usuario.findUnique({ where: { email: email.toLowerCase() }});
+        if ( !usuario ) {
+          throw new Error('El correo electrónico proporcionado no está asociado con ninguna cuenta.');
         };
 
-        if ( !user.password ) {
-          throw new Error("Tu cuenta no tiene una contraseña configurada. Por favor, utiliza un método de inicio de sesión alternativo.");
+        if ( !usuario.password ) {
+          throw new Error('Tu cuenta no tiene una contraseña configurada. Por favor, utiliza un método de inicio de sesión alternativo.');
         };
         
         // Comparar las contraseñas
-        if ( !bcryptjs.compareSync( password, user.password ) ) {
-          throw new Error("La contraseña proporcionada es incorrecta. Por favor, verifica tu contraseña e inténtalo de nuevo.");
+        if ( !bcryptjs.compareSync( password, usuario.password ) ) {
+          throw new Error('La contraseña proporcionada es incorrecta. Por favor, verifica tu contraseña e inténtalo de nuevo.');
         };
 
         // Regresar el usaurio sin el password
-        const { password: _, ...rest } = user;
-        return rest;
+        const { password: _, ...rest } = usuario;
+        return {
+          id: rest.id,
+          image: rest.imagen,
+          email: rest.email,
+          role: rest.rol,
+        };
       },
     })
   ],
@@ -52,27 +57,21 @@ export const authConfig: NextAuthConfig = {
       if ( account?.provider === 'credentials' ) return true;
       
       if ( !user || !user?.email ) {
-        throw new Error("El usuario no tiene un correo electrónico asociado o el usuario es inválido.");
+        throw new Error('El usuario no tiene un correo electrónico asociado o el usuario es inválido.');
       };
-      const userDB = await prisma.user.findUnique({ where: { email: user?.email?.toLowerCase() }});
+      const usuario = await prisma.usuario.findUnique({ where: { email: user?.email?.toLowerCase() }});
 
-      if ( !userDB ) {
-        throw new Error("El correo electrónico proporcionado no está asociado con ninguna cuenta.");
+      if ( !usuario ) {
+        throw new Error('El correo electrónico proporcionado no está asociado con ninguna cuenta.');
       };
 
-      if (!userDB?.image && user.image) {
+      if ( !usuario?.imagen && user.image || usuario?.imagen && user.image && usuario?.imagen !== user.image ) {
         // Si no hay una imagen en la base de datos pero hay una nueva imagen proporcionada, actualizarla
-        await prisma.user.update({
-          data: { image: user.image },
-          where: { id: userDB.id }
+        await prisma.usuario.update({
+          data: { imagen: user.image },
+          where: { id: usuario.id }
         });
-      } else if (userDB?.image && user.image && userDB?.image !== user.image) {
-        // Si hay una imagen en la base de datos y también una nueva imagen proporcionada, y son diferentes, actualizarla
-        await prisma.user.update({
-          data: { image: user.image },
-          where: { id: userDB.id }
-        });
-      }
+      } 
       
       return true;
     },
@@ -80,12 +79,12 @@ export const authConfig: NextAuthConfig = {
       return baseUrl;
     },
     async session({ session, user, token }) {
-      if (token.sub && session.user) {
-        session.user.id = token.sub;
+      if (token.id && session.user) {
+        session.user.id = token.id;
       }
 
       if (token.role && session.user) {
-        session.user.role = token.role as UserRol;
+        session.user.role = token.role as Rol;
       }
 
       if (session.user) {
@@ -98,13 +97,12 @@ export const authConfig: NextAuthConfig = {
     async jwt({ token, user, account, profile, isNewUser }) {
 
       if ( !token.sub ) return token;
-      const userDB = await prisma.user.findUnique({ where: { id: token.sub }});
+      const usuario = await prisma.usuario.findUnique({ where: { email: token.email }});
 
-      if (!userDB) return token;
+      if (!usuario) return token;
 
-      token.email = userDB.email;
-      token.role = userDB.role;
-
+      token.role = usuario.rol;
+      token.id = usuario.id;
       return token;
     }
   },

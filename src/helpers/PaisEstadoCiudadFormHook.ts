@@ -7,7 +7,6 @@ const getListaDePaises = async () => {
     return {
       key: pais.id,
       value: pais.nombre,
-
     }
   })
 }

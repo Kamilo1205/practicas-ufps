@@ -68,7 +68,7 @@ export const guardarDatosEmpresa = async (data: EmpresaData): Promise<Empresa> =
   return actualizarDatos
 }
 
-//TODO: Implementar la función de guardarArchivo
+//TODO: Cambiar el tipo de dato de file a File.
 export const guardarArchivoEmpresa = async (file:any, nombre: string, nombreDeCarpeta:string): Promise<string> => { 
   const archivo = file 
   console.log('guardarArchivo', nombre)
@@ -87,7 +87,6 @@ export const guardarArchivoEmpresa = async (file:any, nombre: string, nombreDeCa
     
     const path = join(process.cwd(), 'temp', nombre)
     const ruta = join(__dirname, `temp/${nombre}`)
-console.log("AHHHH",ruta)
     await writeFile(ruta, Buffer.from(archivo,'base64url'))  
     //TODO: Recibir el path y guardarlo en Google Drive.
     const url = await guardarArchivoEnDrive(nombreDeCarpeta,nombre,path,"empresas")

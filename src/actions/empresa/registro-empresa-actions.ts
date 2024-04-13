@@ -69,7 +69,7 @@ export const guardarDatosEmpresa = async (data: EmpresaData): Promise<Empresa> =
 }
 
 //TODO: Implementar la función de guardarArchivo
-export const guardarArchivoEmpresa = async (file: string, nombre: string, nombreDeCarpeta:string): Promise<string> => { 
+export const guardarArchivoEmpresa = async (file:any, nombre: string, nombreDeCarpeta:string): Promise<string> => { 
   const archivo = file 
   console.log('guardarArchivo', nombre)
   
@@ -135,3 +135,39 @@ console.log("AHHHH",ruta)
   // write the ArrayBuffer to a blob, and you're done
   const blob = new Blob([ab], { type: mineString });
  */
+
+
+  /**
+   * const archivo = file 
+  console.log('guardarArchivo', nombre)
+  
+  try{
+    if (file === null || file === undefined || file === '') {
+      throw new Error('No se ha encontrado un archivo')
+    }
+    const srcToFile= (src:string, fileName:string, mimeType:string) =>{
+      return (fetch(src)
+        .then(function (res) { return res.arrayBuffer(); })
+
+      );
+    }
+    const archivoB = await srcToFile(file, nombre, 'application/pdf')
+    
+    const path = join(process.cwd(), 'temp', nombre)
+    const ruta = join(__dirname, `temp/${nombre}`)
+console.log("AHHHH",ruta)
+    await writeFile(ruta, Buffer.from(archivo,'base64url'))  
+    //TODO: Recibir el path y guardarlo en Google Drive.
+    const url = await guardarArchivoEnDrive(nombreDeCarpeta,nombre,path,"empresas")
+    console.log('Archivo guardado correctamente', archivoB)
+    //TODO: Esto no está borrando na.
+    //await unlink(path) //Borra los archivos al finalizar.
+    console.log('Archivo borrado correctamente')
+    return url
+  } catch (error) {
+    console.log('Error al guardar el archivo', error)
+  }
+  
+
+  return `https://www.example.com/${nombre}.pdf`
+   */

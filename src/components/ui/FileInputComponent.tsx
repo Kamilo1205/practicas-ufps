@@ -8,11 +8,11 @@ export const FileInputComponent = ({ field, onChange }: any) => {
     console.log("FILE INPUT: ", e.target.files[0])
     const file = e.target.files[0]
     const { name } = file
-
+    //console.log(file)
     if (file) {
       const reader = new FileReader()
       reader.onload = (e) => {
-        console.log(`${name}: `, e.target?.result)
+        //console.log(`${name}: `, e.target?.result)
         //onFileInput(e.target?.result)
         onChange(e.target?.result)
       }

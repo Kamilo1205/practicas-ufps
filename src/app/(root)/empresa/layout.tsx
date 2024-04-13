@@ -2,20 +2,20 @@ import { auth } from "@/auth.config";
 import { redirect } from "next/navigation";
 
 
-export default function EmpresaLayout({
+export default async function EmpresaLayout({
     children
 }: {
     children: React.ReactNode;
 }) {
-    const session = auth();
-
+    const session = await auth();
+/*
     if ( session?.user?.role !== 'EMPRESA' ) {
         redirect('/');
     }
-
+*/
     return (
         <div>
-            <h1>Hello Root Layout Empresa</h1>
+          {children}
         </div>
     );
 }

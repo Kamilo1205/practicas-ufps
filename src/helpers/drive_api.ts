@@ -38,7 +38,7 @@ const autorizar = async () => {
  * @throws Error si no se puede crear la carpeta.
  * @returns {Promise<string>} Id del archivo creado.
  */
-const uploadeFile = async (authClient: JWT,folderName:string, fileName:string,pathc:string, parentFolder:FolderKey) => { 
+const uploadeFile = async (authClient: JWT,folderName:string, fileName:string,file:File, parentFolder:FolderKey) => { 
   const drive = google.drive({ version: 'v3', auth: authClient });
   
   //TODO: Cambiar esto por un archivo real.
@@ -46,7 +46,7 @@ const uploadeFile = async (authClient: JWT,folderName:string, fileName:string,pa
   //console.log('Ruta:', pathc) 
   const media = {
     mimeType: 'application/pdf',
-    body: createReadStream(ruta)
+    body: file
   }
 
   try {
@@ -109,10 +109,10 @@ const createFolder = async (authClient: JWT, folderName: string, parentFolder: F
  * @param parentFolder Carpeta donde se encuentra la carpeta donde se guardará el archivo.
  * @returns {string} URL del archivo guardado.
  */
-export const guardarArchivoEnDrive = async (folderName: string, fileName: string, path:string,parentFolder:FolderKey): Promise<string> => { 
+export const guardarArchivoEnDrive = async (folderName: string, fileName: string, file:File,parentFolder:FolderKey): Promise<string> => { 
   //TODO: Ahora toca guardar los arhivos guardados en la carpeta temp en Google Drive.
   const id =  await (autorizar()
-    .then((auth)=>uploadeFile(auth,folderName,fileName,path,parentFolder))
+    .then((auth)=>uploadeFile(auth,folderName,fileName,file,parentFolder))
     .catch(console.error))
   
   if (!id) {

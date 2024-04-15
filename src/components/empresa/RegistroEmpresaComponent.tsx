@@ -3,13 +3,15 @@ import { useState } from "react"
 import { DatosEmpresaForm } from "./DatosEmpresaForm"
 import { DatosRepresentanteLegal } from "./DatosRepresentanteLegal"
 import { Button } from "../ui/button"
+import { DatosConvenio } from "./DatosConvenio"
 
 
 export const RegistroEmpresaComponent = () => { 
-  const [stage, setStage] = useState(1)
+  const [stage, setStage] = useState(2)
 
   const nextStage = () => {
     { /* //TODO: Controlar el max next. */ }
+    if (stage === 3) return;
     setStage(stage + 1)
   }
 
@@ -49,8 +51,13 @@ export const RegistroEmpresaComponent = () => {
       <div className="flex flex-col">
         {
           stage === 1 ? <DatosEmpresaForm setStage={nextStage} /> :
-            stage === 2 ? <DatosRepresentanteLegal /> :
-              <DatosRepresentanteLegal />
+            stage === 2 ? <DatosRepresentanteLegal
+              nextStage={nextStage}
+              backStage={backStage}
+            /> :
+              <DatosConvenio
+                backStage={backStage}
+              />
         }
     
 

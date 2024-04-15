@@ -1,4 +1,5 @@
 import { auth } from "@/auth.config";
+import { SideBar } from "@/components/empresa/SideBar";
 import { redirect } from "next/navigation";
 
 
@@ -13,8 +14,10 @@ export default async function EmpresaLayout({
         redirect('/');
     }
 */
-    return (
-        <div>
+  return (
+     
+    <div>
+      
           {children}
         </div>
     );

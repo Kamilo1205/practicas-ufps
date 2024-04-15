@@ -69,32 +69,22 @@ export const guardarDatosEmpresa = async (data: EmpresaData): Promise<Empresa> =
 }
 
 //TODO: Cambiar el tipo de dato de file a File.
-export const guardarArchivoEmpresa = async (file:any, nombre: string, nombreDeCarpeta:string): Promise<string> => { 
-  const archivo = file 
+export const guardarArchivoEmpresa = async (file:File, nombre: string, nombreDeCarpeta:string): Promise<string> => { 
+  //const archivo = file 
   console.log('guardarArchivo', nombre)
   
   try{
-    if (file === null || file === undefined || file === '') {
+    if (!file ) {
       throw new Error('No se ha encontrado un archivo')
     }
-    const srcToFile= (src:string, fileName:string, mimeType:string) =>{
-      return (fetch(src)
-        .then(function (res) { return res.arrayBuffer(); })
-
-      );
-    }
-    const archivoB = await srcToFile(file, nombre, 'application/pdf')
     
-    const path = join(process.cwd(), 'temp', nombre)
-    const ruta = join(__dirname, `temp/${nombre}`)
-    await writeFile(ruta, Buffer.from(archivo,'base64url'))  
     //TODO: Recibir el path y guardarlo en Google Drive.
-    const url = await guardarArchivoEnDrive(nombreDeCarpeta,nombre,path,"empresas")
-    console.log('Archivo guardado correctamente', archivoB)
+    //const url = await guardarArchivoEnDrive(nombreDeCarpeta,nombre,file,"empresas")
+    //console.log('Archivo guardado correctamente',url)
     //TODO: Esto no está borrando na.
     //await unlink(path) //Borra los archivos al finalizar.
     console.log('Archivo borrado correctamente')
-    return url
+    //return url
   } catch (error) {
     console.log('Error al guardar el archivo', error)
   }

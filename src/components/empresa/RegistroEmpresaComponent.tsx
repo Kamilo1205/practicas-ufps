@@ -2,7 +2,6 @@
 import { useState } from "react"
 import { DatosEmpresaForm } from "./DatosEmpresaForm"
 import { DatosRepresentanteLegal } from "./DatosRepresentanteLegal"
-import { Button } from "../ui/button"
 import { DatosConvenio } from "./DatosConvenio"
 
 

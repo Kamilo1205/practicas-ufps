@@ -1,17 +1,24 @@
 'use client'
 
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useState } from "react"
 
-const valores = [
-  { nombre: 'Empresa', url: '#' },
-  { nombre: 'Solicitud de practicantes', url: '#' },
-  { nombre: 'Registro de tutores', url: '#' },
-  { nombre: 'Contact', url: '#' }
+interface item  {
+  nombre: string
+  url: string
+}
 
-]
+interface Props  {
+  valores: item[],
+}
 
-export const SideBar = () => { 
-  const [open,setOpen] = useState(false)
+export const SideBar = ({ valores }: Props) => {
+  
+  const pathname = usePathname()
+  console.log(pathname)
+  const [open, setOpen] = useState(false)
+
   return (
    
 //<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
@@ -27,16 +34,16 @@ export const SideBar = () => {
       </button>
     </div>
         <nav className={`${open ? 'block' : 'hidden'} flex-grow md:block px-4 pb-4 md:pb-0 md:overflow-y-auto`} >
-      <a className="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-gray-200 rounded-lg dark-mode:bg-gray-700 dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Blog</a>
           {
             valores.map(({nombre,url}) => { 
               return (
-                <a key={nombre} className="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href={url}>{ nombre}</a>
+                pathname === url ?
+                  <Link  key={nombre} className="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-gray-200 rounded-lg dark-mode:bg-gray-700 dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href={url}>{ nombre}</Link>
+                :
+                  <Link  key={nombre} className="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href={url}>{ nombre}</Link>
               )
             })
       }
-      
-      
     </nav>
   </div>
 </div>

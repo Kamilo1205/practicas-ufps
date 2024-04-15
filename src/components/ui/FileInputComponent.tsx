@@ -10,13 +10,14 @@ export const FileInputComponent = ({ field, onChange }: any) => {
     const { name } = file
     //console.log(file)
     if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
+      onChange(file)
+      //const reader = new FileReader()
+      /*reader.onload = (e) => {
         //console.log(`${name}: `, e.target?.result)
         //onFileInput(e.target?.result)
         onChange(e.target?.result)
-      }
-      reader.readAsDataURL(file)
+      }*/
+      //reader.readAsDataURL(file)
     }
   }
   return (

@@ -31,14 +31,12 @@ export const DatosEmpresaSchema = z.object({
     required_error: 'El departamento es requerido',
     invalid_type_error: 'El departamento ingresado no es valido'
   }),
-  rut: z.string({
-    required_error: 'El RUT es requerido',
-    invalid_type_error: 'El RUT ingresado no es valido'
-  }).includes('application/pdf', { message: 'El archivo debe ser un PDF' }),
-  camaraComercio: z.string({
-    required_error: 'La camara de comercio es requerida',
-    invalid_type_error: 'El email ingresado no es valido'
-  }).includes('application/pdf',{ message:'El archivo debe ser un PDF'}),
+  rut: z.any().
+    refine(file => file?.type === 'application/pdf', { message: 'El archivo debe ser un PDF' })
+    .refine((file) => file, 'Debe adjuntar un archivo'),
+  camaraComercio: z.any().
+    refine(file => file?.type === 'application/pdf', { message: 'El archivo debe ser un PDF' })
+    .refine((file) => file, 'Debe adjuntar un archivo'),
   email: z.string({
     required_error: 'El email es requerido',
     invalid_type_error: 'El email ingresado no es valido'
@@ -49,6 +47,13 @@ export const DatosEmpresaSchema = z.object({
 //TODO: Pedir feedback del formulario para saber si está correcto.
 
 /**
+ * 
+ *  camaraComercio: z.string({
+    required_error: 'La camara de comercio es requerida',
+    invalid_type_error: 'El email ingresado no es valido'
+  }).includes('application/pdf',{ message:'El archivo debe ser un PDF'}),
+
+
  *   camaraComercio: z.any()
     .refine((file) => file?.length !==0, 'Debe adjuntar un archivo'),
  */

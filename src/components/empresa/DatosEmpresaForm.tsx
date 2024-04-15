@@ -53,16 +53,17 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
     try {
       setLoading(true)
       const formData = form.getValues()
+      console.log('Errores ', form.formState.errors)
       
       if (JSON.stringify(form.formState.errors) !== '{}' || !verificarValoresJSON(formData)) {
         return setLoading(false);
       }
-      //console.log('onSubmit',form.getValues())
+      console.log('onSubmit',form.getValues())
       const nombreCarpeta = `${formData.nit}-${formData.nombre}`
  
       //Guardamos primero los archivos.
-      const camaraDeComercioUrl = await guardarArchivoEmpresa(formData.camaraComercio, `${formData.nit}-camaraComercio.pdf`, nombreCarpeta)
-      const RUTUrl = await guardarArchivoEmpresa(formData.rut,`${formData.nit}-rut.pdf`,nombreCarpeta)
+      //const camaraDeComercioUrl = await guardarArchivoEmpresa(formData.camaraComercio, `${formData.nit}-camaraComercio.pdf`, nombreCarpeta)
+      //const RUTUrl = await guardarArchivoEmpresa(formData.rut,`${formData.nit}-rut.pdf`,nombreCarpeta)
       
       const empresa = {
         id: EMPRESA_ID,
@@ -74,12 +75,12 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
         departamento: formData.departamento,
         municipio: formData.municipio,
         email: formData.email,
-        camaraComercio: camaraDeComercioUrl,
-        RUTUrl
+        //camaraComercio: camaraDeComercioUrl,
+       // RUTUrl
 
       }
 
-      await guardarDatosEmpresa(empresa) 
+      //await guardarDatosEmpresa(empresa) 
       setStage()
       console.log('Datos de la empresa guardados correctamente')
 
@@ -248,7 +249,7 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
                     <FormControl>
                       <Input type="text" autoComplete="false" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage  />
                   </FormItem>
                 )}
               />
@@ -278,7 +279,7 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
               control={form.control}
               name="rut"
               render={({ field }) => (
-                <FormItem>
+                <FormItem >
                   <FormLabel>RUT</FormLabel>
                   <FormControl>
                     <FileInputComponent field={field} onChange={field.onChange} />
@@ -294,9 +295,9 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
                 <div className="flex justify-center items-center space-x-1 text-sm text-white-700">
 
                   <svg fill='none' className="w-6 h-6 animate-spin" viewBox="0 0 32 32" xmlns='http://www.w3.org/2000/svg'>
-                    <path clip-rule='evenodd'
+                    <path clipRule='evenodd'
                       d='M15.165 8.53a.5.5 0 01-.404.58A7 7 0 1023 16a.5.5 0 011 0 8 8 0 11-9.416-7.874.5.5 0 01.58.404z'
-                      fill='currentColor' fill-rule='evenodd' />
+                      fill='currentColor' fillRule='evenodd' />
                   </svg>
 
 

@@ -4,16 +4,31 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { z } from "zod"
 import { Input } from "../ui/input"
 import { DatosRepresentanteLegalSchema } from "@/schemas/DatosRepresentanteLegalScheme"
-import { FileInputComponent } from "../ui/FileInputComponent"
 import { LabelConInfo } from "../ui/LabelConInfo"
+import { Button } from "../ui/button"
 
 
-export const DatosRepresentanteLegal = () => { 
+interface Props {
+  nextStage: () => void
+  backStage: () => void
+}
 
+export const DatosRepresentanteLegal = ({nextStage,backStage}:Props) => { 
+  const loading = false
+  
   const form = useForm<z.infer<typeof DatosRepresentanteLegalSchema>>({
     mode: 'onBlur',
     resolver: zodResolver(DatosRepresentanteLegalSchema)
   })
+  const onSubmit = (e: any) => {
+    'use client'
+    console.log('submit')
+    e.preventDefault()
+    console.log(e.target.value)
+    console.log(form.getValues())
+    nextStage()
+  }
+
     return (
         <div>
        
@@ -90,6 +105,32 @@ export const DatosRepresentanteLegal = () => {
                   )}
                 />
               </div>
+              <div
+                className="flex flex-row justify-between"
+              >
+                <Button
+                  onClick={backStage}
+                  className="self-end"
+                >Atras</Button>
+                <Button onClick={onSubmit} className={`self-end`} disabled={loading}>
+                  {
+                    loading ? <div className="flex items-center justify-center w-full h-full">
+                      <div className="flex justify-center items-center space-x-1 text-sm text-white-700">
+
+                        <svg fill='none' className="w-6 h-6 animate-spin" viewBox="0 0 32 32" xmlns='http://www.w3.org/2000/svg'>
+                          <path clipRule='evenodd'
+                            d='M15.165 8.53a.5.5 0 01-.404.58A7 7 0 1023 16a.5.5 0 011 0 8 8 0 11-9.416-7.874.5.5 0 01.58.404z'
+                            fill='currentColor' fillRule='evenodd' />
+                        </svg>
+
+
+                        <div>Enviando...</div>
+                      </div>
+                    </div>
+                      : 'Enviar'
+                  }</Button>
+              </div>
+              
             </form>
           </Form>
           </div>

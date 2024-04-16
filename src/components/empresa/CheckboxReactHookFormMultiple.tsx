@@ -32,7 +32,7 @@ interface Props {
 
 const FormSchema = z.object({
   items: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "You have to select at least one item.",
+    message: "Debe seleccionar al menos una opción.",
   }),
 })
 
@@ -40,7 +40,7 @@ export function CheckboxReactHookFormMultiple({items,title,description}:Props) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      items: ["recents", "home"],
+      items: [],
     },
   })
 

@@ -4,7 +4,7 @@ const valores = [
   { nombre: 'Empresa', url: '/empresa' },
   { nombre: 'Solicitud de practicantes', url: '/empresa/practicantes' },
   { nombre: 'Registro de tutores', url: '/empresa/tutores' },
-  { nombre: 'Contact', url: '#' }
+
 
 ]
 

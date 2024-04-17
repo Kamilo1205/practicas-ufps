@@ -9,7 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useState } from "react"
 import { FileInputComponent } from "../ui/FileInputComponent"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import {  MdOutlineWarning, MdWarning } from "react-icons/md"
+import {  MdOutlineWarning } from "react-icons/md"
 
 
 interface Props { 

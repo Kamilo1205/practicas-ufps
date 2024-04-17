@@ -29,6 +29,8 @@ interface Props {
   title: string
   description: string,
   independent?: boolean
+  seleccionar: (item: item) => void
+  quitar: (item: item) => void
 }
 
 const FormSchema = z.object({
@@ -37,7 +39,7 @@ const FormSchema = z.object({
   }),
 })
 
-export function CheckboxReactHookFormMultiple({items,title,description,independent=false}:Props) {
+export function CheckboxReactHookFormMultiple({items,title,description,independent=false,seleccionar,quitar}:Props) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -46,6 +48,7 @@ export function CheckboxReactHookFormMultiple({items,title,description,independe
   })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log(data)
     toast({
       title: "You submitted the following values:",
       description: (
@@ -85,6 +88,7 @@ export function CheckboxReactHookFormMultiple({items,title,description,independe
                           <Checkbox
                             checked={field.value?.includes(item.id)}
                             onCheckedChange={(checked) => {
+                              checked ? seleccionar(item) : quitar(item)
                               return checked
                                 ? field.onChange([...field.value, item.id])
                                 : field.onChange(

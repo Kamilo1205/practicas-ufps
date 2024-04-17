@@ -30,14 +30,34 @@ const items = [
     label: "Inteligencia Artificial.",
   }
 ] 
+interface Opcion {
+  id: string
+  label: string
 
+}
 
+interface Props { 
+  perfil: Opcion[]
+  setPerfil: (perfil: Opcion[]) => void
+}
 
-export const PerfilSolicitudComponent = () => { 
+export const PerfilSolicitudComponent = ({perfil, setPerfil}:Props) => { 
+
+  const agregarPerfil = (opcion: Opcion) => { 
+    if(perfil.find((o) => o.id === opcion.id)) return
+    setPerfil([...perfil, opcion])
+  }
+
+  const quitarPerfil = (opcion: Opcion) => {
+    setPerfil(perfil.filter((o) => o.id !== opcion.id))
+  }
 
   return (
     <CheckboxReactHookFormMultiple items={items}
       title="Perfil del practicante"
-      description="Seleccione entre las siguientes habilidades, aquellas que se acoplen al perfil de practicante que está solicitando." />
+      description="Seleccione entre las siguientes habilidades, aquellas que se acoplen al perfil de practicante que está solicitando."
+      seleccionar={agregarPerfil}
+      quitar={quitarPerfil}
+    />
   )
 }

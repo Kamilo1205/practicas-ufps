@@ -270,6 +270,138 @@ export const getSkills = async () => {
     {
       id: 67,
       name:"Express"
+    },
+    {
+      id: 68,
+      name:"Nodejs"
+    },
+    {
+      id: 69,
+      name:"Django"
+    },
+    {
+      id: 70,
+      name:"Flask"
+    },
+    {
+      id: 71,
+      name:"Laravel"
+    },
+    {
+      id: 72,
+      name:"Symfony"
+    },
+    {
+      id: 73,
+      name:"Ruby on Rails"
+    },
+    {
+      id: 74,
+      name:"ASP.NET"
+    },
+    {
+      id: 75,
+      name:"Vue.js"
+    },
+    {
+      id: 76,
+      name:"React.js"
+    },
+    {
+      id: 77,
+      name:"Angular"
+    },
+    {
+      id: 78,
+      name:"Svelte"
+    },
+    {
+      id: 79,
+      name:"Next.js"
+    },
+    {
+      id: 80,
+      name:"Nuxt.js"
+    },
+    {
+      id: 81,
+      name:"Sapper"
+    },
+    {
+      id: 82,
+      name:"Blitz"
+    },
+    {
+      id: 83,
+      name:"Redwood"
+    },
+    {
+      id: 84,
+      name:"Solid"
+    },
+    {
+      id: 85,
+      name:"Astro"
+    },
+    {
+      id: 86,
+      name:"SvelteKit"
+    },
+    {
+      id: 87,
+      name:"Vite"
+    },
+    {
+      id: 88,
+      name:"Snowpack"
+    },
+    {
+      id: 89,
+      name:"Parcel"
+    },
+    {
+      id: 90,
+      name:"Webpack"
+    },
+    {
+      id: 91,
+      name:"Rollup"
+    },
+    {
+      id: 92,
+      name:"Gulp"
+    },
+    {
+      id: 93,
+      name:"Grunt"
+    },
+    {
+      id: 94,
+      name:"Babel"
+    },
+    {
+      id: 95,
+      name:"TypeScript"
+    },
+    {
+      id: 96,
+      name:"JavaScript"
+    },
+    {
+      id: 97,
+      name:"HTML"
+    },
+    {
+      id: 98,
+      name:"CSS"
+    },
+    {
+      id: 99,
+      name:"SCSS"
+    },
+    {
+      id: 100,
+      name: "SASS"
     }
 
   ])

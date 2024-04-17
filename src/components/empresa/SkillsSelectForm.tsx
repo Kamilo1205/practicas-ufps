@@ -3,8 +3,8 @@
 import { useState } from "react"
 import { Autocomplete } from "../ui/Autocomplete"
 import { PerfilSolicitudComponent } from "./PerfilSolicitudComponent"
-import { sk } from "date-fns/locale"
 import { TagComponent } from "../ui/Tag"
+import { Checkbox } from "@/components/ui/checkbox"
 
 
 interface Skill {
@@ -21,6 +21,7 @@ export const SkillsSelectForm = ({skills}:Props) => {
   const [skillsSeleccionados, setSkillsSeleccionados] = useState<Skill[]>([])
 
   const agregarSkill = (skill: Skill) => {
+    if(skillsSeleccionados.find((s) => s.id === skill.id)) return
     setSkillsSeleccionados([...skillsSeleccionados, skill])
   }
 
@@ -28,14 +29,19 @@ export const SkillsSelectForm = ({skills}:Props) => {
     setSkillsSeleccionados(skillsSeleccionados.filter((s) => s.id !== skill.id))
   }
 
+  const onSubmit = () => {
+   console.log(skillsSeleccionados) 
+  }
+
   return (<>
     <div className="mt-5">
+      { /*//TODO: Adaptar el componente para recivir un valor y modificiarlo. */ }
       <PerfilSolicitudComponent />
 
-      
+      <h2 className="mt-5">Puede especificar que habilidad o herramienta está buscando en el practicante.</h2>
+
       <Autocomplete choices={skills} setValue={agregarSkill} />
-      <h2 className="text-lg font-semibold text-gray-800 mt-5">Skills seleccionados</h2>
-      <div className="flex">
+      <div className="flex max-w-2xl flex-wrap">
 
         {
           skillsSeleccionados.map(
@@ -44,6 +50,16 @@ export const SkillsSelectForm = ({skills}:Props) => {
         }
       </div>
 
+      <div className="flex items-center space-x-2 mb-4 mt-5">
+        <Checkbox />
+        <label
+          htmlFor="terms"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          ¿El practicante recibirá algún tipo de incentivo economico (auxilio de trasporte, comisión u otros)?
+        </label>
+      </div>
+      <button className="bg-black text-white px-4 py-2 rounded mt-5" onClick={onSubmit}>Guardar</button>
     </div>
   </>)
 }

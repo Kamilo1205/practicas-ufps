@@ -1,4 +1,5 @@
-//'use client'
+'use client'
+
 import { z } from "zod"
 import { Button } from "../ui/button"
 import { Form } from "../ui/form"

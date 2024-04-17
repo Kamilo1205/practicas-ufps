@@ -25,10 +25,6 @@ export const SoliciutudPracticantes = async() => {
         <h1 className="text-2xl font-semibold text-gray-800">Solicitud de practicantes</h1> 
         <SkillsSelectForm skills={skills} />
       </div>
-      
-
-
-
     </SideBarLayout>
   )
 }

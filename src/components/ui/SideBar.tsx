@@ -11,9 +11,10 @@ interface item  {
 
 interface Props  {
   valores: item[],
+  titulo: string
 }
 
-export const SideBar = ({ valores }: Props) => {
+export const SideBar = ({ valores, titulo }: Props) => {
   
   const pathname = usePathname()
   console.log(pathname)
@@ -25,7 +26,7 @@ export const SideBar = ({ valores }: Props) => {
 <div className="md:flex flex-col md:flex-row md:min-h-screen w-full">
   <div  className="flex flex-col w-full md:w-64 text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800 flex-shrink-0" x-data="{ open: false }">
     <div className="flex-shrink-0 px-8 py-4 flex flex-row items-center justify-between">
-          <a href="/empresa" className={`${!open ? 'hidden':''} md:block text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline`}>Empresa</a>
+          <a href={valores[0].url} className={`${!open ? 'hidden':''} md:block text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline`}>{titulo}</a>
       <button className="rounded-lg md:hidden focus:outline-none focus:shadow-outline" onClick={()=>setOpen(!open)}>
             <svg fill="currentColor" viewBox="0 0 20 20" className="w-6 h-6">
               {

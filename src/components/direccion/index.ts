@@ -1,0 +1,3 @@
+
+
+export {RegistroConvenioComponent} from './RegistroConvenios'

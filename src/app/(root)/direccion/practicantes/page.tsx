@@ -8,7 +8,7 @@ export const metadata = {
 export const Page = () => { 
   return (
     <div>
-      <h1>Practicantes</h1>
+      <h1 className="font-semibold text-2xl">Practicantes</h1>
     </div>
   )
 }

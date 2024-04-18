@@ -24,7 +24,7 @@ export const SideBar = ({ valores, titulo }: Props) => {
    
 //<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 <div className="md:flex flex-col md:flex-row md:min-h-screen w-full">
-  <div  className="flex flex-col w-full md:w-64 text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800 flex-shrink-0" x-data="{ open: false }">
+  <div  className="flex flex-col w-full md:w-64 text-gray-700 bg-slate-100 -translate-x-1 rounded-lg dark-mode:text-gray-200 dark-mode:bg-gray-800 flex-shrink-0" x-data="{ open: false }">
     <div className="flex-shrink-0 px-8 py-4 flex flex-row items-center justify-between">
           <a href={valores[0].url} className={`${!open ? 'hidden':''} md:block text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline`}>{titulo}</a>
       <button className="rounded-lg md:hidden focus:outline-none focus:shadow-outline" onClick={()=>setOpen(!open)}>

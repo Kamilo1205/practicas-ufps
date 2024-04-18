@@ -30,7 +30,7 @@ export const DatosTutorEmpresa = () => {
 
       <div className="p-2">
         <Form {...form}>
-          <form className="flex flex-col flex-wrap">
+          <form className="flex flex-col flex-wrap" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-wrap mb-2">
               { /** Nombre del representante legal. */}
               <div className="m-1">
@@ -104,7 +104,7 @@ export const DatosTutorEmpresa = () => {
               className="flex flex-row justify-between"
             >
               
-              <Button onClick={onSubmit} className={`self-end`} disabled={loading}>
+              <Button type="submit" className={`self-end`} disabled={loading}>
                 {
                   loading ? <div className="flex items-center justify-center w-full h-full">
                     <div className="flex justify-center items-center space-x-1 text-sm text-white-700">

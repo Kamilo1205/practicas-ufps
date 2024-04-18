@@ -141,7 +141,10 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Correo</FormLabel>
+                    <FormLabel>
+                      <LabelConInfo label="Correo" info="Este correo será usado para el inicio de sección y comunicación por medio de correos." />
+
+                    </FormLabel>
                     <FormControl>
                       <Input type="email" autoComplete="false" {...field} />
                     </FormControl>
@@ -158,7 +161,7 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel asChild>
-                      <LabelConInfo label="NIT" info="Tenga en cuenta que si el telefono no es de Colombia, debe agregar el código de país. Ejemplo: +1 para Estados Unidos" />
+                      <LabelConInfo label="NIT" info="El NIT debe contener 9 digítos más el digíto de verificación" />
                     </FormLabel>
                     <FormControl>
                       <DigitosInputComponent maxLength={10} value={field.value} setValue={field.onChange} />

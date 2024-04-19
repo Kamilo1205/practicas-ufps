@@ -21,7 +21,7 @@ export const Layout = ({children}:any) => {
       <div className="flex-shrink-0 fixed">
         <SideBar valores={valores} titulo="Dirección" />
       </div>
-      <div className="px-3 pt-5 bg-gray-100 ml-64 w-full">
+      <div className="px-3 pt-5 bg-gray-100 ml-64 w-full h-full">
         {children}
 
       </div>

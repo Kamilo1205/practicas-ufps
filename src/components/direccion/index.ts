@@ -1,3 +1,4 @@
 
 
-export {RegistroConvenioComponent} from './RegistroConvenios'
+export { RegistroConveniosComponent } from './RegistroConvenios'
+export { RegistroNuevoConvenio } from './RegistroNuevoConvenioComponent'

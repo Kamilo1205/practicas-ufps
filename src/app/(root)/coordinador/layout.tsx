@@ -19,9 +19,9 @@ export const Layout = ({children}:any) => {
   return (
     <div className="flex flex-row w-full">
       <div className="flex-shrink-0 fixed">
-        <SideBar valores={valores} titulo="Dirección" />
+        <SideBar valores={valores} titulo="Cordinación" />
       </div>
-      <div className="px-3 pt-5 bg-gray-100 ml-64 w-full h-full">
+      <div className="px-3 pt-5 bg-gray-100 ml-1 md:ml-64 w-full h-full">
         {children}
 
       </div>

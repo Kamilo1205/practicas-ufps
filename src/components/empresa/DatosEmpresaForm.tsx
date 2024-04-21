@@ -100,6 +100,25 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
       <Form {...form} >
         <form className="flex flex-col flex-wrap" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex flex-wrap mb-2">
+            {/* Input NIT */}
+            <div className="flex-1 m-1">
+              <FormField
+                control={form.control}
+                name="nit"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel asChild>
+                      <LabelConInfo label="NIT" info="El NIT deben ser solo números o en formato XXXXXXXXX-X, donde X es un digíto de 0-9" />
+                    </FormLabel>
+                    <FormControl>
+                      { /** //TODO: Componente NIT */}
+                      <Input type="text" autoComplete="false" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             {/* Input Nombre */}
             <div className="m-1">
               <FormField
@@ -153,24 +172,7 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
                 )}
               />
             </div>
-            {/* Input NIT */}
-            <div className="flex-1 m-1">
-              <FormField
-                control={form.control}
-                name="nit"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel asChild>
-                      <LabelConInfo label="NIT" info="El NIT debe contener 9 digítos más el digíto de verificación" />
-                    </FormLabel>
-                    <FormControl>
-                      <DigitosInputComponent maxLength={10} value={field.value} setValue={field.onChange} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            
           </div>
           
           <div className="flex flex-wrap mb-2">
@@ -314,3 +316,7 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
       </div>
   )
 }
+
+
+
+// <DigitosInputComponent maxLength={10} value={field.value} setValue={field.onChange} />

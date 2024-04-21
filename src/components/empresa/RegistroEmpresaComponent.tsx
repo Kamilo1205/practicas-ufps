@@ -6,7 +6,7 @@ import { DatosConvenio } from "./DatosConvenio"
 
 
 export const RegistroEmpresaComponent = () => { 
-  const [stage, setStage] = useState(3)
+  const [stage, setStage] = useState(1)
 
   const nextStage = () => {
     { /* //TODO: Controlar el max next. */ }

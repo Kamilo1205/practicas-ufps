@@ -7,7 +7,18 @@ const valores = [
 },
   {
     nombre: 'Convenios',
-    url: '/direccion/convenios'
+    url: '/direccion/convenios',
+    itemOpen: false,
+    subitems: [
+      {
+        nombre: 'Registrar convenios',
+        url: '/direccion/convenios'
+      },
+      {
+        nombre: 'Convenios registrados',
+        url: '/direccion/convenios/registrados'
+      }
+    ]
   },
   {
     nombre: 'Practicantes',

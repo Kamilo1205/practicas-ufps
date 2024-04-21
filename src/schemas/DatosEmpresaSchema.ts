@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+// Expresión regular para verificar el formato XXXXXXXXX-X
+const formatoEspecifico = /^[0-9]{9}-[0-9]$/;
+// Expresión regular para verificar que solo se ingresen números
+const soloNumeros = /^[0-9]+$/;
+
+
 export const DatosEmpresaSchema = z.object({
   nombre: z.string({
     required_error: 'El nombre de la empresa es requerido',
@@ -17,7 +23,12 @@ export const DatosEmpresaSchema = z.object({
     required_error: 'El NIT es requerido',
     invalid_type_error: 'El NIT ingresado no es valido',
     
-  }).length(10, 'El NIT debe tener 9 digitos y el digito de verificación'),
+  }).refine(
+      (val) => soloNumeros.test(val) || formatoEspecifico.test(val),
+      {
+        message: 'El NIT deben ser solo números o en formato XXXXXXXXX-X',
+      }
+    ),
   pais: z.string({
     required_error: 'El pais es requerido',
     invalid_type_error: 'El pais ingresado no es valido'

@@ -26,12 +26,12 @@ export const DatosTutorEmpresa = () => {
   }
 
   return (
-    <div>
+    <div className="w-full">
 
-      <div className="p-2">
+      <div className="p-2 w-full">
         <Form {...form}>
-          <form className="flex flex-col flex-wrap" onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="flex flex-wrap mb-2">
+          <form className="flex flex-col flex-wrap w-full" onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="flex flex-wrap mb-2 w-full">
               { /** Nombre del representante legal. */}
               <div className="m-1">
                 <FormField

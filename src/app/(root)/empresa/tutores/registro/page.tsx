@@ -1,7 +1,6 @@
 import { DatosTutorEmpresa } from "@/components/empresa"
 import { SideBarLayout } from "../../SidebarLayout"
-import Link from "next/link"
-import { LuArrowLeft } from "react-icons/lu"
+import { CardComponent } from "@/components"
 
 
 export const metadata = {
@@ -12,16 +11,22 @@ export const metadata = {
 export const Page = () => {
   return (
     <SideBarLayout>
-      <div className="flex flex-col w-full">
-
-        <Link href="/empresa/tutores">
-          <button className="">
-            <LuArrowLeft size={'30px'}/>
-          </button>
-        </Link>
-        <h1 className="text-2xl font-semibold text-gray-800">Registro de tutor</h1>
-       <DatosTutorEmpresa />
+      
+      <div className="lg:w-6/12">
+        <CardComponent
+          title="Registro de un tutor"
+          description="Una vez registrado el correo del tutor, este será notificado y podrá acceder al sistema dentro del periodo de practicas actual."
+          cardContent={
+            <div className="flex">
+              <DatosTutorEmpresa />
+            </div>
+          }
+          cardFooter={<></>}
+        />
       </div>
+      
+
+     
     </SideBarLayout>
   )
 

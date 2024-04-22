@@ -11,8 +11,8 @@ import { FileInputComponent } from "../ui/FileInputComponent"
 
 const Formulario = ({form}:any) => { 
   return (
-    <>
-      <div className="flex flex-wrap">
+    <div className="grid grid-cols-1 md:grid-cols-2">
+      
         { /** Nombre del representante legal. */}
         <div className="m-1">
           <FormField
@@ -45,7 +45,7 @@ const Formulario = ({form}:any) => {
             )}
           />
         </div>
-      </div>
+      
 
       { /** Correo del representante legal */}
       <div className="m-1">
@@ -64,7 +64,7 @@ const Formulario = ({form}:any) => {
         />
       </div>
       {/* Input Telefono */}
-      <div className="flex-1 m-1">
+      <div className="m-1">
         <FormField
           control={form.control}
           name="telefono"
@@ -98,7 +98,7 @@ const Formulario = ({form}:any) => {
         />
       </div>
 
-    </> 
+    </div> 
   )
 }
 

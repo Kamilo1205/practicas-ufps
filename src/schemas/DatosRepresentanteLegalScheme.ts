@@ -17,7 +17,7 @@ export const DatosRepresentanteLegalSchema = z.object({
     required_error: 'El telefono del representante legal es requerido',
     invalid_type_error: 'El telefono debe ser una cadena de texto'
   }),
-  documentoFile: z.string().array().nonempty({
-    message: 'El documento identidad es requerido'
-  }),
+  documentoFile: z.any().
+    refine(file => file?.type === 'application/pdf', { message: 'El archivo debe ser un PDF' })
+    .refine((file) => file, 'Debe adjuntar un archivo'),
 })

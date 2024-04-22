@@ -6,7 +6,7 @@ import { DatosConvenio } from "./DatosConvenio"
 
 
 export const RegistroEmpresaComponent = () => { 
-  const [stage, setStage] = useState(1)
+  const [stage, setStage] = useState(2)
 
   const nextStage = () => {
     { /* //TODO: Controlar el max next. */ }
@@ -19,7 +19,7 @@ export const RegistroEmpresaComponent = () => {
     setStage(stage - 1)
   }
   return (
-    <div className="flex px-28 py-10">
+    <div className="flex px-20 py-10">
       <div className="mr-10 w-96 flex flex-col space-y-10">
         <div className={`rounded  p-3 ${stage === 1 && 'bg-red-50'}`}>
           <h2 className="font-semibold">

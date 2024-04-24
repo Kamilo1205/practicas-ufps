@@ -11,7 +11,7 @@ import "primereact/resources/themes/lara-light-cyan/theme.css";
 const items = [
   { label: 'Datos de la empresa' },
   { label: 'Datos del representante legal' },
-  { label: 'Convenio' }
+  { label: 'Solicitud de Convenio' }
 
 ]
 

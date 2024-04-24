@@ -1,16 +1,12 @@
 'use client'
 
-import { z } from "zod"
 import { Button } from "../ui/button"
-import { Form } from "../ui/form"
+
 import { useForm } from "react-hook-form"
-import { DatosRepresentanteLegalSchema } from "@/schemas"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Checkbox } from "@/components/ui/checkbox"
+
 import { useState } from "react"
 import { FileInputComponent } from "../ui/FileInputComponent"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import {  MdOutlineWarning } from "react-icons/md"
+
 import { CardComponent } from "../ui/CardComponent"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Label } from "../ui/label"

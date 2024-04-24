@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import {  useState } from "react"
+import {  useEffect, useState } from "react"
 
 interface item  {
   nombre: string
@@ -46,7 +46,9 @@ export const SideBar = ({ valores, titulo }: Props) => {
   
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
-  const [items, setItems] = useState<BarItem[]>(valores.map((item) => new BarItem(item)))
+  const [items, setItems] = useState<BarItem[]>(
+    valores.map((item) => new BarItem({ ...item, itemOpen: pathname == item.url || item.subitems?.some((subitem) => pathname == subitem.url)}))
+  )
 
   const setItemOpen = (item: BarItem) => { 
     

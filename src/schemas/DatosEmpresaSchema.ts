@@ -21,14 +21,21 @@ export const DatosEmpresaSchema = z.object({
   }).min(1, 'La dirección es requerida'),  
   nit: z.string({
     required_error: 'El NIT es requerido',
-    invalid_type_error: 'El NIT ingresado no es valido',
-    
+    invalid_type_error: 'El NIT ingresado no es valido',   
   }).refine(
       (val) => soloNumeros.test(val) || formatoEspecifico.test(val),
       {
         message: 'El NIT deben ser solo números o en formato XXXXXXXXX-X',
       }
-    ),
+  ),
+  sector: z.string({
+    required_error: 'El sector es requerido',
+  }).refine(
+    (val) => val === 'Privada' || val === 'Publica',
+    {
+      message: 'El sector debe ser Privado o Público',
+    }
+  ),
   pais: z.string({
     required_error: 'El pais es requerido',
     invalid_type_error: 'El pais ingresado no es valido'
@@ -48,10 +55,7 @@ export const DatosEmpresaSchema = z.object({
   camaraComercio: z.any().
     refine(file => file?.type === 'application/pdf', { message: 'El archivo debe ser un PDF' })
     .refine((file) => file, 'Debe adjuntar un archivo'),
-  email: z.string({
-    required_error: 'El email es requerido',
-    invalid_type_error: 'El email ingresado no es valido'
-  }).min(1, 'El email es requerido').email()
+  
   
 })
 

@@ -14,6 +14,8 @@ import { SelectComponent } from "../ui/SelectComponent"
 import { PaisEstadoCiudadFormHook } from "@/helpers/PaisEstadoCiudadFormHook"
 import { Button } from "../ui/button"
 import { Toaster, toast } from "sonner"
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
+import { getSectoresConSubsectores } from "@/helpers/Indutrias"
 
 
 interface Props{
@@ -86,26 +88,46 @@ const DatosGeneralesEmpresa = ({form}:any) => {
           )}
         />
       </div>
-      { /** Correo de la empresa */}
-      <div className="m-1">
+
+      {/* Input Telefono */}
+      <div className="m-1 mt-3">
         <FormField
           control={form.control}
-          name="email"
+          name="sector"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                <LabelConInfo label="Correo" info="Este correo será usado para el inicio de sección y comunicación por medio de correos." />
-
-              </FormLabel>
+            <FormItem className="space-y-3">
+              <FormLabel>Tipo de empresa</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="correo@gmail.com" autoComplete="false" {...field} />
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex flex-col space-y-1"
+                >
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="Publica" />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      Pública
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="Privada" />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      Privada
+                    </FormLabel>
+                  </FormItem>
+                  
+                </RadioGroup>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
       </div>
-
+      
     </div>
   )
 }
@@ -251,13 +273,13 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
       nit: '',
       nombre: '',
       telefono: '',
-      email: '',
+      sector: 'Privada',
       pais: 'Colombia',
       departamento: '',
       municipio: '',
       direccion: '',
       camaraComercio: null,
-      rut: null
+      rut: null,
     }
   });
 
@@ -265,6 +287,7 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
     paisSeleccionado: form.getValues().pais || "",
     estadoSeleccionado: form.getValues().departamento || "",
   }); 
+  console.log('sectores', getSectoresConSubsectores())
   //console.log(form.getValues())
   const watcher = form.watch(['pais', 'departamento', 'municipio'])
 
@@ -293,7 +316,6 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
         pais: formData.pais,
         departamento: formData.departamento,
         municipio: formData.municipio,
-        email: formData.email,
         //camaraComercio: camaraDeComercioUrl,
        // RUTUrl
 

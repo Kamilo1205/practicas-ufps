@@ -1,16 +1,15 @@
 'use client'
 
-import { z } from "zod"
 import { Button } from "../ui/button"
-import { Form } from "../ui/form"
+
 import { useForm } from "react-hook-form"
-import { DatosRepresentanteLegalSchema } from "@/schemas"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Checkbox } from "@/components/ui/checkbox"
+
 import { useState } from "react"
 import { FileInputComponent } from "../ui/FileInputComponent"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import {  MdOutlineWarning } from "react-icons/md"
+
+import { CardComponent } from "../ui/CardComponent"
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
+import { Label } from "../ui/label"
 
 
 interface Props { 
@@ -22,10 +21,11 @@ export const DatosConvenio = ({ backStage }: Props) => {
   const loading = false
 
   const [convenioActivo, setConvenioActivo] = useState(false)
-
-  const form = useForm<z.infer<typeof DatosRepresentanteLegalSchema>>({
-    mode: 'onBlur',
-    resolver: zodResolver(DatosRepresentanteLegalSchema)
+  console.log(convenioActivo)
+  const form = useForm({
+    defaultValues: {
+      convenio: false
+    }
   })
 
   const onSubmit = (e: any) => { 
@@ -36,35 +36,54 @@ export const DatosConvenio = ({ backStage }: Props) => {
   }
 
   return (
-    <div>
+    <div >
       <h1 className="text-2xl font-semibold">Datos del convenio</h1>
 
       <p className="text-gray-800 text-sm mt-1 mb-2 leading-6">
        A continuación, debe indicar si la empresa tiene un convenio activo con la universidad. De lo contrario simplemente omita este paso.
       </p>
-      <Form {...form}>
-        <form>
-          <div className="flex items-center space-x-2 mb-4">
-            <Checkbox id="terms"
-              checked={convenioActivo}
-              onCheckedChange={() => setConvenioActivo(!convenioActivo)}
-            />
+     
+      <form>
+        
+          <CardComponent
+            title="Convenio activo"
+            description="¿Su empresa cuenta con un convenio activo con la universidad?"
+            cardContent={
+              <div className="flex flex-col">
+                
             <label
               htmlFor="terms"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
               ¿Tiene actualmente su empresa un convenio activo con la universidad?
-            </label>
-          </div>
+                </label>
+                <RadioGroup className="mt-5" defaultValue="option-no" onValueChange={()=>setConvenioActivo(!convenioActivo)}>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="option-si" id="option-si"
+                      />
+                    <Label htmlFor="Si">Si</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="option-no" id="option-no"
+                      
+                    />
+                    <Label htmlFor="No">No</Label>
+                  </div>
+                </RadioGroup>
+              {
+                  !convenioActivo && <div className="mt-5 mb-4">
+                    <p className="text-sm text-gray-800 mb-3">Si ya cuenta con la solicitud de convenio adjuntela acontinuación. De lo contrario de click <a href="/PPS02. modelo de convenio.docx" download={'PPS02. modelo de convenio.docx'}><span className="font-bold cursor-pointer" >aquí</span></a> para descargar el formato de solicitud y al terminar adjuntelo acontinuación. </p> 
+                  <FileInputComponent />
+                </div>
+              }
+          </div>}
+            cardFooter={<></>}
+          />
 
-          {
-            convenioActivo && <div className="mb-4">
-              <FileInputComponent />
-            </div>
-          }
+          
           
           <div
-            className="flex flex-row justify-between"
+            className="flex flex-row justify-between mt-5"
           >
             <Button
               onClick={backStage}
@@ -89,19 +108,23 @@ export const DatosConvenio = ({ backStage }: Props) => {
               }</Button>
           </div>
         </form> 
-      </Form>
-      <div className="mt-5">
-        <Alert>
-          <MdOutlineWarning className="h-4 w-4" />
-          <AlertTitle className="font-bold">¡Importante!</AlertTitle>
-          <AlertDescription>
-            Si su empresa no cuenta con un convenio activo, debe enviar una solicitud al correo <span className="font-bold">correo@gmail.com</span> .
-          </AlertDescription>
-        </Alert>
-
-      </div> 
+     
+      
 
       
     </div>
   )
 }
+
+/**
+ * <div className="mb-5">
+                  <Alert>
+                    <MdOutlineWarning className="h-4 w-4" />
+                    <AlertTitle className="font-bold">¡Importante!</AlertTitle>
+                    <AlertDescription>
+                      Si su empresa no cuenta con un convenio activo<span className="font-bold">correo@gmail.com</span> .
+                    </AlertDescription>
+                  </Alert>
+
+                </div> 
+ */

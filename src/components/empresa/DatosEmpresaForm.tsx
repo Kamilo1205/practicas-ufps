@@ -19,6 +19,7 @@ import { getSectoresConSubsectores } from "@/helpers/Indutrias"
 
 
 interface Props{
+  sectores: any
   setStage: () => void
 
 }
@@ -33,7 +34,7 @@ const verificarValoresJSON = (obj: any) => {
 
 }
 
-const DatosGeneralesEmpresa = ({form}:any) => { 
+const DatosGeneralesEmpresa = ({ form, sectores }: any) => { 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2">
       {/* Input NIT */}
@@ -127,6 +128,29 @@ const DatosGeneralesEmpresa = ({form}:any) => {
           )}
         />
       </div>
+
+      {/*Selección del Sector comercial*/}
+      <div className="mr-2">
+        <FormField
+          control={form.control}
+          name="industria"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Industria</FormLabel>
+              <FormControl>
+                <SelectComponent
+                  placeholder="Seleccione un sector..."
+                  items={sectores}
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+
       
     </div>
   )
@@ -261,8 +285,9 @@ const ArchivosEmpresa = ({ form }: any) => {
       )
 }
 
-export const DatosEmpresaForm = ({setStage}:Props) => { 
+export const DatosEmpresaForm = ({ setStage, }: Props) => {
   
+  const [sectores,setSectores ] = useState<any>([])
   const EMPRESA_ID = "1"
   const [loading, setLoading] = useState(false)
 
@@ -280,16 +305,18 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
       direccion: '',
       camaraComercio: null,
       rut: null,
+      industria: ''
     }
   });
 
-  const { paises,estados,ciudades } = PaisEstadoCiudadFormHook({
+  const { paises, estados, ciudades } = PaisEstadoCiudadFormHook({
     paisSeleccionado: form.getValues().pais || "",
     estadoSeleccionado: form.getValues().departamento || "",
-  }); 
-  console.log('sectores', getSectoresConSubsectores())
+  });
+
   //console.log(form.getValues())
   const watcher = form.watch(['pais', 'departamento', 'municipio'])
+
 
   const onSubmit = async() => { 
     try {
@@ -331,6 +358,20 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
       setLoading(false)
     }
   }
+  useEffect(() => {
+    getSectoresConSubsectores().then(resp => {
+
+      const sectYSub = resp.map(sector => {
+        return {
+          key: sector.sector,
+          value:sector.sector
+        }
+      })
+      setSectores(sectYSub)
+    })
+
+    }
+    , [])
 
   useEffect(() => { },
     [watcher])
@@ -344,7 +385,7 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
           <CardComponent 
             title="Datos generales de la empresa"
             description=""
-            cardContent={<DatosGeneralesEmpresa form={form} />}
+            cardContent={<DatosGeneralesEmpresa form={form} sectores={ sectores} />}
             cardFooter={<></>}
           />
           

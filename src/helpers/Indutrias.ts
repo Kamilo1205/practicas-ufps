@@ -1,5 +1,5 @@
-import { se } from 'date-fns/locale';
-import sectores from './sectores.json';
+//import sectores from './sectores.json';
+
 
 
 export interface Sector {
@@ -87,7 +87,14 @@ export interface Format {
 export interface RenderingContent {
 }
 
-export const getSectoresConSubsectores = () => { 
+const sectoresPromise = async () => {
+  const sectorUrl = "https://raw.githubusercontent.com/joferrer/Indutrias/main/sectores.json"
+  const resp: Sector = await fetch(sectorUrl).then((response )=> response.json())
+  return resp
+}
+
+export const getSectoresConSubsectores = async() => { 
+  const sectores = await sectoresPromise()
   return sectores.hits.map((sector) => {
     return {
       sector: sector.sector,

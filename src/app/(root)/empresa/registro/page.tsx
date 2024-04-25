@@ -1,4 +1,5 @@
 import { RegistroEmpresaComponent } from "@/components/empresa/RegistroEmpresaComponent";
+import { getSectoresConSubsectores } from "@/helpers/Indutrias";
 
 
 export const metadata = {
@@ -6,8 +7,9 @@ export const metadata = {
     description: "Formulario para el registro de una empresa",
 }
 
-export default function Page() { 
+export default async function Page() { 
+  const sectores = await getSectoresConSubsectores()
     return (
-        <RegistroEmpresaComponent />
+      <RegistroEmpresaComponent sectores={ sectores} />
     )
 }

@@ -19,9 +19,8 @@ interface Props {
 export const DatosConvenio = ({ backStage }: Props) => { 
   
   const loading = false
-
   const [convenioActivo, setConvenioActivo] = useState(false)
-  console.log(convenioActivo)
+
   const form = useForm({
     defaultValues: {
       convenio: false

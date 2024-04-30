@@ -8,23 +8,9 @@ export const metadata = {
     description: "Formulario para el registro de una empresa",
 }
 
-const getDatosEmpresa = async () => {
-  const empresa = await obtenerEmpresa('1')
-  return Promise.resolve({
-    id: '1',
-    nombre: 'Empresa 1',
-    direccion: 'Direccion 1',
-    sector: 'Sector 1',
-    telefono: '12345678',
-    email: '',
-    camaraComercio: null,
-    rut: null,
-    industria: 'Industria 1',
-  })
-}
 
 const datosEmpresa = async (empresaId: string) => {
-  //const empresa = await obtenerEmpresa('1')
+  //const empresa = await obtenerEmpresa(empresaId)
   return Promise.resolve({
     id: '1',
     nit: '12345678',
@@ -62,7 +48,7 @@ export default async function Page() {
   const { nit, representanteLegal, convenio } = await datosEmpresa(session?.user?.id)
   
   const stage = !nit ? 0 : !representanteLegal.documento ? 1 : convenio.estado === 'pendiente' ? 2 : 3
-  console.log(stage)
+  //console.log(stage)
   if (stage === 3) { 
     redirect('/empresa/')
   }

@@ -17,6 +17,10 @@ import { DatosGeneralesEmpresa } from "./DatosGeneralesEmpresa"
 import { DatosDireccionEmpresa } from "./DatosDireccionEmpresa"
 
 
+import { Dialog } from 'primereact/dialog';
+
+
+
 interface Props{
   setStage: () => void
 
@@ -74,6 +78,8 @@ const ArchivosEmpresa = ({ form }: any) => {
 
 export const DatosEmpresaForm = ({ setStage, }: Props) => {
   
+
+
   const [sectores,setSectores ] = useState<any>([])
   const EMPRESA_ID = "1"
   const [loading, setLoading] = useState(false)
@@ -162,9 +168,21 @@ export const DatosEmpresaForm = ({ setStage, }: Props) => {
 
   useEffect(() => { },
     [watcher])
+  
+    const [visible, setVisible] = useState(true)
   return (
       <div className="p-2">
-   
+      <div>
+        <Dialog header="¡Bienvenido!" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
+          <div>
+            <p className="m-0">
+              A continuación deberá completar los siguientes formularios para poder llevar a cabo la solicitud de convenio. Como paso final deberá adjuntar el documento PDF de su solicitud. Por esto, antes de continuar, le recomendamos que lea atentamente y complete la solicitud.
+            </p>
+            <a href="/PPS02. modelo de convenio.docx" download={'PPS02. modelo de convenio.docx'}><span className="text-blue-400">Descargue aquí el documento de solicitud</span></a>
+          </div>
+        </Dialog>
+      </div>
+
       <Toaster position="top-right" richColors />
       <h2 className="font-semibold text-2xl">Datos de la empresa</h2>
       <Form {...form} >

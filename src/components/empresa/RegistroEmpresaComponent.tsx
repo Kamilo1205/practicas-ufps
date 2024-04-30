@@ -15,8 +15,12 @@ const items = [
 
 ]
 
-export const RegistroEmpresaComponent = () => { 
-  const [stage, setStage] = useState(1)
+interface RegistroEmpresaComponentProps {
+  initialStage: number
+}
+
+export const RegistroEmpresaComponent = ({initialStage}:RegistroEmpresaComponentProps) => { 
+  const [stage, setStage] = useState(0)
 
   const nextStage = () => {
     { /* //TODO: Controlar el max next. */ }

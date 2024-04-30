@@ -18,7 +18,6 @@ import { DatosDireccionEmpresa } from "./DatosDireccionEmpresa"
 
 
 interface Props{
-  sectores: any
   setStage: () => void
 
 }

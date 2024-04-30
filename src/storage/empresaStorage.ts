@@ -1,3 +1,4 @@
+import { ca } from "date-fns/locale"
 import {
   Empresa,
   RepresentanteLegal,
@@ -13,8 +14,34 @@ export const registrarEmpresa = async(empresa:Empresa) => {
 
 }
 
-export const obtenerEmpresa = async (usuarioId: Usuario) => { 
-
+export const obtenerEmpresa = async (usuarioId: string) => { 
+  const URL = 'http://localhost:3000'
+  const peticion = await (await fetch(URL + '/empresa/' + usuarioId)).json()
+  const empresa = {
+    id: peticion.id,
+    nit: peticion.nit,
+    nombre: peticion.nombre,
+    rut: peticion.rut,
+    direccion: peticion.direccion,
+    sector: peticion.sector,
+    telefono: peticion.telefono,
+    email: peticion.email,
+    camaraComercio: peticion.camaraComercio,
+    representanteLegal:{
+        nombre: peticion.representanteLegal.nombre,
+        apellido: peticion.representanteLegal.apellido,
+        telefono: peticion.representanteLegal.telefono,
+        email: peticion.representanteLegal.email,
+        documento: peticion.representanteLegal.documento
+      
+    },
+    convenio: {
+      estado: 'pendiente',
+      fechaInicio: new Date(),
+      documento: null
+    }
+  }
+  return empresa
 }
 
 

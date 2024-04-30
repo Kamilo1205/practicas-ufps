@@ -1,12 +1,14 @@
 import { DatosTutorEmpresa } from "@/components/empresa"
 import { SideBarLayout } from "../../SidebarLayout"
 import { CardComponent } from "@/components"
+import { obtenerEmpresa } from "@/storage/empresaStorage"
 
 
 export const metadata = {
   title: 'Registro de tutor',
   description: 'Registra un tutor en el sistema.',
 }
+
 
 export const Page = () => {
   return (

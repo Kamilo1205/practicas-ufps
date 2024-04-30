@@ -175,8 +175,8 @@ export const DatosEmpresaForm = ({ setStage, }: Props) => {
       <div>
         <Dialog header="¡Bienvenido!" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
           <div>
-            <p className="m-0">
-              A continuación deberá completar los siguientes formularios para poder llevar a cabo la solicitud de convenio. Como paso final deberá adjuntar el documento PDF de su solicitud. Por esto, antes de continuar, le recomendamos que lea atentamente y complete la solicitud.
+            <p className="mb-2">
+              A continuación deberá completar los siguientes formularios para poder llevar a cabo la solicitud de convenio. Como paso final deberá adjuntar el documento PDF de su solicitud. Antes de continuar, le recomendamos que lea atentamente el documento de solicitud de convenio y lo complete con sus respectivos datos.
             </p>
             <a href="/PPS02. modelo de convenio.docx" download={'PPS02. modelo de convenio.docx'}><span className="text-blue-400">Descargue aquí el documento de solicitud</span></a>
           </div>

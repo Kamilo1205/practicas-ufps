@@ -20,7 +20,7 @@ interface RegistroEmpresaComponentProps {
 }
 
 export const RegistroEmpresaComponent = ({initialStage}:RegistroEmpresaComponentProps) => { 
-  const [stage, setStage] = useState(0)
+  const [stage, setStage] = useState(1)
 
   const nextStage = () => {
     { /* //TODO: Controlar el max next. */ }

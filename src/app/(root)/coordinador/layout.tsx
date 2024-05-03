@@ -4,6 +4,10 @@ const valores = [
   {
     nombre: 'Inicio',
     url: '/coordinador'
+  },
+  {
+    nombre: 'Calendario',
+    url: '/coordinador/calendario'
 },
   {
     nombre: 'Convenios',

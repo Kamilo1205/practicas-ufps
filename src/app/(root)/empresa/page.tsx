@@ -41,7 +41,7 @@ const datosEmpresa = async (empresaId: string) => {
   //const empresa = await obtenerEmpresa('1')
   return Promise.resolve({
     id: '1',
-    nit: null,
+    nit: '11',
     nombre: 'Empresa 1',
     direccion: 'Direccion 1',
     sector: 'Sector 1',
@@ -55,10 +55,10 @@ const datosEmpresa = async (empresaId: string) => {
       apellido: 'Apellido 1',
       telefono: '12345678',
       email: '',
-      documento: null
+      documento: '111'
     },
     convenio: {
-      estado: 'pendiente',
+      estado: 'activo',
       fechaInicio: new Date(),
       documento: null
     }

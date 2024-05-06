@@ -1,6 +1,9 @@
-import { CardComponent } from "@/components"
+import { CardComponent, TimelineComponent } from "@/components"
+
+
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
+import { Separator } from "@radix-ui/react-separator";
 dayjs().format()
 dayjs.locale('es')
 
@@ -21,10 +24,44 @@ const getSemester = () => {
   return semester
 }
 
+const timelineItems = [
+  {
+    date: '2022-08-01',
+    title: 'Inicio de semestre',
+    content: 'Se inicia el semestre 2022-2',
+  },
+  {
+    date: '2022-08-10',
+    title: 'Inicio de clases',
+    content: 'Se inician las clases del semestre 2022-2',
+  },
+  {
+    date: '2022-11-01',
+    title: 'Fin de clases',
+    content: 'Se finalizan las clases del semestre 2022-2',
+  },
+  {
+    date: '2022-11-10',
+    title: 'Fin de semestre',
+    content: 'Se finaliza el semestre 2022-2',
+  },
+
+]
 
 export const CalendarioPage = () => { 
   return <div className="h-full">
     <h1 className="text-2xl font-light">Gestión de Calendario</h1>
+    <CardComponent
+      title=""
+      description=""
+      cardContent={
+        <>
+          
+          <TimelineComponent items={timelineItems} />
+        </>
+      }
+      cardFooter={<></>}
+    />
     <CardComponent
       title={`Fecha de inicio del semestre ${getSemester()}`}
       description="Este apartado define las fecha para el inicio del semestre actual"

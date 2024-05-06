@@ -24,7 +24,6 @@ interface Props {
   perfil: Opcion[]
   setPerfil: (perfil: Opcion[]) => void
 }
-
 export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => { 
   
   const [items, setItems] = useState<Item[]>()
@@ -42,6 +41,7 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
       ]
     }
   ])
+  console.log(selecciones)
 
   const onHandleChange = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => { 
 
@@ -63,7 +63,6 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
     setSelecciones(nuevaLista)
   }
 
-  console.log("select",selecciones)
 
   useEffect(() => {
     getPerfiles().then((res) => {
@@ -102,23 +101,34 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
   return (
     <>
       <button
-        className="bg-blue-500 text-white p-2 rounded-md mt-2 right-2"
-        onClick={() => agregarPerfil({ id: "1", label: "Perfil 1" })}>Agregar nuevo perfil</button>
+        className="bg-blue-500 text-white p-2 rounded-md mt-2"
+        onClick={() => agregarPerfil({ id: "1", label: "Perfil 1" })}>Agregar nuevo perfil
+      </button>
+
+      <button
+        className="bg-blue-500 text-white p-2 rounded-md mt-2"
+      >
+        Enviar solicitud
+      </button>
+
       {
         selecciones.map((seleccion,index) => (
           <CardComponent
             key={`${index}-${seleccion.id}`}
-            title={`Perfil de practicante #${index + 1}`}
+            title={`${index + 1} Perfil de practicante `}
             description="Seleccione entre las siguientes habilidades, aquellas que se acoplen al perfil de practicante que está solicitando."
             cardContent={
               
               <form onSubmit={handleSubtmit}>
                 <div>
                   <label className="font-semibold">Perfil</label>
-                  <select className="w-full border border-gray-300 rounded p-1"
+                  <select
+                    className="w-full border border-gray-300 rounded p-1"
                     onChange={(e) => onHandleChange(e, index)}
+                    value={seleccion.id}
+                    required
                   >
-                    <option defaultValue={''} value={''}>Seleccione un perfil</option>
+                    <option defaultValue={''} >Seleccione un perfil</option>
                     {items?.map((item) => (
                       <option key={`${index}-${item.id}`} value={item.id}>{item.label}</option>
                     ))}
@@ -140,14 +150,30 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
                     </div>  
                   }
                 </div>
-                
+                {
+                  <div>
+                    {
+                      selecciones[index].conocimientos[0].nombre !== ""
+                      &&
+                      <div className="mt-2">
+                        <label className="font-semibold">Tecnologías</label>
+                        <select className="w-full border border-gray-300 rounded p-1">
+                          <option defaultValue={''} value={''}>Seleccione una tecnología</option>
+                          {items?.find((i) => i.id === selecciones[index].id)?.conocimientos.find((c) => c.id === selecciones[index].conocimientos[0].id)?.tecnologias.map((tecnologia) => (
+                            <option key={`${index}-${tecnologia}`} value={tecnologia}>{tecnologia}</option>
+                          ))}
+                          <option value={'otro'}>Otro</option>
+                        </select>
+                      </div>
+                    }
+                  </div>
+                }
                 <button
                   className="bg-red-500 text-white p-2 rounded-md mt-2 mr-2"
                   onClick={() => setSelecciones(selecciones.filter((s, i) => i !== index))}
                 >
                   Eliminar
                 </button>
-                    <input type="submit" value="Agregar" className="bg-blue-500 text-white p-2 rounded-md mt-2"/>
                 </form>
               
             }

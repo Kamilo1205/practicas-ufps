@@ -8,4 +8,6 @@ export { FileInputComponent } from "./ui/FileInputComponent";
 
 export { LabelConInfo } from "./ui/LabelConInfo";
 
-export {CardComponent} from './ui/CardComponent'
+export { CardComponent } from './ui/CardComponent'
+
+export {TimelineComponent} from './ui/TimeLine'

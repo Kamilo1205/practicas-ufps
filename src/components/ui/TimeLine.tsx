@@ -1,8 +1,9 @@
 
+
 interface TimelineItem {
   date: string;
   title: string;
-  content: string;
+  content: any;
 
 }
 
@@ -32,7 +33,7 @@ export const TimelineComponent = ({items}:Props) => {
                           </svg>
                         </div>
                         {/*<!-- Date -->*/}
-                      <time className="text-sm font-medium text-indigo-500 md:w-28">{ item.date}</time>
+                      <time className="text-sm font-medium text-indigo-500 md:w-28"><input type="datetime-local" className="w-full border border-gray-300 rounded p-1" /></time>
                       </div>
                       {/*<!-- Title -->*/}
                     <div className="text-slate-500 ml-14"><span className="text-slate-900 font-bold">{ item.title}</span> 2024-01</div>

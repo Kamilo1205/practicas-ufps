@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { CardComponent } from "../ui/CardComponent"
 import { getPerfiles } from "@/storage/perfilPracticanteStorage"
+import { TextSelectBadgeComponent } from "../ui/TextSelectBadges";
 
 interface Item{
   id: string;
@@ -63,8 +64,27 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
     setSelecciones(nuevaLista)
   }
 
+  const onHandleChangeConocimiento = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => { 
+    const itemId = e.target.value
+    const item = items?.find((i) => i.id === itemId)
+    const {label, id, conocimientos} = item || {label: "", id: "", conocimientos: []}
+    let seleccionI = {
+      id,
+      label,
+      conocimientos
+    }
+    const nuevaLista = selecciones.map((s, i) => {
+      if(i === index) return seleccionI
+      return s
+    }
+    )
+    setSelecciones(nuevaLista)
+  
+  }
+
 
   useEffect(() => {
+    //TRAER LOS PERFILES DE PRACTICANTE DEL STORAGE
     getPerfiles().then((res) => {
       setItems(res)
     })
@@ -100,6 +120,8 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
 
   return (
     <>
+      <TextSelectBadgeComponent />
+
       <button
         className="bg-blue-500 text-white p-2 rounded-md mt-2"
         onClick={() => agregarPerfil({ id: "1", label: "Perfil 1" })}>Agregar nuevo perfil
@@ -164,6 +186,7 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
                           ))}
                           <option value={'otro'}>Otro</option>
                         </select>
+                      
                       </div>
                     }
                   </div>
@@ -182,7 +205,6 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
         ))
 
     }
-     
       
     </> 
     

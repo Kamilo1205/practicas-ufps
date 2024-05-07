@@ -24,29 +24,40 @@ const getSemester = () => {
   return semester
 }
 
+
+const prueba = ({ nombre = 'JJ' }: any) => {
+  return <h1>{`Hola ${nombre}!`}</h1>
+}
+
 const timelineItems = [
   {
     date: '2022-08-01',
-    title: 'Inicio de semestre',
-    content: 'Se inicia el semestre 2022-2',
+    title: 'Inicio de clases del semestre',
+    content: 'Esta fecha marca el inicio de las clases del semestre 2022-2, ',
+  },
+  {
+    date: '2022-08-05',
+    title: 'Fecha límite de inscripción de datos por parte del estudiante',
+    content: 'Plazo máximo para que los estudiantes diligencien el formulario de inscripción de de sus datos para las practicas profesionales',
   },
   {
     date: '2022-08-10',
-    title: 'Inicio de clases',
-    content: 'Se inician las clases del semestre 2022-2',
+    title: 'Entrega del plan de trabajo',
+    content: prueba({nombre: 'Juan'}),
   },
   {
     date: '2022-11-01',
-    title: 'Fin de clases',
+    title: 'Entrega del primer informe',
     content: 'Se finalizan las clases del semestre 2022-2',
   },
   {
     date: '2022-11-10',
-    title: 'Fin de semestre',
+    title: 'Entrega del informe final',
     content: 'Se finaliza el semestre 2022-2',
   },
 
 ]
+
 
 export const CalendarioPage = () => { 
   return <div className="h-full">

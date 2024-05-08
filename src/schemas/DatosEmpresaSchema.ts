@@ -36,6 +36,9 @@ export const DatosEmpresaSchema = z.object({
       message: 'El sector debe ser Privado o Público',
     }
   ),
+  industria: z.string({
+    required_error: 'La industria es requerida'
+  }),
   pais: z.string({
     required_error: 'El pais es requerido',
     invalid_type_error: 'El pais ingresado no es valido'

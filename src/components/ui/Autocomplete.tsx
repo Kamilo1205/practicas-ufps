@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { Input } from "./input"
 
 interface choice { 
-  id: number
+  id: number | string
   name: string
 
 }
@@ -14,6 +14,11 @@ interface Props{
   choices: choice[],
 }
 
+const filterChoices = (value: string, choices: choice[]) => {
+  return choices.filter((choice) =>
+    choice.name.toLowerCase().includes(value.toLowerCase())
+  );
+};
 
 export const Autocomplete = ({value = "",setValue,choices}:Props) => { 
 
@@ -22,11 +27,7 @@ export const Autocomplete = ({value = "",setValue,choices}:Props) => {
   const [filteredChoices, setFilteredChoices] = useState<choice[]>([]);
 
 
-  const filterChoices = (value: string) => {
-    return choices.filter((choice) =>
-      choice.name.toLowerCase().includes(value.toLowerCase())
-    );
-  };
+
 
   const onChoiceClick = (choice: choice) => { 
     console.log(choice)
@@ -37,10 +38,10 @@ export const Autocomplete = ({value = "",setValue,choices}:Props) => {
  
   useEffect(() => {
     if (controlValue.length > 0) { 
-      const filteredChoices = filterChoices(controlValue) 
+      const filteredChoices = filterChoices(controlValue,choices) 
       setFilteredChoices(filteredChoices)
     }
-   }, [controlValue])
+   }, [controlValue,choices])
 
   return <div>
    

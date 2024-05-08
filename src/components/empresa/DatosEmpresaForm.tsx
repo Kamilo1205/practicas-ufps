@@ -7,15 +7,18 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { DatosEmpresaSchema } from "@/schemas"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
-import { Input } from "../ui/input"
-import { CardComponent, FileInputComponent, LabelConInfo } from ".."
+import { CardComponent, FileInputComponent } from ".."
 
-import { SelectComponent } from "../ui/SelectComponent"
 import { PaisEstadoCiudadFormHook } from "@/helpers/PaisEstadoCiudadFormHook"
 import { Button } from "../ui/button"
 import { Toaster, toast } from "sonner"
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { getSectoresConSubsectores } from "@/helpers/Indutrias"
+import { DatosGeneralesEmpresa } from "./DatosGeneralesEmpresa"
+import { DatosDireccionEmpresa } from "./DatosDireccionEmpresa"
+
+
+import { Dialog } from 'primereact/dialog';
+
 
 
 interface Props{
@@ -31,194 +34,6 @@ const verificarValoresJSON = (obj: any) => {
   }
   return true
 
-}
-
-const DatosGeneralesEmpresa = ({form}:any) => { 
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2">
-      {/* Input NIT */}
-      <div className="m-1">
-        <FormField
-          control={form.control}
-          name="nit"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel asChild>
-                <LabelConInfo label="NIT" info="El NIT deben ser solo números o en formato XXXXXXXXX-X, donde X es un digíto de 0-9" />
-              </FormLabel>
-              <FormControl>
-                <Input type="text" autoComplete="false" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-      {/* Input Nombre */}
-      <div className="m-1">
-        <FormField
-          control={form.control}
-          name="nombre"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nombre</FormLabel>
-              <FormControl>
-                <Input type="text" autoComplete="false" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-      {/* Input Telefono */}
-      <div className="flex-1 m-1">
-        <FormField
-          control={form.control}
-          name="telefono"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel asChild>
-                <LabelConInfo label="Telefono" info="Tenga en cuenta que si el telefono no es de Colombia, debe agregar el código de país. Ejemplo: +1 para Estados Unidos" />
-              </FormLabel>
-              <FormControl>
-                <Input type="text" autoComplete="true" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-
-      {/* Input Telefono */}
-      <div className="m-1 mt-3">
-        <FormField
-          control={form.control}
-          name="sector"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>Tipo de empresa</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
-                >
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="Publica" />
-                    </FormControl>
-                    <FormLabel className="font-normal">
-                      Pública
-                    </FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="Privada" />
-                    </FormControl>
-                    <FormLabel className="font-normal">
-                      Privada
-                    </FormLabel>
-                  </FormItem>
-                  
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-      
-    </div>
-  )
-}
-
-
-const DatosDireccionEmpresa = ({ form , paises, estados,ciudades }: any) => { 
-  return (<div className="flex flex-wrap mb-2">
-    {/*Selección del Pais*/}
-    <div className="mr-2">
-      <FormField
-        control={form.control}
-        name="pais"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Pais</FormLabel>
-            <FormControl>
-              <SelectComponent
-                placeholder="Seleccione un pais"
-                items={paises}
-                value={field.value}
-                onChange={field.onChange}
-
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </div>
-
-    {/*Selección del Departamento/Estado*/}
-    <div className="mr-2">
-      <FormField
-        control={form.control}
-        name="departamento"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Departamento</FormLabel>
-            <FormControl>
-              <SelectComponent
-                placeholder="Seleccione un departamento"
-                items={estados}
-                value={field.value}
-                onChange={field.onChange}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </div>
-
-    {/*Selección del Ciudad*/}
-    <div className="mr-2">
-      <FormField
-        control={form.control}
-        name="municipio"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Ciudad</FormLabel>
-            <FormControl>
-              <SelectComponent
-                placeholder="Seleccione una ciudad"
-                items={ciudades}
-                value={field.value}
-                onChange={field.onChange}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </div>
-
-    {/* Input Direccion */}
-    <div className="col-span-3">
-      <FormField
-        control={form.control}
-        name="direccion"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Dirección</FormLabel>
-            <FormControl>
-              <Input type="text" autoComplete="false" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </div>
-  </div>)
 }
 
 const ArchivosEmpresa = ({ form }: any) => { 
@@ -261,8 +76,11 @@ const ArchivosEmpresa = ({ form }: any) => {
       )
 }
 
-export const DatosEmpresaForm = ({setStage}:Props) => { 
+export const DatosEmpresaForm = ({ setStage, }: Props) => {
   
+
+
+  const [sectores,setSectores ] = useState<any>([])
   const EMPRESA_ID = "1"
   const [loading, setLoading] = useState(false)
 
@@ -280,16 +98,18 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
       direccion: '',
       camaraComercio: null,
       rut: null,
+      industria: ''
     }
   });
 
-  const { paises,estados,ciudades } = PaisEstadoCiudadFormHook({
+  const { paises, estados, ciudades } = PaisEstadoCiudadFormHook({
     paisSeleccionado: form.getValues().pais || "",
     estadoSeleccionado: form.getValues().departamento || "",
-  }); 
-  console.log('sectores', getSectoresConSubsectores())
+  });
+
   //console.log(form.getValues())
   const watcher = form.watch(['pais', 'departamento', 'municipio'])
+
 
   const onSubmit = async() => { 
     try {
@@ -331,12 +151,38 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
       setLoading(false)
     }
   }
+  useEffect(() => {
+    getSectoresConSubsectores().then(resp => {
+
+      const sectYSub = resp.map(sector => {
+        return {
+          key: sector.sector,
+          value:sector.sector
+        }
+      })
+      setSectores(sectYSub)
+    })
+
+    }
+    , [])
 
   useEffect(() => { },
     [watcher])
+  
+    const [visible, setVisible] = useState(true)
   return (
       <div className="p-2">
-   
+      <div>
+        <Dialog header="¡Bienvenido!" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
+          <div>
+            <p className="mb-2">
+              A continuación deberá completar los siguientes formularios para poder llevar a cabo la solicitud de convenio. Como paso final deberá adjuntar el documento PDF de su solicitud. Antes de continuar, le recomendamos que lea atentamente el documento de solicitud de convenio y lo complete con sus respectivos datos.
+            </p>
+            <a href="/PPS02. modelo de convenio.docx" download={'PPS02. modelo de convenio.docx'}><span className="text-blue-400">Descargue aquí el documento de solicitud</span></a>
+          </div>
+        </Dialog>
+      </div>
+
       <Toaster position="top-right" richColors />
       <h2 className="font-semibold text-2xl">Datos de la empresa</h2>
       <Form {...form} >
@@ -344,7 +190,7 @@ export const DatosEmpresaForm = ({setStage}:Props) => {
           <CardComponent 
             title="Datos generales de la empresa"
             description=""
-            cardContent={<DatosGeneralesEmpresa form={form} />}
+            cardContent={<DatosGeneralesEmpresa form={form} sectores={ sectores} />}
             cardFooter={<></>}
           />
           

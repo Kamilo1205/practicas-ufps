@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { Input } from "./input"
 
 interface choice { 
-  id: number
+  id: number | string
   name: string
 
 }

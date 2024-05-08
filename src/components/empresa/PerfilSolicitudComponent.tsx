@@ -1,19 +1,8 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import { get } from "http";
 import { CardComponent } from "../ui/CardComponent"
-import { getPerfiles } from "@/storage/perfilPracticanteStorage"
-import { TextSelectBadgeComponent } from "../ui/TextSelectBadges";
-
-interface Item{
-  id: string;
-  label: string;
-  conocimientos: {
-    id: string;
-    nombre: string;
-    tecnologias: string[];
-  }[]
-}
+import { useSolicitudPracticas } from "@/helpers/hookSolicitudPracticas";
 
 interface Opcion {
   id: string
@@ -27,68 +16,22 @@ interface Props {
 }
 export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => { 
   
-  const [items, setItems] = useState<Item[]>()
-  
-  const [selecciones, setSelecciones] = useState<Item[]>([
-    {
-      id: "",
-      label: "",
-      conocimientos: [
-        {
-          id: "",
-          nombre: "",
-          tecnologias: [""]
-        }
-      ]
-    }
-  ])
-  console.log(selecciones)
+  const {
+    items,
+    selecciones,
+    setItems,
+    setSelecciones,
+    guardarPerfil,
+    guardarTecnologia,
+    guardarConocimiento,
+    getConocimientosDePerfil,
+    getTecnologiasPorConocimiento,
+  } = useSolicitudPracticas()
 
-  const onHandleChange = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => { 
-
+  const onChangePerfil = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => { 
     const itemId = e.target.value
-    const item = items?.find((i) => i.id === itemId)
-   
-    const {label, id, conocimientos} = item || {label: "", id: "", conocimientos: []}
-
-    let seleccionI = {
-      id,
-      label,
-      conocimientos
-    }
-    const nuevaLista = selecciones.map((s, i) => {
-      if(i === index) return seleccionI
-      return s
-    }
-    )
-    setSelecciones(nuevaLista)
-  }
-
-  const onHandleChangeConocimiento = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => { 
-    const itemId = e.target.value
-    const item = items?.find((i) => i.id === itemId)
-    const {label, id, conocimientos} = item || {label: "", id: "", conocimientos: []}
-    let seleccionI = {
-      id,
-      label,
-      conocimientos
-    }
-    const nuevaLista = selecciones.map((s, i) => {
-      if(i === index) return seleccionI
-      return s
-    }
-    )
-    setSelecciones(nuevaLista)
-  
-  }
-
-
-  useEffect(() => {
-    //TRAER LOS PERFILES DE PRACTICANTE DEL STORAGE
-    getPerfiles().then((res) => {
-      setItems(res)
-    })
-  }, [])  
+    guardarPerfil(itemId, index)
+  }    
 
 
   const agregarPerfil = (opcion: Opcion) => { 
@@ -98,19 +41,25 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
     setSelecciones([...selecciones, {
       id: "",
       label: "",
-      conocimientos: [
-        {
-          id: "",
-          nombre: "",
-          tecnologias: [""]
-        }
-      ]
+      conocimientos: []
     }])
   }
 
   const quitarPerfil = (opcion: Opcion) => {
     setPerfil(perfil.filter((o) => o.id !== opcion.id))
   }
+  const quitarConocimiento = (idPerfil: string, idConocimiento: string) => {
+    const conocimientos = selecciones.find((s) => s.id === idPerfil)?.conocimientos.filter((c) => c.id !== idConocimiento) || []
+    const nuevaLista = selecciones.map((s) => {
+      if (s.id === idPerfil) {
+        return { ...s, conocimientos }
+      }
+      return s
+    })
+    setSelecciones(nuevaLista)
+  }
+
+  
 
   const handleSubtmit = (e: React.FormEvent<HTMLFormElement> ) => { 
     e.preventDefault()
@@ -120,7 +69,6 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
 
   return (
     <>
-      <TextSelectBadgeComponent />
 
       <button
         className="bg-blue-500 text-white p-2 rounded-md mt-2"
@@ -146,7 +94,7 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
                   <label className="font-semibold">Perfil</label>
                   <select
                     className="w-full border border-gray-300 rounded p-1"
-                    onChange={(e) => onHandleChange(e, index)}
+                    onChange={(e) => onChangePerfil(e, index)}
                     value={seleccion.id}
                     required
                   >
@@ -160,25 +108,39 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
                   {
                     selecciones[index].label !== ""
                     &&
-                    <div className="mt-2">
+                    <div className="mt-2 justify-center">
                         <label className="font-semibold">Conocimientos</label>
-                        <select className="w-full border border-gray-300 rounded p-1">
-                          <option defaultValue={''} value={''}>Seleccione un conocimiento</option>
-                          {items?.find((i) => i.id === selecciones[index].id)?.conocimientos.map((conocimiento) => (
-                            <option key={`${index}-${conocimiento.id}`} value={conocimiento.id}>{conocimiento.nombre}</option>
-                          ))}
-                          <option value={'otro'}>Otro</option>
-                        </select>
+
+                        {
+                          getConocimientosDePerfil(selecciones[index].id)
+                            ?.map((conocimiento) => 
+                              <div key={conocimiento.id}>
+                                <input
+                                  type="checkbox"
+                                  value={conocimiento.id}
+                                  checked={ selecciones[index].conocimientos.find(c => c.id === conocimiento.id) ? true : false}
+                                  onChange={
+                                    () => selecciones[index].conocimientos.find(c => c.id === conocimiento.id) === undefined ?
+                                    guardarConocimiento(seleccion.id, conocimiento.id)
+                                      : quitarConocimiento(seleccion.id, conocimiento.id)
+                                  }
+                                />
+                                <label className="ml-1">{conocimiento.nombre}</label>
+                          </div>
+                          )
+                      }
+                        
                     </div>  
                   }
                 </div>
                 {
                   <div>
                     {
-                      selecciones[index].conocimientos[0].nombre !== ""
+                      selecciones[index].conocimientos.length !== 0
                       &&
                       <div className="mt-2">
-                        <label className="font-semibold">Tecnologías</label>
+                          <label className="font-semibold">Tecnologías</label>
+                         
                         <select className="w-full border border-gray-300 rounded p-1">
                           <option defaultValue={''} value={''}>Seleccione una tecnología</option>
                           {items?.find((i) => i.id === selecciones[index].id)?.conocimientos.find((c) => c.id === selecciones[index].conocimientos[0].id)?.tecnologias.map((tecnologia) => (
@@ -218,4 +180,12 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
           seleccionar={agregarPerfil}
           quitar={quitarPerfil}
         /> 
+
+         <select className="w-full border border-gray-300 rounded p-1" multiple >
+                          <option defaultValue={''} value={''}>Seleccione un conocimiento</option>
+                          {items?.find((i) => i.id === selecciones[index].id)?.conocimientos.map((conocimiento) => (
+                            <option key={`${index}-${conocimiento.id}`} value={conocimiento.id}>{conocimiento.nombre}</option>
+                          ))}
+                          <option value={'otro'}>Otro</option>
+                        </select>
  */

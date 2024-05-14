@@ -3,6 +3,7 @@
 import { CardComponent } from "../ui/CardComponent"
 import { useSolicitudPracticas } from "@/helpers/hookSolicitudPracticas";
 import { TextSelectBadgeComponent } from "../ui/TextSelectBadges";
+import AutocompleteInput from "../ui/AutocompleteInput";
 
 interface Opcion {
   id: string
@@ -140,7 +141,7 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
                       &&
                       <div className="mt-2">
                           <label className="font-semibold">Tecnologías</label>
-                         <TextSelectBadgeComponent />
+                      <AutocompleteInput />
                        
                       
                       </div>

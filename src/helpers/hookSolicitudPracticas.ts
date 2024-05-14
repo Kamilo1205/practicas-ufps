@@ -129,6 +129,13 @@ export const useSolicitudPracticas = () => {
     setSelecciones(nuevaLista)
   }
 
+  const getTodasLasTecnologiasDeSelecciones = () => { 
+    let tecnologias = selecciones.map(s =>
+      s.conocimientos.map(c => getTecnologiasPorConocimiento(s.id,c.id))).flat(2)
+
+    return tecnologias
+  }
+
   return {
     items,
     setItems,
@@ -139,6 +146,7 @@ export const useSolicitudPracticas = () => {
     guardarTecnologia,
     guardarPerfil,
     guardarConocimiento,
-    quitarTecnologia
+    quitarTecnologia,
+    getTodasLasTecnologiasDeSelecciones
   }
 }

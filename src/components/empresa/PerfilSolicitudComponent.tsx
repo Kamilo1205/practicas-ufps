@@ -2,7 +2,6 @@
 
 import { CardComponent } from "../ui/CardComponent"
 import { useSolicitudPracticas } from "@/helpers/hookSolicitudPracticas";
-import { TextSelectBadgeComponent } from "../ui/TextSelectBadges";
 import AutocompleteInput from "../ui/AutocompleteInput";
 
 interface Opcion {
@@ -27,6 +26,7 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
     guardarConocimiento,
     getConocimientosDePerfil,
     getTecnologiasPorConocimiento,
+    getTodasLasTecnologiasDeSelecciones,
   } = useSolicitudPracticas()
 
   const onChangePerfil = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => { 
@@ -141,7 +141,10 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
                       &&
                       <div className="mt-2">
                           <label className="font-semibold">Tecnologías</label>
-                      <AutocompleteInput />
+                          <AutocompleteInput
+                            availableOptions={getTodasLasTecnologiasDeSelecciones().map(
+                              t => ({ id: t, label: t })
+                              )} />
                        
                       
                       </div>

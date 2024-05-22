@@ -14,7 +14,7 @@ interface Item {
 
 
 export const useSolicitudPracticas = () => {
-  const [items, setItems] = useState<Item[]>()
+  const [items, setItems] = useState<Item[]>([])
 
   const [selecciones, setSelecciones] = useState<Item[]>([
     {
@@ -58,7 +58,7 @@ export const useSolicitudPracticas = () => {
   }
 
   const getTecnologiasPorConocimiento = (idPerfil: string, idConocimiento: string) => {
-    return items?.find((i) => i.id === idPerfil)?.conocimientos.find((c) => c.id === idConocimiento)?.tecnologias
+    return items.find((i) => i.id === idPerfil)?.conocimientos.find((c) => c.id === idConocimiento)?.tecnologias
   }
 
   const guardarConocimiento = (idPerfil: string, idConocimiento: string) => { 
@@ -84,6 +84,7 @@ export const useSolicitudPracticas = () => {
   }
 
   const guardarTecnologia = (tecnologia: string, idPerfil: string, idConocimiento: string) => {
+    console.log('tecnologia', tecnologia)
     const nuevaLista = selecciones.map((s, i) => {
       if (s.id === idPerfil) return {
         id: s.id,
@@ -131,9 +132,13 @@ export const useSolicitudPracticas = () => {
 
   const getTodasLasTecnologiasDeSelecciones = () => { 
     let tecnologias = selecciones.map(s =>
-      s.conocimientos.map(c => getTecnologiasPorConocimiento(s.id,c.id))).flat(2)
+      s.conocimientos.map(c => {
+        let tecno = getTecnologiasPorConocimiento(s.id, c.id) || []
+        return tecno
+      })
+    ).flat(2)
 
-    return tecnologias
+    return tecnologias || []
   }
 
   return {

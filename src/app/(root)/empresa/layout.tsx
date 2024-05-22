@@ -18,7 +18,7 @@ export default async function EmpresaLayout({
       }
   return (
 
-    <div>
+    <div className="h-full">
       {children}
     </div>
   );

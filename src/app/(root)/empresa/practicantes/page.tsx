@@ -1,32 +1,66 @@
-import { PracticantesActivosComponent } from "@/components/empresa/PracticantesActivosComponent"
+
+import { ListaSolicitudesComponent } from "@/components/empresa/ListaSolicitudesComponent"
 import { SideBarLayout } from "../SidebarLayout"
-import { PerfilSolicitudComponent } from "@/components/empresa/PerfilSolicitudComponent"
-import { Input } from "@/components/ui/input"
-import { Autocomplete } from "@/components/ui/Autocomplete"
-import { getSkills } from "@/helpers/consultaSkillsTest"
-import { SkillsSelectForm } from "@/components/empresa/SkillsSelectForm"
-
-
+import { CardComponent } from "@/components"
 
 export const metadata = {
-  title: "Practicantes",
-  description: "Realiza la solicitud de practicantes.",
+  title: "Solicitudes de practicantes",
+  description: "Revisa las solicitudes de practicantes."
 
 }
 
-
-export const SoliciutudPracticantes = async() => { 
-
-  const skills = await getSkills()
-  
-  return (
-    <SideBarLayout>
-      <div className="flex flex-col w-full">
-        <h1 className="text-2xl font-semibold text-gray-800">Solicitud de practicantes</h1> 
-        <SkillsSelectForm skills={skills} />
-      </div>
-    </SideBarLayout>
-  )
+const Solicitudes = async () => { 
+  return Promise.resolve([
+    {
+      id: 1,
+      perfil: "Desarrollador de software",
+      conocimientos: ["Frontend", "Backend"],
+      herramientas: ["React", "NodeJS", "MongoDB", "ExpressJS", "Firebase", "AWS"],
+      numeroPracticantes: 1,
+      fechaSolicitud: "2021-09-01",
+      semestre: "2022-1",
+      estado: "Aceptada"
+    },
+    {
+      id: 2,
+      perfil: "Desarrollador de software",
+      conocimientos: ["Frontend", "Backend"],
+      herramientas: ["React", "NodeJS", "MongoDB", "ExpressJS", "Firebase", "AWS"],
+      numeroPracticantes: 1,
+      fechaSolicitud: "2021-09-01",
+      semestre: "2023-1",
+      estado: "Aceptada"
+    },
+    {
+      id: 3,
+      perfil: "Desarrollador de software",
+      conocimientos: ["Frontend", "Backend"],
+      herramientas: ["React", "NodeJS", "MongoDB", "ExpressJS", "Firebase", "AWS"],
+      numeroPracticantes: 1,
+      fechaSolicitud: "2021-09-01",
+      semestre: "2024-1",
+      estado: "Rechazada"
+    },
+    {
+      id: 4,
+      perfil: "Desarrollador de software",
+      conocimientos: ["Frontend", "Backend"],
+      herramientas: ["React", "NodeJS", "MongoDB", "ExpressJS", "Firebase", "AWS"],
+      numeroPracticantes: 1,
+      fechaSolicitud: "2021-09-01",
+      semestre: "2024-2",
+      estado: "Pendiente"
+    }
+  ])
 }
 
-export default SoliciutudPracticantes
+export const SolicitudesPracticantes = async () => { 
+
+  const solicitudes = await Solicitudes()
+
+  return <SideBarLayout>
+    <ListaSolicitudesComponent solicitudes={ solicitudes} />
+  </SideBarLayout>
+}
+
+export default SolicitudesPracticantes

@@ -65,6 +65,7 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
   const handleSubtmit = (e: React.FormEvent<HTMLFormElement> ) => { 
     e.preventDefault()
     console.log(e.target)
+    console.log('perfil', perfil)
    
   }
 
@@ -90,7 +91,7 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
             description="Seleccione entre las siguientes habilidades, aquellas que se acoplen al perfil de practicante que está solicitando."
             cardContent={
               
-              <form onSubmit={handleSubtmit}>
+              <form>
                 <div>
                   <label className="font-semibold">Perfil</label>
                   <select
@@ -143,7 +144,9 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
                           <label className="font-semibold">Tecnologías</label>
                           <AutocompleteInput
                             availableOptions={getTodasLasTecnologiasDeSelecciones().map(
-                              t => ({ id: t, label: t })
+                              t => (
+                                { id: t, label: t }
+                              )
                               )} />
                        
                       

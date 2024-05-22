@@ -13,27 +13,30 @@ const getPracticantes = () => {
       nombre: 'Juan',
       apellido: 'Perez',
       carrera: 'Ingenieria en Sistemas',
-      semestre: '8',
+      semestre: '2024-1',
       telefono: '12345678',
       correo: '',
+      activo: true
     },
     {
       id: 2,
       nombre: 'Maria',
       apellido: 'Lopez',
       carrera: 'Ingenieria en Sistemas',
-      semestre: '7',
+      semestre: '2021-2',
       telefono: '12345678',
       correo: '',
+      activo: false
     },
     {
       id: 3,
       nombre: 'Pedro',
       apellido: 'Ramirez',
       carrera: 'Ingenieria en Sistemas',
-      semestre: '6',
+      semestre: '2023-1',
       telefono: '12345678',
       correo: '',
+      activo: false
     },
   ])
 }

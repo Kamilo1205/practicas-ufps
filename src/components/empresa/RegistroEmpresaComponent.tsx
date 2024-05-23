@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react"
+import { use, useState } from "react"
 import { DatosEmpresaForm } from "./DatosEmpresaForm"
 import { DatosRepresentanteLegal } from "./DatosRepresentanteLegal"
 import { DatosConvenio } from "./DatosConvenio"
@@ -7,6 +7,9 @@ import { DatosConvenio } from "./DatosConvenio"
 import { Steps } from 'primereact/steps';
 import { PrimeReactProvider } from "primereact/api"
 import "primereact/resources/themes/lara-light-cyan/theme.css";
+import { useUsuariosStorage } from "@/storage/UsuariosStorage"
+import { obtenerEmpresa, useEmpresaStorage } from "@/storage/empresaStorage"
+import { redirect } from "next/navigation"
 
 const items = [
   { label: 'Datos de la empresa' },
@@ -15,12 +18,18 @@ const items = [
 
 ]
 
-interface RegistroEmpresaComponentProps {
-  initialStage: number
-}
 
-export const RegistroEmpresaComponent = ({initialStage}:RegistroEmpresaComponentProps) => { 
-  const [stage, setStage] = useState(initialStage)
+export const RegistroEmpresaComponent = () => { 
+  
+  const { usuario } = useUsuariosStorage();
+  const { empresa } = useEmpresaStorage()
+  const { nit, representanteLegal, convenio } = empresa
+  const [stage, setStage] = useState(!nit ? 0 : !representanteLegal.representanteEmail ? 1 : !convenio ? 2 : 3)
+
+  if (stage === 3) {
+    redirect('/empresa')
+  }
+
 
   const nextStage = () => {
     { /* //TODO: Controlar el max next. */ }

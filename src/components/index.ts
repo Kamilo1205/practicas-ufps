@@ -11,5 +11,3 @@ export { LabelConInfo } from "./ui/LabelConInfo";
 export { CardComponent } from './ui/CardComponent'
 
 export { TimelineComponent } from './ui/TimeLine'
-
-export {TextSelectBadgeComponent} from './ui/TextSelectBadges'

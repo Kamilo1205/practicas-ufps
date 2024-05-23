@@ -40,6 +40,7 @@
     "next-themes": "^0.3.0",
     "primereact": "^10.6.3",
     "react": "^18",
+    "react-autosuggest": "^10.1.0",
     "react-day-picker": "^8.10.0",
     "react-dom": "^18",
     "react-hook-form": "^7.51.2",
@@ -53,14 +54,15 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
-    "@types/react": "^18",
+    "@types/react": "^18.3.2",
+    "@types/react-autosuggest": "^10.1.11",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.19",
     "eslint": "^8",
     "eslint-config-next": "14.1.4",
     "postcss": "^8",
     "prisma": "^5.11.0",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^3.4.3",
     "ts-node": "^10.9.2",
     "typescript": "^5"
   }

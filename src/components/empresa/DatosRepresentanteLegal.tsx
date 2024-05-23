@@ -8,6 +8,7 @@ import { LabelConInfo } from "../ui/LabelConInfo"
 import { Button } from "../ui/button"
 import { CardComponent } from "../ui/CardComponent"
 import { FileInputComponent } from "../ui/FileInputComponent"
+import { useEmpresaStorage } from "@/storage/empresaStorage"
 
 const Formulario = ({form}:any) => { 
   return (
@@ -110,7 +111,8 @@ interface Props {
 
 export const DatosRepresentanteLegal = ({nextStage,backStage}:Props) => { 
   const loading = false
-  
+  const { guardarFormulario } = useEmpresaStorage()
+  //console.log('repre',empresa)
   const form = useForm<z.infer<typeof DatosRepresentanteLegalSchema>>({
     mode: 'onBlur',
     resolver: zodResolver(DatosRepresentanteLegalSchema)
@@ -121,7 +123,18 @@ export const DatosRepresentanteLegal = ({nextStage,backStage}:Props) => {
     e.preventDefault()
     console.log(e.target.value)
     console.log(form.getValues())
+    // TODO: El tipo de documente debe ser un select y traer los tipos de documento de la base de datos
+    const representante = {
+      representanteNombre: form.getValues('nombre'),
+      representanteEmail: form.getValues('email'),
+      representanteTelefono: form.getValues('telefono'),
+      representanteTipoDocumentoId: 'CC',
+      representanteNumeroDocumentoIdentidad: form.getValues('documento'),
+      documentoIdentidad: form.getValues('documentoFile')
+    }
+    guardarFormulario({ representanteLegal: representante })
     nextStage()
+
   }
 
     return (

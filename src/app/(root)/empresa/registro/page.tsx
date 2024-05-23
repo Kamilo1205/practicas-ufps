@@ -39,20 +39,10 @@ const datosEmpresa = async (empresaId: string) => {
 
 
 
-export default async function Page() { 
+export default function Page() { 
 
-  //TODO: Usar una session real cuando esté. 
-  //const session = await auth();
-  const session = { user: { role: 'EMPRESA', id: '1' } }
-
-  const { nit, representanteLegal, convenio } = await datosEmpresa(session?.user?.id)
   
-  const stage = !nit ? 0 : !representanteLegal.documento ? 1 : convenio.estado === 'pendiente' ? 2 : 3
-  //console.log(stage)
-  if (stage === 3) { 
-    redirect('/empresa/')
-  }
     return (
-      <RegistroEmpresaComponent initialStage={ stage} />
+      <RegistroEmpresaComponent  />
     )
 }

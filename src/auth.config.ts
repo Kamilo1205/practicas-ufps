@@ -26,7 +26,7 @@ export const authConfig: NextAuthConfig = {
         };
         const { email, password } = parsedCredentials.data;
         
-        //Buscar el correo
+        //TODO: Buscar el correo - Acomodar para que ahora mande una request a la API.  
         const usuario = await prisma.usuario.findUnique({ where: { email: email.toLowerCase() }});
         if ( !usuario ) {
           throw new Error('El correo electrónico proporcionado no está asociado con ninguna cuenta.');

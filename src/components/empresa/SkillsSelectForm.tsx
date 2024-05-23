@@ -49,6 +49,12 @@ export const SkillsSelectForm = ({skills}:Props) => {
       { /*//TODO: Adaptar el componente para recivir un valor y modificiarlo. */ }
       <PerfilSolicitudComponent perfil={ perfil} setPerfil = {setPerfil} />
 
+    </div>
+  </>)
+}
+
+/**
+ * 
       <h2 className="mt-5">Puede especificar que habilidad o herramienta está buscando en el practicante.</h2>
 
       <Autocomplete choices={skills} setValue={agregarSkill} />
@@ -71,6 +77,4 @@ export const SkillsSelectForm = ({skills}:Props) => {
         </label>
       </div>
       <button className="bg-black text-white px-4 py-2 rounded mt-5" onClick={onSubmit}>Enviar solicitud</button>
-    </div>
-  </>)
-}
+ */

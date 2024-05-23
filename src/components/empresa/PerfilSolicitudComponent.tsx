@@ -1,8 +1,8 @@
 'use client'
 
-import { get } from "http";
 import { CardComponent } from "../ui/CardComponent"
 import { useSolicitudPracticas } from "@/helpers/hookSolicitudPracticas";
+import AutocompleteInput from "../ui/AutocompleteInput";
 
 interface Opcion {
   id: string
@@ -26,6 +26,7 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
     guardarConocimiento,
     getConocimientosDePerfil,
     getTecnologiasPorConocimiento,
+    getTodasLasTecnologiasDeSelecciones,
   } = useSolicitudPracticas()
 
   const onChangePerfil = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => { 
@@ -64,6 +65,7 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
   const handleSubtmit = (e: React.FormEvent<HTMLFormElement> ) => { 
     e.preventDefault()
     console.log(e.target)
+    console.log('perfil', perfil)
    
   }
 
@@ -89,7 +91,7 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
             description="Seleccione entre las siguientes habilidades, aquellas que se acoplen al perfil de practicante que está solicitando."
             cardContent={
               
-              <form onSubmit={handleSubtmit}>
+              <form>
                 <div>
                   <label className="font-semibold">Perfil</label>
                   <select
@@ -140,14 +142,13 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
                       &&
                       <div className="mt-2">
                           <label className="font-semibold">Tecnologías</label>
-                         
-                        <select className="w-full border border-gray-300 rounded p-1">
-                          <option defaultValue={''} value={''}>Seleccione una tecnología</option>
-                          {items?.find((i) => i.id === selecciones[index].id)?.conocimientos.find((c) => c.id === selecciones[index].conocimientos[0].id)?.tecnologias.map((tecnologia) => (
-                            <option key={`${index}-${tecnologia}`} value={tecnologia}>{tecnologia}</option>
-                          ))}
-                          <option value={'otro'}>Otro</option>
-                        </select>
+                          <AutocompleteInput
+                            availableOptions={getTodasLasTecnologiasDeSelecciones().map(
+                              t => (
+                                { id: t, label: t }
+                              )
+                              )} />
+                       
                       
                       </div>
                     }
@@ -185,6 +186,16 @@ export const PerfilSolicitudComponent = ({ perfil, setPerfil }: Props) => {
                           <option defaultValue={''} value={''}>Seleccione un conocimiento</option>
                           {items?.find((i) => i.id === selecciones[index].id)?.conocimientos.map((conocimiento) => (
                             <option key={`${index}-${conocimiento.id}`} value={conocimiento.id}>{conocimiento.nombre}</option>
+                          ))}
+                          <option value={'otro'}>Otro</option>
+                        </select>
+
+
+
+                         <select className="w-full border border-gray-300 rounded p-1">
+                          <option defaultValue={''} value={''}>Seleccione una tecnología</option>
+                          {items?.find((i) => i.id === selecciones[index].id)?.conocimientos.find((c) => c.id === selecciones[index].conocimientos[0].id)?.tecnologias.map((tecnologia) => (
+                            <option key={`${index}-${tecnologia}`} value={tecnologia}>{tecnologia}</option>
                           ))}
                           <option value={'otro'}>Otro</option>
                         </select>

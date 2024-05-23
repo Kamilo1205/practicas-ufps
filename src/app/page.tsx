@@ -1,14 +1,13 @@
-
+'use client'
 import { redirect } from 'next/navigation';
-import { auth } from '../auth.config';
-import Link from 'next/link';
+import { useUsuariosStorage } from '@/storage/UsuariosStorage';
 
-export default async function Home() {
+export default function Home() {
 
-  const session = await auth();
+  const {usuario,accessToken,loggingIn} = useUsuariosStorage();
 
-  if ( session?.user ) {
-    switch (session.user.role) {
+  if (accessToken && accessToken !== '') {
+    switch (usuario.roles[0].nombre.toUpperCase()) {
       case 'ESTUDIANTE':
         redirect('/estudiante');
       case 'TUTOR_PRACTICAS':
@@ -23,26 +22,18 @@ export default async function Home() {
         break;
     }
   }
-
+  else {
+    redirect('/login');
+  }
   return (
     <>
-      <h1>
-        Pagina Principal
-      </h1>
-      <div>
-        <Link href="/login">
-          Inicio de Sesion
-        </Link>
-        <Link href="/estudiante">
-          Estudiante
-        </Link>
-        <Link href="/empresa">
-          Empresa
-        </Link>
-        <Link href="/empresa">
-          Empresa
-        </Link>
+      <div className='flex items-center justify-center min-h-screen'>
+        <div className="w-8 h-8 border-4 border-red-200 rounded-full animate-spin border-t-transparent"></div>
+        <p className="ml-2">cargando...</p>
       </div>
+      
+
+      
     </>
   );
 }

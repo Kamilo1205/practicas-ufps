@@ -18,6 +18,7 @@ import { DatosDireccionEmpresa } from "./DatosDireccionEmpresa"
 
 
 import { Dialog } from 'primereact/dialog';
+import { useEmpresaStorage } from "@/storage/empresaStorage"
 
 
 
@@ -78,11 +79,11 @@ const ArchivosEmpresa = ({ form }: any) => {
 
 export const DatosEmpresaForm = ({ setStage, }: Props) => {
   
-
-
   const [sectores,setSectores ] = useState<any>([])
   const EMPRESA_ID = "1"
   const [loading, setLoading] = useState(false)
+  const {guardarFormulario} = useEmpresaStorage()
+
 
   const form = useForm<z.infer<typeof DatosEmpresaSchema>>({
     mode: 'onBlur',
@@ -128,20 +129,20 @@ export const DatosEmpresaForm = ({ setStage, }: Props) => {
       //const RUTUrl = await guardarArchivoEmpresa(formData.rut,`${formData.nit}-rut.pdf`,nombreCarpeta)
       
       const empresa = {
-        id: EMPRESA_ID,
         nombre: formData.nombre,
         direccion: formData.direccion,
-        NIT: formData.nit,
+        nit: formData.nit,
         telefono: formData.telefono,
         pais: formData.pais,
         departamento: formData.departamento,
-        municipio: formData.municipio,
-        //camaraComercio: camaraDeComercioUrl,
-       // RUTUrl
-
+        ciudad: formData.municipio,
+        industria: formData.industria,
+        rut: formData.rut ,
+        camaraComercio: formData.camaraComercio,
+        sector: formData.sector,
       }
 
-      //await guardarDatosEmpresa(empresa) 
+      guardarFormulario(empresa) 
       setStage()
       console.log('Datos de la empresa guardados correctamente')
 
@@ -166,7 +167,9 @@ export const DatosEmpresaForm = ({ setStage, }: Props) => {
     }
     , [])
 
-  useEffect(() => { },
+  useEffect(() => { 
+    console.log('Renderizando... 1')
+  },
     [watcher])
   
     const [visible, setVisible] = useState(true)

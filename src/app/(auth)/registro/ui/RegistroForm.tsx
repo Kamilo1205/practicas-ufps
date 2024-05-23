@@ -5,11 +5,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { useForm } from 'react-hook-form';
-import { signIn, useSession } from 'next-auth/react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { FcGoogle } from 'react-icons/fc';
 import { LuLoader2 } from 'react-icons/lu';
 import { MdOutlineEmail } from 'react-icons/md';
 
@@ -18,13 +16,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 
-import { authenticate } from '@/actions';
 import { RegistroSchema } from '@/schemas';
 import { useUsuariosStorage } from '@/storage/UsuariosStorage';
 
 export const RegistroForm = () => {
 
-  const { data: session, status } = useSession(); 
+  //const { data: session, status } = useSession(); 
 
   const {registarEmpresa,accessToken,error} = useUsuariosStorage()
 
@@ -32,10 +29,12 @@ export const RegistroForm = () => {
   const { toast } = useToast();
   const router = useRouter();
 
+  console.log('accessToken',accessToken)
+
   useEffect(() => {
     if (error != undefined && error !== '') {
       toast({
-        variant: "destructive",
+        variant: "destructive" as const,
         description: error,
       });
     }
@@ -54,13 +53,10 @@ export const RegistroForm = () => {
     setIsLoading( false );
   }
 
-  if(accessToken && accessToken !== '') return router.push('/')
+  if(accessToken && accessToken !== '') router.push('/')
 
   return (
     <>
-      
-    
-      
       <Form {...form}>
         <form 
           onSubmit={form.handleSubmit(onSubmit)} 

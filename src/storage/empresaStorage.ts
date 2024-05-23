@@ -1,4 +1,4 @@
-import { ca } from "date-fns/locale"
+import { create } from "zustand"
 import {
   Empresa,
   RepresentanteLegal,
@@ -6,13 +6,71 @@ import {
   TutorDeEmpresa,
   Usuario
 } from "./modelos"
+import { createJSONStorage, devtools, persist } from "zustand/middleware"
 
+interface EmpresaStorage {
+  empresa: Empresa,
+  guardarFormulario: (data: any) => void,
+  registrarEmpresa: (empresa: Empresa) => Promise<void>,
+ }
 
+export const useEmpresaStorage = create<EmpresaStorage>()(
+  devtools(
+    persist(
+      (set, get) => ({
+        empresa: {
+          id: '',
+          nombre: '',
+          direccion: '',
+          nit: '',
+          telefono: '',
+          pais: '',
+          departamento: '',
+          ciudad: '',
+          industria: '',
+          descripcion: '',
+          representanteLegal: {
+            representanteNombre: '',
+            representanteEmail: '',
+            representanteTelefono: '',
+            representanteTipoDocumentoId: '',
+            representanteNumeroDocumentoIdentidad: '',
+            representanteFechaExpedicion: '',
+            representanteLugarExpedicion: ''
+          },
+          rut: null,
+          camaraComercio: null,
+          documentoIdentidad: null,
+          convenio: null,
+          sector: ''
+        },
+        registrarEmpresa: async (empresa: Empresa) => { 
+          //TODO: Implementar el registro de la empresa. No olvidar primero convertir a FormData antes de enviar
+        },
+        guardarFormulario: (data: any) => {
+          console.log('Guardando formulario', data)
+          set(state => {
+            return {
+              empresa: {
+                ...state.empresa,
+                ...data
+              }
+            }
+          })
+        }
 
-export const registrarEmpresa = async(empresa:Empresa) => {
-  
+        
+      })
+      ,
+      {
+        name: 'empresa-storage',
+        storage: createJSONStorage(() => sessionStorage)
 
-}
+      }
+    )
+  )
+)
+
 
 export const obtenerEmpresa = async (usuarioId: string) => { 
   const URL = 'http://localhost:3000'

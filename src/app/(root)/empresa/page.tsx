@@ -70,14 +70,10 @@ const datosEmpresa = async (empresaId: string) => {
 
 export default async function Page() {
 
-  //TODO: Usar una session real cuando esté. 
+  //TODO: Usar una session real cuando esté.
   //const session = await auth();
-  const session = { user: { role: 'EMPRESA', id: '1' } }
 
- const empresa = await datosEmpresa(session.user.id)
-  if (!empresa.nit || !empresa.representanteLegal.documento || empresa.convenio.estado === 'pendiente') {
-    redirect('/empresa/registro')
-  }
+  const session = { user: { role: 'EMPRESA', id: '1' } }
 
   const practicantes = await getPracticantes()
   return (

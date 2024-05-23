@@ -1,24 +1,35 @@
-import { auth } from "@/auth.config";
-import { obtenerEmpresa } from "@/storage/empresaStorage";
-import { redirect } from "next/navigation";
+'use client'
+import { useUsuariosStorage } from "@/storage/UsuariosStorage";
+import { redirect, useRouter } from "next/navigation";
+import { LuLogOut } from "react-icons/lu";
 
 
 
-export default async function EmpresaLayout({
+export default function EmpresaLayout({
   children
 }: {
   children: React.ReactNode;
   }) {
-  //TODO: Usar una session real cuando esté. 
+  //TODO: Usar una session real cuando esté.
   //const session = await auth();
-  const session = { user: { role:'EMPRESA',id:'1' } }
   
-      if ( !session || session?.user?.role !== 'EMPRESA' ) {
-          redirect('/');
-      }
+  const router = useRouter();
+
+  const {usuario,accessToken, cerrarSeccion} = useUsuariosStorage();
+  const session = usuario
+  
+  if ( !accessToken || accessToken === '' || session.roles.find(rol => rol.nombre.toUpperCase() === 'EMPRESA') === undefined){
+    redirect('/');
+  }
+  if (!usuario.estaRegistrado) {
+    router.push('/empresa/registro');
+  }
   return (
 
     <div className="h-full">
+      <div className="w-full bg-red-500 flex justify-end z-50" onClick={cerrarSeccion}>
+        <LuLogOut className="w-5 h-5 mx-8 my-4 text-white font-bold cursor-pointer" />
+      </div>
       {children}
     </div>
   );

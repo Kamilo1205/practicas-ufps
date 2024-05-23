@@ -18,10 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 
-import { authenticate } from '@/actions';
 import { LoginSchema } from '@/schemas';
-import { useStore } from 'zustand';
-import { stat } from 'fs';
 import { useUsuariosStorage } from '@/storage/UsuariosStorage';
 
 export const LoginForm = () => {
@@ -57,7 +54,7 @@ export const LoginForm = () => {
     setIsLoading( false );
   }
   console.log('accessToken',accessToken)
-  if(accessToken && accessToken !== '') return router.push('/')
+  if(accessToken && accessToken !== '') router.push('/')
 
   return (
     <>
@@ -116,6 +113,7 @@ export const LoginForm = () => {
                 </FormItem>
               )}
             />
+            {/* //TODO: Olvidaste tu contraseña? */}
             <Link 
               href="#"
               className="mt-2 w-full text-end ml-auto inline-block text-sm underline"
